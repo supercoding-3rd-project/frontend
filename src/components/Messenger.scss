@@ -1,0 +1,42 @@
+.MCL-header-left {
+  width: 360px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+}
+
+.chatplus {
+  width: 40px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nosee-chat {
+  font-size: 0.8rem;
+  width: 120px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e8edf3;
+  border-radius: 20px;
+}
+
+.nosee-chat:hover {
+  cursor: pointer;
+}
+
+.searching-bar {
+  width: 290px;
+  height: 28px;
+  border-radius: 13px;
+  border: none;
+  outline: none;
+}
+
+#smile-icon {
+  width: 300px;
+  height: auto;
+}
