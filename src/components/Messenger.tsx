@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MessengerLeftModal from "./MessengerLeftModal";
 // import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
@@ -107,6 +107,13 @@ const MChatContents = styled.div`
   border-right: 1px solid #e2e8f0;
 `;
 
+interface Chat {
+  id: number;
+  name: string;
+  date: string;
+  content: string;
+}
+
 const Messenger: React.FC = () => {
   const [searching, setSearching] = useState(""); ///검색창 인풋태그
   const [isChatModalOpen, setIsChatModalOpen] = useState([]); ///오른쪽 채팅창 띄우기
@@ -115,9 +122,18 @@ const Messenger: React.FC = () => {
   // const [chatContentModal, SetChatContentModal] = useState(false); /// 새 채팅 시작하기 모달
   const [newChatModal, setNewChatModal] = useState(false); /// 새 채팅 시작하기 모달
   const [showChatWindow, setShowChatWindow] = useState(false); /// 채팅창 여닫기 모달
-
+  const [chatlist, setChatlist] = useState<Chat[]>([]);
   const openNCModal = () => setNewChatModal(true);
   const closeNCModal = () => setNewChatModal(false);
+
+  useEffect(() => {
+    fetch(
+      "https://raw.githubusercontent.com/Regulus55/ChatDummy/main/ChatDummy.json"
+    )
+      .then((response) => response.json())
+      .then((data) => setChatlist(data))
+      .catch((error) => console.error("Fetch error:", error));
+  }, []);
 
   return (
     <MBackground>
@@ -144,7 +160,7 @@ const Messenger: React.FC = () => {
           </MSearchChatBox>
         </MSearchChatDiv>
         <MChatModals>
-          {ChatDummy.map((chat) => (
+          {chatlist.map((chat) => (
             <MessengerLeftModal key={chat.id} chat={chat} />
           ))}
 
