@@ -10,6 +10,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@toast-ui/react-editor": "^3.2.3",
+    "@toast-ui/react-editor": "^3.2.3",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.91",
     "@types/react-dom": "^18.2.23",
@@ -51,6 +52,10 @@
   "devDependencies": {
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.73",
+    "@types/react-icons": "^3.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.73",
