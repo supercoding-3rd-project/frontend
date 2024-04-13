@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "KOTRAHOPE";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts/211001_kotrahope.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .App {
   text-align: center;
 }
