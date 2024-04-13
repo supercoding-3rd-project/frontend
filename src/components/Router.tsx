@@ -10,6 +10,7 @@ import SearchPage from "../pages/search";
 import QnaListPage from "../pages/qnas";
 import QnaCreatePage from "../pages/qnas/create";
 import QnaDetailPage from "../pages/qnas/detail";
+import IntroPage from "../pages/intro/intro";
 
 export default function Router() {
   return (
@@ -25,6 +26,7 @@ export default function Router() {
       <Route path="/qnas/:id" element={<QnaDetailPage />} />
       <Route path="/qnas/create" element={<QnaCreatePage />} />
       <Route path="/search" element={<SearchPage />} />
+      <Route path="/intro" element={<IntroPage />} />
       <Route path="*" element={<Navigate replace to="/" />} />
     </Routes>
   );
