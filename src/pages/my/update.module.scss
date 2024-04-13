@@ -1,0 +1,80 @@
+.edit-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+
+  .profile-pic-container {
+    position: relative;
+    margin-bottom: 20px;
+
+    img {
+      width: 200px; /* 프로필 이미지의 너비 */
+      height: 200px; /* 프로필 이미지의 높이 */
+      border-radius: 50%; /* 프로필 이미지를 둥글게 만듭니다. */
+      object-fit: cover; /* 이미지를 비율 유지하며 자르지 않고 채웁니다. */
+    }
+
+    .profile-pic-button {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #007bff;
+      color: white;
+      font-size: 24px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+  }
+
+  .input-container {
+    width: 100%;
+    max-width: 400px; /* 입력 컨테이너의 최대 너비 */
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+
+      input,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        margin-top: 5px;
+      }
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #0056b3;
+      }
+
+      &:not(:last-child) {
+        margin-top: 10px;
+      }
+    }
+  }
+}

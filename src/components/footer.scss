@@ -1,0 +1,190 @@
+.footer {
+  margin-top: 30px;
+  height: 100%;
+  background-color: #ffed72;
+  padding: 25px 50px;
+  font-weight: 400;
+  color: black;
+
+  &__first {
+    font-size: 20px;
+
+    &__content {
+      letter-spacing: 1.2px;
+      display: inline;
+
+      span {
+        transition: color 0.3s ease;
+
+        &:hover:not(.separator) {
+          color: #5a852a;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  &__second {
+    margin-top: 30px;
+    font-size: 18px;
+
+    &__content {
+      letter-spacing: 1.1px;
+      line-height: 1.4;
+    }
+  }
+
+  &__third {
+    font-size: 18px;
+
+    &__content {
+      letter-spacing: 1.1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &-right {
+        letter-spacing: 1.1px;
+        line-height: 1.3;
+
+        span {
+          font-size: 20px;
+        }
+
+        div {
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+.separator {
+  margin: 0 20px;
+}
+
+.tmi {
+  color: #5a852a;
+}
+
+.address {
+  font-size: 16px;
+}
+
+.popup-container {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+
+  .popup {
+    background-color: #ffed72;
+    padding: 20px;
+    border-radius: 8px;
+    width: 1000px;
+    max-height: 700px;
+    overflow: auto;
+
+    &__btn {
+      display: block;
+      text-align: end;
+      margin-bottom: -30px;
+
+      &-close {
+        border: none;
+        background-color: #ffed72;
+        color: #5a852a;
+        cursor: pointer;
+      }
+    }
+
+    &__title {
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+// 아코디언
+.accordion {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+
+  &__section {
+    border-bottom: 1px solid #ccc;
+
+    &__content {
+      padding: 10px;
+      white-space: pre-line;
+      font-size: 18px;
+      line-height: 1.5;
+      background-color: #fff;
+
+      &.active {
+        display: block;
+      }
+    }
+
+    &__header {
+      padding: 10px;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      transition: background-color 0.3s ease;
+      font-size: 22px;
+      color: #5a852a;
+
+      &:hover {
+        background-color: #e0e0e0;
+      }
+
+      &.active {
+        background-color: #ddd !important;
+      }
+    }
+  }
+}
+
+// 개인정보처리방침
+
+.privacy {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  height: 100%;
+  white-space: pre-line;
+
+  &__title {
+    margin-top: -30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+
+    &-img {
+      margin-right: 20px;
+    }
+  }
+
+  &__main {
+    font-size: 20px;
+    margin: 20px 0;
+    letter-spacing: 1.1px;
+    line-height: 1.2;
+    color: #5a852a;
+  }
+
+  &__sub {
+    font-size: 18px;
+    margin: 20px 0;
+    letter-spacing: 1.1px;
+    line-height: 1.4;
+    padding: 10px 20px;
+  }
+}
