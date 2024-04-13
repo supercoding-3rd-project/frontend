@@ -1,0 +1,99 @@
+.answer-editor-layout {
+  width: 100%;
+}
+
+.answer-container {
+  display: flex;
+  width: 100%;
+  border: 1px solid #d7dbdf;
+  margin-bottom: 30px;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+.answer-container .answer-container-left {
+  width: 50px;
+  justify-content: center;
+  margin: 10px 0 0 5px;
+}
+.answer-container .answer-container-left span {
+  font-size: 3rem;
+  color: #64758b;
+}
+.answer-container .answer-container-right {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 1.25rem;
+  padding-top: 5px;
+  margin: 10px 5px 0 5px;
+}
+.answer-container .answer-container-right div {
+  font-size: 1.125rem;
+  color: #a8b0b7;
+  margin: 5px 0 5px 0;
+}
+.answer-container .answer-container-right .text-textarea {
+  height: 34px;
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: rgba(255, 237, 113, 0);
+}
+.answer-container .answer-container-right .codebox-container {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d7dbdf;
+  border-radius: 0.25rem;
+}
+.answer-container .answer-container-right .codebox-container select {
+  width: 100px;
+  height: 25px;
+  border: 1px solid #d7dbdf;
+  border-radius: 0.25rem;
+  margin: 5px;
+  background-color: rgba(255, 237, 113, 0);
+}
+.answer-container .answer-container-right .codebox-container select option {
+  background-color: #ffed71;
+}
+.answer-container .answer-container-right .codebox-textarea-wrapper {
+  border: 1px solid #d7dbdf;
+  border-radius: 0.25rem;
+  margin: 5px;
+}
+.answer-container .answer-container-right .codebox-textarea {
+  height: 34px;
+  border: none;
+  outline: none;
+  resize: none;
+  background-color: rgba(255, 237, 113, 0);
+}
+.answer-container .answer-container-right .btn-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-top: 1px solid #d7dbdf;
+  padding-top: 10px;
+}
+.answer-container .answer-container-right .btn-wrapper .codebox-btn {
+  font-size: 1.375rem;
+  color: #3d4755;
+  background-color: rgba(255, 237, 113, 0);
+  border: none;
+}
+.answer-container .answer-container-right .btn-wrapper .reply-submit-btn {
+  width: 90px;
+  height: 32px;
+  font-size: 1.125rem;
+  border: none;
+  border-radius: 0.25rem;
+  color: #a8b0b7;
+}
+.answer-container .answer-container-right .btn-wrapper .btn-enabled {
+  color: white;
+  background-color: #3d4755;
+}
+.answer-container .answer-container-right .btn-wrapper .btn-enabled:hover {
+  background-color: black;
+  cursor: pointer;
+}/*# sourceMappingURL=answerEditor.css.map */
