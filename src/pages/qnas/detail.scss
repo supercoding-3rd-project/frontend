@@ -1,0 +1,129 @@
+$darkergrey: #3d4755;
+$darkgrey: #7a828c;
+$midgrey: #b6b9bb;
+$lightgrey: #d7dbdf;
+$lightergrey: #ecedee;
+$alco-yellow: #ffed71;
+$alco-peach: #ffc597;
+$alco-pink: #ff7eb1;
+$alco-purple: #9367ff;
+$alco-blue: #6bd7ff;
+$alco-test-butter: #faedb2;
+$alco-test-pink: #f8bdeb;
+$alco-test-blue: #5272f2;
+$alco-test-navy: #082541;
+
+.qna-detail-page-layout {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .viewer-answer-wrapper {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid $lightgrey;
+    border-left: 1px solid $lightgrey;
+    padding: 50px 70px 100px 70px;
+    background-color: white;
+  }
+}
+
+.quetion-delete-btn-container {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  button {
+    width: 50px;
+    height: 32px;
+    background-color: $lightergrey;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    color: $darkergrey;
+    &:hover {
+      background-color: $lightgrey;
+      cursor: pointer;
+    }
+  }
+}
+
+.viewer-container {
+  width: 100%;
+  height: 100%;
+}
+
+.post-info {
+  display: flex;
+  div {
+    color: $darkgrey;
+  }
+  div:nth-child(2) {
+    margin: 0 3px 0 3px;
+  }
+}
+
+.viewer-component-wrapper {
+  padding: 30px 0 55px 0;
+}
+
+.viewer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 50px;
+}
+
+.like-dislike-wrapper {
+  display: flex;
+  flex-direction: column;
+  color: $darkgrey;
+
+  .like-dislike {
+    display: flex;
+    button {
+      display: flex;
+      align-items: end;
+      background-color: white;
+      border: none;
+      font-size: 0.875rem;
+      color: $darkgrey;
+      div {
+        padding-right: 2px;
+        margin-right: 3px;
+      }
+    }
+    .like-button {
+      width: 95px;
+      &.like-button-clicked {
+        color: $alco-test-pink;
+      }
+    }
+    .dislike-button {
+      width: 125px;
+      display: flex;
+
+      span {
+        padding-left: 4.5px;
+      }
+    }
+  }
+}
+
+.writer-info {
+  display: flex;
+  align-items: start;
+  color: $darkgrey;
+  span {
+    font-size: 1.5rem;
+  }
+}
+
+.answer-count {
+  display: flex;
+  width: 100%;
+  margin: 5px 0 5px 0;
+}
