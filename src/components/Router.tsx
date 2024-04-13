@@ -10,6 +10,7 @@ import SearchPage from "../pages/search";
 import QnaListPage from "../pages/qnas";
 import QnaCreatePage from "../pages/qnas/create";
 import QnaDetailPage from "../pages/qnas/detail";
+import UserPage from "../pages/otherprofile/Userpage";
 
 export default function Router() {
   return (
@@ -18,6 +19,7 @@ export default function Router() {
       <Route path="/my" element={<MyPage />} />
       <Route path="/my/update" element={<MyPageUpdate />} />
       <Route path="/users/login" element={<LoginPage />} />
+      <Route path="/users/:username" element={<UserPage />} />
       <Route path="/users/signup" element={<SignupPage />} />
       <Route path="/messenger" element={<MessengerService />} />
       <Route path="/notifications" element={<NotificationsPage />} />
