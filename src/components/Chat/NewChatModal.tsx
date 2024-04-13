@@ -59,17 +59,21 @@ const CloseIconImg = styled(GrClose)`
 
 // 모달창 중간 팔로우 팔로워 부분
 const NCMFollowBox = styled.div`
-  height=60px;
+  height: 60px;
   display: flex;
   align-items: center;
-  &:hover{cursor:pointer;}
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const NCMFollower = styled.div`
   width: 250px;
-  color: true ? black : #cbd5e6;
+  // color: true ? black : #cbd5e6;
   border-bottom: 2px solid #cbd5e6;
-  &:hover{cursor:pointer;}
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const NCMFollowing = styled.div`
@@ -99,11 +103,7 @@ const ChatContentModal: React.FC<ChatContentModalProps> = ({ show, close }) => {
         </NCMHeader>
 
         <NCMFollowBox>
-          <NCMFollower
-          // onClick={() => {
-          //   setSelectedFollower( selected => selected     selectedFollower === true ? true : true);
-          // }}
-          >
+          <NCMFollower>
             <div>팔로워</div>
             <div>2</div>
           </NCMFollower>

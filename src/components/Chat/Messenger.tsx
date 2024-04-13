@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MessengerLeftModal from "./MessengerLeftModal";
 // import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
-import "./Messenger.css";
+import "./CSS/Messenger.css";
 import { BsEnvelopePlus } from "react-icons/bs";
 import { TbTriangleInverted } from "react-icons/tb";
 import { IoSearch } from "react-icons/io5";

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { CgProfile } from "react-icons/cg";
-import "./MessengerLeftModal.css";
+import "./CSS/MessengerLeftModal.css";
 
 // 메신저 왼쪽 모달창/  Messenger Left Modal
 
