@@ -12,6 +12,8 @@ import QnaCreatePage from "../pages/qnas/create";
 import QnaDetailPage from "../pages/qnas/detail";
 import UserPage from "../pages/otherprofile/Userpage";
 import IntroPage from "../pages/intro/intro";
+import IntroPage from "../pages/intro/intro";
+import UserPage from "../pages/otherprofile/Userpage";
 
 export default function Router() {
   return (
