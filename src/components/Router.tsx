@@ -10,6 +10,8 @@ import SearchPage from "../pages/search";
 import QnaListPage from "../pages/qnas";
 import QnaCreatePage from "../pages/qnas/create";
 import QnaDetailPage from "../pages/qnas/detail";
+import IntroPage from "../pages/intro/intro";
+import UserPage from "../pages/otherprofile/Userpage";
 
 export default function Router() {
   return (
