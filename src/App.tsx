@@ -1,4 +1,5 @@
 import "./App.scss";
+import { Layout } from "./components/Layout";
 import Router from "./components/Router";
 
 function App() {
