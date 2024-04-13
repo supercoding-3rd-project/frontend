@@ -1,13 +1,10 @@
-import React from "react";
-import "./App.css";
-import Messenger from "./components/Chat/Messenger";
+import "./App.scss";
+import Router from "./components/Router";
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      헤더
-      <Messenger />
-      푸터
+    <div>
+      <Router />
     </div>
   );
 };
