@@ -109,7 +109,8 @@ const initialPosts: Post = {
 export default function QnaListPage() {
   const [mockPosts, setMockPosts] = useState<Post>(initialPosts); //data status
   const [loading, setLoading] = useState<boolean>(false); //data loading status. to show users 'Loading...' during Loaded.
-  //서버에서 받아온 데이터를 재가공 하는 로직
+
+  //서버에서 받아온 데이터를 재가공
   const processedData = Object.values(initialPosts).flatMap((questions) => {
     return questions.map((question: Question) => {
       const mostLikedAnswer: any = question.answers?.reduce(
@@ -163,7 +164,7 @@ export default function QnaListPage() {
     });
   });
 
-  //additional data load function
+  //추가 데이터 로딩 로직
   const loadMorePosts = () => {
     //API request simulation (add addtional data after 1 sec) 추후 수정 예정
     setTimeout(() => {
