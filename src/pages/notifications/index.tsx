@@ -19,27 +19,27 @@ export default function NotificationsPage() {
   const [notifications, setNotifications] = useState<Notification[]>(notiDummy);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // 웹소켓 연결
-    const socket = new WebSocket("ws://example.com"); // 백엔드에서 제공하는 웹소켓 엔드포인트 사용
-    // 웹소켓 연결 이벤트 핸들러 등록
-    socket.onopen = () => {
-      // 웹소켓 연결이 열렸을 때, JWT 토큰을 요청하여 받아옴
-      fetch("http://example.com/authenticate", {
-        method: "POST",
-        credentials: "include", // JWT 토큰을 쿠키에 저장하거나 헤더에 포함하기 위해 쿠키를 전송
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          // JWT 토큰을 받아와서 저장 또는 처리
-          const token = data.token;
-          // 여기서 받아온 토큰을 사용하여 웹소켓 연결 인증
-          socket.send(JSON.stringify({ type: "authenticate", token: token }));
-        })
-        .catch((error) => {
-          console.error("Error authenticating:", error);
-        });
-    };
+  // useEffect(() => {
+  //   // 웹소켓 연결
+  //   const socket = new WebSocket("ws://example.com"); // 백엔드에서 제공하는 웹소켓 엔드포인트 사용
+  //   // 웹소켓 연결 이벤트 핸들러 등록
+  //   socket.onopen = () => {
+  //     // 웹소켓 연결이 열렸을 때, JWT 토큰을 요청하여 받아옴
+  //     fetch("http://example.com/authenticate", {
+  //       method: "POST",
+  //       credentials: "include", // JWT 토큰을 쿠키에 저장하거나 헤더에 포함하기 위해 쿠키를 전송
+  //     })
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         // JWT 토큰을 받아와서 저장 또는 처리
+  //         const token = data.token;
+  //         // 여기서 받아온 토큰을 사용하여 웹소켓 연결 인증
+  //         socket.send(JSON.stringify({ type: "authenticate", token: token }));
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error authenticating:", error);
+  //       });
+  //   };
 
     // 새로운 알림이 도착할 때마다 알림 목록을 업데이트
     socket.onmessage = (event) => {
