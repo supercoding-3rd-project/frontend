@@ -1,11 +1,12 @@
 import "./App.scss";
+import { Layout } from "./components/Layout";
 import Router from "./components/Router";
 
 const App: React.FC = () => {
   return (
-    <div>
+    <Layout>
       <Router />
-    </div>
+    </Layout>
   );
 };
 
