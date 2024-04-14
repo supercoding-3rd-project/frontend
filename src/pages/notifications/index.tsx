@@ -41,20 +41,20 @@ export default function NotificationsPage() {
   //       });
   //   };
 
-    // 새로운 알림이 도착할 때마다 알림 목록을 업데이트
-    socket.onmessage = (event) => {
-      const newNotification = JSON.parse(event.data);
-      setNotifications((prevNotifications) => [
-        ...prevNotifications,
-        newNotification,
-      ]);
-    };
+  //   // 새로운 알림이 도착할 때마다 알림 목록을 업데이트
+  //   socket.onmessage = (event) => {
+  //     const newNotification = JSON.parse(event.data);
+  //     setNotifications((prevNotifications) => [
+  //       ...prevNotifications,
+  //       newNotification,
+  //     ]);
+  //   };
 
-    // 컴포넌트 언마운트 시 웹소켓 연결 해제
-    return () => {
-      socket.close();
-    };
-  }, []);
+  //   // 컴포넌트 언마운트 시 웹소켓 연결 해제
+  //   return () => {
+  //     socket.close();
+  //   };
+  // }, []);
 
   const markNotificationAsSeen = (notificationId: string) => {
     // 서버에 알림 확인 상태 전달하는 요청 보내기
