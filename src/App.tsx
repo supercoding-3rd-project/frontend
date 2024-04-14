@@ -2,12 +2,12 @@ import "./App.scss";
 import { Layout } from "./components/Layout";
 import Router from "./components/Router";
 
-function App() {
+const App: React.FC = () => {
   return (
     <Layout>
       <Router />
     </Layout>
   );
-}
+};
 
 export default App;
