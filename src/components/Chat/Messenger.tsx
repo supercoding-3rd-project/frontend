@@ -45,9 +45,9 @@ const MCLHeaderLeft = styled.div`
 
 const ChatPlusIcon = styled(BsEnvelopePlus)`
   font-size: 1.3rem;
-  &: hover {
-    cursor: pointer;
-  }
+  //&: hover {
+  //  cursor: pointer;
+  //}
 `;
 
 const MCLHeaderRight = styled.div`

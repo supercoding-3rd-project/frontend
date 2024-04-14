@@ -38,9 +38,8 @@ const AnswerViewer: React.FC<AnswerViewerProps> = ({
   userId,
   answers,
 }) => {
-  //현재 파이어베이스. 추후 수정 필요
-  const apiUrl =
-    "https://supercoding-3rd-pj-test-default-rtdb.firebaseio.com/.json";
+  //추후 수정 필요
+  const apiUrl = "";
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   // 모든 답변의 코멘트들을 합친 배열을 펼쳐서 초기값으로 설정. 각 comment객체에 answerId값을 추가

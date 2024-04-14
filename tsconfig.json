@@ -17,7 +17,7 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
-      "@toast-ui/react-editor": ["node_modules/@toast-ui/react-editor"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["src"]

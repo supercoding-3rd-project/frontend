@@ -9,9 +9,8 @@ import TempSaveModal from "src/components/qnas/TempSaveModal";
 import axios from "axios";
 
 export default function QnaCreatePage() {
-  //현재 파이어베이스. 추후 수정 필요
-  const apiUrl =
-    "https://supercoding-3rd-pj-test-default-rtdb.firebaseio.com/.json";
+  //추후 수정 필요
+  const apiUrl = "";
 
   //title
   const [title, setTitle] = useState("");

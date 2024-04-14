@@ -11,10 +11,9 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function QnaDetailPage() {
-  //현재 파이어베이스. 추후 수정 필요
-  const apiUrl =
-    "https://supercoding-3rd-pj-test-default-rtdb.firebaseio.com/.json";
-  //로그인상태, 추후 useEffect로 바꿔서 처음 랜더링시 로그인 여부 판단해야할듯
+  //추후 수정 필요
+  const apiUrl = "";
+  //로그인상태, 추후 useEffect로 수정해서 처음 랜더링시 로그인 여부 판단하기
   const [loggedIn, setLoggedIn] = useState(true);
 
   //임의로넣은 상태. 추후 데이터 형식에 따라서 수정 필요
