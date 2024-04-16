@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Signup.module.scss";
 import { Link } from "react-router-dom";
+import TermsPopup from "../TermsPopup";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [termsAgreed, setTermsAgreed] = useState(false);
+  const [showTermsPopup, setShowTermsPopup] = useState(false);
 
   const navigate = useNavigate();
 
@@ -62,6 +64,10 @@ const Signup = () => {
     return true;
   };
 
+  const handleTermsClick = () => {
+    setShowTermsPopup(true);
+  };
+
   // 타입을 'React.FormEvent<HTMLFormElement>'로 명시
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -94,7 +100,7 @@ const Signup = () => {
           throw new Error("회원가입 요청 실패");
         }
 
-        // 여기서부터 로그인 요청 로직
+        // 회원가입 성공 후 로그인 요청 로직
         const loginResponse = await fetch(
           "http://13.209.98.14:8080/api/login",
           {
@@ -113,9 +119,10 @@ const Signup = () => {
           throw new Error("로그인 요청 실패");
         }
 
-        const loginData = await loginResponse.json();
-        // 로그인 성공 처리, 예: 로컬 스토리지에 토큰 저장
-        localStorage.setItem("userToken", loginData.token);
+        const { accessToken, refreshToken } = await loginResponse.json();
+        // 토큰 저장 로직
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
 
         // 로그인 성공 후 메인 페이지로 이동
         navigate("/");
@@ -215,11 +222,13 @@ const Signup = () => {
             checked={termsAgreed}
             onChange={(e) => setTermsAgreed(e.target.checked)}
           />
-          <label htmlFor="termsAgreed" className={styles.checkboxLabel}>
+          <span onClick={handleTermsClick} className={styles.checkboxLabel}>
             (필수) 개인정보 수집 및 이용약관 동의
-          </label>
+          </span>
         </div>
-        <button type="submit">회원가입</button>
+        <button type="submit" className={styles.signupButton}>
+          회원가입
+        </button>
       </form>
       <div className={styles.signupPrompt}>
         <span className={styles.signupText}>계정이 있으신가요?</span>
@@ -227,6 +236,9 @@ const Signup = () => {
           로그인하기
         </Link>
       </div>
+      {showTermsPopup && (
+        <TermsPopup onClose={() => setShowTermsPopup(false)} />
+      )}
     </div>
   );
 };

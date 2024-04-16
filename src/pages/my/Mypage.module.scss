@@ -1,0 +1,52 @@
+.mypageContainer {
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.profilePicContainer {
+  width: 100px; /* 원하는 컨테이너 크기로 설정 */
+  height: 100px; /* 컨테이너와 같은 크기로 설정하여 원형이 되도록 함 */
+  border-radius: 50%; /* 원형으로 만들기 */
+  border: 2px solid #fff;
+  overflow: hidden; /* 컨테이너를 초과하는 이미지 부분을 숨김 */
+  display: flex; /* 이미지를 가운데 정렬하기 위한 설정 */
+  justify-content: center; /* 중앙 정렬 */
+  align-items: center; /* 중앙 정렬 */
+}
+
+.profilePicContainer img {
+  width: auto; /* 이미지의 원래 비율을 유지 */
+  height: 100%; /* 컨테이너의 높이에 맞춤 */
+  object-fit: cover; /* 이미지가 컨테이너를 초과할 경우 중앙 부분이 보이도록 조정 */
+}
+
+.userInfo {
+  text-align: center; /* 텍스트 중앙 정렬 */
+  font-size: 1.2rem; /* 폰트 크기 조정 */
+  color: #333; /* 텍스트 색상 */
+  /* 추가적인 스타일링 */
+}
+
+.followInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tab {
+  background-color: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.active {
+  color: blue; /* 활성 탭의 색상 */
+  border-bottom: 2px solid blue; /* 활성 탭을 나타내는 밑줄 */
+}
