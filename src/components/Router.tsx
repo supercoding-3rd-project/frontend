@@ -29,7 +29,7 @@ export default function Router() {
       <Route path="/qnas/create" element={<QnaCreatePage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/intro" element={<IntroPage />} />
-      <Route path="*" element={<Navigate replace to="/" />} />
+      {/* <Route path="*" element={<Navigate replace to="/" />} /> */}
     </Routes>
   );
 }
