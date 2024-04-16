@@ -20,6 +20,7 @@ $alco-blue: #6bd7ff;
   justify-content: flex-end;
   width: 100%;
   border-bottom: 1px solid $midgrey;
+  margin-top: 90px;
   padding: 10px 0 10px 0;
 
   .temporary-storage-btn {
@@ -32,6 +33,7 @@ $alco-blue: #6bd7ff;
     background-color: white;
     &:hover {
       background-color: $lightergrey;
+      cursor: pointer;
     }
   }
   .save-btn {
@@ -46,6 +48,7 @@ $alco-blue: #6bd7ff;
       border: 1px solid $darkgrey;
       &:hover {
         background-color: $lightgrey;
+        cursor: pointer;
       }
     }
   }
@@ -63,6 +66,7 @@ $alco-blue: #6bd7ff;
       background-color: $darkgrey;
       &:hover {
         background-color: $darkergrey;
+        cursor: pointer;
       }
     }
   }

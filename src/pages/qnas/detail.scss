@@ -1,17 +1,11 @@
 $darkergrey: #3d4755;
 $darkgrey: #7a828c;
 $midgrey: #b6b9bb;
+$midgrey2: #9ea8b7;
 $lightgrey: #d7dbdf;
 $lightergrey: #ecedee;
 $alco-yellow: #ffed71;
-$alco-peach: #ffc597;
-$alco-pink: #ff7eb1;
-$alco-purple: #9367ff;
-$alco-blue: #6bd7ff;
-$alco-test-butter: #faedb2;
-$alco-test-pink: #f8bdeb;
-$alco-test-blue: #5272f2;
-$alco-test-navy: #082541;
+$alco-yellow2: #ffed72;
 
 .qna-detail-page-layout {
   width: 100%;
@@ -19,7 +13,7 @@ $alco-test-navy: #082541;
   justify-content: center;
 
   .viewer-answer-wrapper {
-    width: 40%;
+    width: 800px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -27,6 +21,7 @@ $alco-test-navy: #082541;
     align-items: center;
     border-right: 1px solid $lightgrey;
     border-left: 1px solid $lightgrey;
+    margin-top: 90px;
     padding: 50px 70px 100px 70px;
     background-color: white;
   }
@@ -36,7 +31,7 @@ $alco-test-navy: #082541;
   display: flex;
   justify-content: end;
   width: 100%;
-  button {
+  .quetion-delete-btn {
     width: 50px;
     height: 32px;
     background-color: $lightergrey;
@@ -59,7 +54,7 @@ $alco-test-navy: #082541;
 .post-info {
   display: flex;
   div {
-    color: $darkgrey;
+    color: $midgrey2;
   }
   div:nth-child(2) {
     margin: 0 3px 0 3px;
@@ -80,7 +75,7 @@ $alco-test-navy: #082541;
 .like-dislike-wrapper {
   display: flex;
   flex-direction: column;
-  color: $darkgrey;
+  color: $midgrey2;
 
   .like-dislike {
     display: flex;
@@ -90,7 +85,8 @@ $alco-test-navy: #082541;
       background-color: white;
       border: none;
       font-size: 0.875rem;
-      color: $darkgrey;
+      color: $midgrey2;
+
       div {
         padding-right: 2px;
         margin-right: 3px;
@@ -99,7 +95,7 @@ $alco-test-navy: #082541;
     .like-button {
       width: 95px;
       &.like-button-clicked {
-        color: $alco-test-pink;
+        color: $alco-yellow2;
       }
     }
     .dislike-button {

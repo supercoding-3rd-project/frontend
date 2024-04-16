@@ -4,23 +4,25 @@ import { IoClose } from "react-icons/io5";
 import { IoTrashOutline } from "react-icons/io5";
 import axios from "axios";
 
-interface tempPosts {
-  post_id: number;
+//부모의 인터페이스 참조
+interface SaveSubmitPosts {
+  tempId: number;
   title: string;
   content: string;
+  createdAt?: "2024-04-16...";
 }
 
 interface TempSaveModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  tempSaved: tempPosts[];
+  tempSavedPosts: SaveSubmitPosts[];
   deleteBtnHandler: () => void;
 }
 
 const TempSaveModal = ({
   isModalOpen,
   setIsModalOpen,
-  tempSaved,
+  tempSavedPosts,
   deleteBtnHandler,
 }: TempSaveModalProps) => {
   useEffect(() => {
@@ -57,8 +59,8 @@ const TempSaveModal = ({
           </button>
         </div>
 
-        {tempSaved.map((post) => (
-          <div key={post.post_id} className="temp-saved-post-container">
+        {tempSavedPosts.map((post) => (
+          <div key={post.tempId} className="temp-saved-post-container">
             <div className="temp-saved-post-title">{post.title}</div>
             <div>|</div>
             <div className="temp-saved-post-content">{post.content}</div>

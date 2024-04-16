@@ -30,7 +30,10 @@ $alco-test-navy: #082541;
   .answer-viewer-header {
     display: flex;
     padding: 15px 5px 10px 5px;
-    span {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .answer-viewer-header-user-photo {
       display: flex;
       align-items: center;
       font-size: 2.75rem;
@@ -40,15 +43,55 @@ $alco-test-navy: #082541;
       align-items: center;
       margin-right: 5px;
     }
-    div:nth-child(1) {
-      font-size: 1.125rem;
-      color: black;
+
+    .answer-header-block {
+      display: flex;
+      flex-direction: column;
+      .user-info {
+        display: flex;
+        flex-direction: row;
+        font-size: 0.875rem;
+        font-size: 1.125rem;
+        color: black;
+      }
     }
-    div:nth-child(2) {
-      color: $darkergrey;
+    .user-date-text {
+      color: $darkgrey;
     }
-    .user-date-info {
-      font-size: 0.875rem;
+    .author-badge-container {
+      display: flex;
+      justify-content: start;
+      align-items: top;
+      .author-badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 45px;
+        height: 17px;
+        margin: 3px 0 0 5px;
+        border-radius: 0.5rem;
+        background-color: $darkgrey;
+        .author-text {
+          font-size: 0.6rem;
+          color: white;
+        }
+      }
+    }
+    .answer-delete-btn-container {
+      position: absolute;
+      right: 15px;
+
+      .answer-delete-btn {
+        background-color: rgba(white, 0.3);
+        border: none;
+        border-radius: 0.25rem;
+        color: $darkgrey;
+        &:hover {
+          background-color: rgba(white, 0.5);
+          color: $darkergrey;
+          cursor: pointer;
+        }
+      }
     }
   }
 }
@@ -166,11 +209,36 @@ $alco-test-navy: #082541;
   }
   .user-date-info {
     margin-left: 10px;
-    div:nth-child(2) {
+    .user-badge-container {
+      display: flex;
+      .author-badge-container-2 {
+        display: flex;
+        justify-content: start;
+        align-items: top;
+        margin-left: 5px;
+        .author-badge-2 {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 45px;
+          height: 17px;
+
+          border-radius: 0.5rem;
+          background-color: $darkgrey;
+          .author-text-2 {
+            font-size: 0.6rem;
+            color: white;
+          }
+        }
+      }
+    }
+
+    .user-date-text {
       color: $darkergrey;
       font-size: 0.875rem;
     }
   }
+
   .comment-delete-btn-container {
     position: absolute;
     right: 15px;
