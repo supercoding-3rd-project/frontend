@@ -5,12 +5,14 @@
   top: 0;
   z-index: 10;
   width: 100%;
+  height: 70px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #ffed72;
   padding: 10px 20px;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 600;
 
   &__left {
     display: flex;
@@ -26,7 +28,7 @@
   &__menu__left {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
 
     &__list {
       list-style: none;
@@ -34,7 +36,7 @@
       align-items: center;
 
       &-item {
-        margin-right: 20px;
+        margin-right: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -61,7 +63,45 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
+        position: relative;
       }
     }
   }
+}
+
+.search-icon {
+  margin-right: 20px;
+}
+
+.search-input-container {
+  transition: max-width 0.3s ease;
+  margin-right: 10px;
+
+  input {
+    border-radius: 17.5px;
+    background: #fff;
+    width: 300px;
+    height: 35px;
+    flex-shrink: 0;
+    padding-left: 15px;
+    transition: width 0.3s ease;
+    font-size: 18px;
+
+    &.open {
+      width: 300px;
+    }
+  }
+
+  label {
+    display: block;
+  }
+}
+
+.red-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  margin-left: 5px; /* 닷과 텍스트 사이 여백 조정 */
+  position: absolute;
 }

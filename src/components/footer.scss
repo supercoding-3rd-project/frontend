@@ -1,10 +1,9 @@
 .footer {
-  margin-top: 30px;
   height: 100%;
-  background-color: #ffed72;
+  background-color: #222;
   padding: 25px 50px;
   font-weight: 400;
-  color: black;
+  color: #fff;
 
   &__first {
     font-size: 20px;
@@ -20,6 +19,10 @@
           color: #5a852a;
           cursor: pointer;
         }
+
+        &:nth-child(3) {
+          font-weight: 600;
+        }
       }
     }
   }
@@ -27,15 +30,16 @@
   &__second {
     margin-top: 30px;
     font-size: 18px;
+    font-weight: 500;
 
     &__content {
-      letter-spacing: 1.1px;
-      line-height: 1.4;
+      letter-spacing: 1.2px;
+      line-height: 1.5;
     }
   }
 
   &__third {
-    font-size: 18px;
+    font-size: 16px;
 
     &__content {
       letter-spacing: 1.1px;
@@ -106,7 +110,7 @@
 
     &__title {
       font-size: 28px;
-      font-weight: 400;
+      font-weight: 600;
       margin-bottom: 20px;
     }
   }
@@ -123,7 +127,7 @@
     &__content {
       padding: 10px;
       white-space: pre-line;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1.5;
       background-color: #fff;
 
@@ -137,7 +141,8 @@
       cursor: pointer;
       background-color: #f0f0f0;
       transition: background-color 0.3s ease;
-      font-size: 22px;
+      font-size: 20px;
+      font-weight: 600;
       color: #5a852a;
 
       &:hover {
@@ -165,7 +170,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 32px;
 
     &-img {
       margin-right: 20px;
@@ -173,15 +178,16 @@
   }
 
   &__main {
-    font-size: 20px;
+    font-size: 18px;
     margin: 20px 0;
     letter-spacing: 1.1px;
     line-height: 1.2;
     color: #5a852a;
+    font-weight: 600;
   }
 
   &__sub {
-    font-size: 18px;
+    font-size: 16px;
     margin: 20px 0;
     letter-spacing: 1.1px;
     line-height: 1.4;
