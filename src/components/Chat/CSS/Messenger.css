@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "pr";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
 .MCL-header-left {
   width: 360px;
   height: 50px;
@@ -38,7 +46,7 @@
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
-  border: 1px solid #e8edf3;
+  border: 1px solid #ced3db;
   border-radius: 20px;
 }
 
@@ -77,3 +85,71 @@
   cursor: pointer;
 }
 /*# sourceMappingURL=Dkk.css.map */
+
+.chat-container {
+  width: 400px;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+#input-box {
+  height: 55px;
+  display: flex;
+  align-items: center;
+}
+
+.msg-box {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.msg-box.left {
+  justify-content: flex-start;
+}
+
+.msg-box.right {
+  justify-content: flex-end;
+}
+
+.nick-tag {
+  color: #333;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.msg-box.left .bubble {
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  border: 1px solid #dedede;
+  max-width: 230px;
+}
+
+.msg-box.right .bubble {
+  padding: 10px;
+  border-radius: 8px;
+  background: #f9e300;
+  font-size: 14px;
+  border: 1px solid #dedede;
+  max-width: 230px;
+}
+
+input {
+  font-family: pr;
+  font-size: 14px;
+  padding-left: 4px;
+}
+
+.btn-dark {
+  background-color: #222;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: pr;
+  font-size: 15px;
+}
+.btn-dark:hover {
+  background-color: #000;
+}

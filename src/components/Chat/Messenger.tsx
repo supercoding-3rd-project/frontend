@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MessengerLeftModal from "./MessengerLeftModal";
+import ChatList from "./ChatList";
 // import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import "./CSS/Messenger.css";
@@ -10,12 +11,20 @@ import ChatDummy from "./ChatDummy";
 import NewChatModal from "./NewChatModal";
 import MessengerChatWindowModal from "./MessengerChatWindowModal";
 
+//socket io connect
+import io from "socket.io-client";
+import { Socket } from "socket.io-client"; // SocketIOClient 타입 가져오기
+import { Console } from "console";
+const SOCKET_SERVER_URL = "http://52.79.37.99:3001";
+
 const MBackground = styled.div`
   transition: margin-left 0.5s ease;
   width: 960px;
-  height: 100vh;
+  height: 90vh;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 90px;
+  margin-bottom: -32px;
   display: flex;
   flex-direction: row;
 `;
@@ -55,7 +64,7 @@ const MCLHeaderRight = styled.div`
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const TriangleDownIcon = styled(TbTriangleInverted)`
@@ -108,10 +117,13 @@ const MChatContents = styled.div`
 `;
 
 interface Chat {
+  onClick: Function;
+  roomId: number;
   id: number;
   name: string;
   date: string;
   content: string;
+  chats: any;
 }
 
 const Messenger: React.FC = () => {
@@ -123,17 +135,72 @@ const Messenger: React.FC = () => {
   const [newChatModal, setNewChatModal] = useState(false); /// 새 채팅 시작하기 모달
   const [showChatWindow, setShowChatWindow] = useState(false); /// 채팅창 여닫기 모달
   const [chatlist, setChatlist] = useState<Chat[]>([]);
+  const [currentChats, setCurrentChats] = useState([] as any);
   const openNCModal = () => setNewChatModal(true);
   const closeNCModal = () => setNewChatModal(false);
+  const [loginUser, setLoginUser] = useState("");
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  const initSocketConnect = (roomId: any) => {
+    if (socket != null) {
+      socket.disconnect();
+    }
+
+    var newSocket = io(SOCKET_SERVER_URL);
+
+    setSocket(newSocket);
+    // 연결된 소켓에 대한 이벤트 핸들러 등록
+    newSocket.on("connect", () => {
+      setLoginUser(newSocket.id == undefined ? "nouser" : newSocket.id);
+      console.log("소켓 서버에 연결되었습니다." + newSocket.id);
+      newSocket.emit("join", "room" + roomId);
+    });
+
+    // 필요에 따라 다른 이벤트 핸들러 등록
+    newSocket.on("recv", (data: any) => {
+      console.log("새로운 메시지가 도착했습니다:", data);
+
+      var from = data.from;
+      var value = data.value;
+
+      //alert(thisRoomId)
+      //chatlist 업데이트
+      var room = chatlist.find((room) => room.roomId == roomId);
+
+      var newChats = {
+        user: from,
+        content: value,
+        time: new Date().toISOString(),
+      };
+      // 새로운 메시지 추가하거나 수정된 메시지 내용 등을 업데이트
+      if (room && room != undefined) {
+        room.chats.push(newChats);
+        setCurrentChats(currentChats.concat(room.chats));
+      }
+    });
+
+    return () => {
+      // 컴포넌트가 언마운트되면 소켓 연결 해제
+      newSocket.disconnect();
+    };
+  };
 
   useEffect(() => {
     fetch(
       "https://raw.githubusercontent.com/Regulus55/ChatDummy/main/ChatDummy.json"
     )
       .then((response) => response.json())
-      .then((data) => setChatlist(data))
+      .then((data) => {
+        setChatlist(data);
+      })
       .catch((error) => console.error("Fetch error:", error));
   }, []);
+
+  function handleSend(message: any) {
+    if (socket) {
+      socket.emit("msg", { from: loginUser, value: message });
+    }
+  }
 
   return (
     <MBackground>
@@ -148,9 +215,6 @@ const Messenger: React.FC = () => {
             <div className="nosee-chat">
               <TriangleDownIcon />안 읽은 메시지
             </div>
-            <div className="chatplus">
-              <ChatPlusIcon onClick={openNCModal} />
-            </div>
           </MCLHeaderRight>
         </MCListHeader>
         <MSearchChatDiv>
@@ -160,23 +224,26 @@ const Messenger: React.FC = () => {
           </MSearchChatBox>
         </MSearchChatDiv>
         <MChatModals>
-          {chatlist.map((chat) => (
-            <MessengerLeftModal key={chat.id} chat={chat} />
-          ))}
+          {chatlist.map(function (chat) {
+            chat.onClick = () => {
+              initSocketConnect(chat.roomId);
+              //소켓 연결 및 채팅 UI 오픈
 
-          <button
-            onClick={() => {
-              setShowChatWindow(showChatWindow === true ? false : true);
-            }}
-          >
-            '그' 버튼
-            {/* ^^^ 임시ㅣㅣㅣㅣㅣ아래버튼이 채팅창 키는 버튼 */}
-          </button>
+              setShowChatWindow(true);
+              setCurrentChats(chat.chats);
+            };
+
+            return <MessengerLeftModal key={chat.id} chat={chat} />;
+          })}
+
+          {/* {chatlist.map((chat) => (
+            <MessengerLeftModal key={chat.id} chat={chat} />
+          ))} */}
         </MChatModals>
       </MChatList>
 
       {showChatWindow ? (
-        <MessengerChatWindowModal windowshow={true} />
+        <ChatList chats={currentChats} me={loginUser} onSend={handleSend} />
       ) : (
         <MChatContents>
           <div>
