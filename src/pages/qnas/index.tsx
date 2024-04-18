@@ -127,8 +127,8 @@ const mockData: Posts = {
   ],
 };
 export default function QnaListPage() {
-  const apiUrl: string = ""; // 추후수정필요
-  const [mainData, setMainData] = useState<Posts | null>(mockData);
+  const apiUrl: string = "https://api.alco4dev.com"; // 추후수정필요
+  const [mainData, setMainData] = useState<Posts | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
@@ -137,10 +137,13 @@ export default function QnaListPage() {
   //글쓰기 버튼 클릭시 사용
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); //추후 로그인관련 로직 추가 필요
-  const [loggedInUserId, setLoggedInUserId] = useState<number>(1234567); //추후 로그인관련 로직 추가 필요
 
-  //글쓰기 버튼 클릭 핸들러
+  //글쓰기 버튼 클릭 핸들러 //로그인을 전역상태로 관리하는게 맞는듯. 지금은 토큰여부만 확인하는 로직으로 넣음
+
   const writeBtnClickHandler = () => {
+    const token = localStorage.getItem("token");
+
+    token ? setIsLoggedIn(true) : setIsLoggedIn(false);
     if (isLoggedIn) {
       navigate(`/qnas/create`);
     }
@@ -166,19 +169,12 @@ export default function QnaListPage() {
     async (page: number) => {
       try {
         setIsLoading(true);
-        //병합되면 헤더 식제!?
+
         const response: AxiosResponse<Posts> = await axios.get<Posts>(
-          `https://cors-anywhere.herokuapp.com/${apiUrl}/api/search?page=${page}`,
-          {
-            headers: {
-              "ngrok-skip-browser-warning": "any-value",
-            },
-          }
+          `${apiUrl}/api/search?page=${page}`
         );
         const data = response.data;
-
         setMainData((prevData) => (prevData ? { ...prevData, ...data } : data));
-
         setCurrentPage(data.currentPage); // 숫자로 된 페이지 번호를 상태로 설정
         setTotalPages(data.totalPages);
         setIsLoading(false);
@@ -265,101 +261,107 @@ export default function QnaListPage() {
         {/*mapping mock data*/}
 
         <div>
-          {mainData?.mainAllQuestionDto.map((post: Question) => (
-            <button
-              onClick={() => handlePostClick(post.questionId)}
-              className="post-container"
-              key={post.questionId}
-            >
-              <div className="post-container-header">
-                <div className="respondent-description">
-                  <span>
-                    <img
-                      className="profile-img"
-                      src="/images/profile_default.png"
-                      alt=""
-                    />
-                  </span>
-                  {post.answers && post.answers.length > 0 ? (
-                    <div className="questioner-answerer-desc">
-                      <div className="questioner-answerer-text">
-                        {post.answers[0].answerer} 님이 질문에 답변을 남겼어요
+          {mainData &&
+            mainData.mainAllQuestionDto &&
+            mainData.mainAllQuestionDto.map((post: Question) => (
+              <button
+                onClick={() => handlePostClick(post.questionId)}
+                className="post-container"
+                key={post.questionId}
+              >
+                <div className="post-container-header">
+                  <div className="respondent-description">
+                    <span>
+                      <img
+                        className="profile-img"
+                        src="/images/profile_default.png"
+                        alt=""
+                      />
+                    </span>
+                    {post.answers && post.answers.length > 0 ? (
+                      <div className="questioner-answerer-desc">
+                        <div className="questioner-answerer-text">
+                          {post.answers[0].answerer} 님이 질문에 답변을 남겼어요
+                        </div>
                       </div>
+                    ) : (
+                      <div className="questioner-answerer-desc">
+                        <div className="questioner-answerer-text">
+                          {post.questioner} 님이 질문을 남겼어요
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="respondent-info">
+                    <span>
+                      <img
+                        className="questioner-answerer-img"
+                        src="/images/profile_default.png"
+                        alt=""
+                      />
+                    </span>
+                    <span>
+                      {post.answers && post.answers.length > 0 ? (
+                        <div className="answerer-userName">
+                          {post.answers[0].answerer}
+                        </div>
+                      ) : (
+                        <div className="answerer-userName">
+                          {post.questioner}
+                        </div>
+                      )}
+                      {post.questioner ? (
+                        <div className="post-date">
+                          {formattedDateYYMMDD(post.createdAt)}
+                        </div>
+                      ) : (
+                        <div className="post-date">
+                          {formattedDateYYMMDD(post.createdAt)}
+                        </div>
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="question-box-wrapper">
+                  <div className="question-box">
+                    <div className="q-symbol">
+                      <div>Q.</div>
                     </div>
+                    <div className="post-title">{post.title}</div>
+                    <div className="post-question">{post.content}</div>
+                  </div>
+
+                  {post.answers && post.answers.length > 0 ? (
+                    <div className="post-answer">{post.answers[0].content}</div>
                   ) : (
-                    <div className="questioner-answerer-desc">
-                      <div className="questioner-answerer-text">
-                        {post.questioner} 님이 질문을 남겼어요
-                      </div>
+                    <div className="pls-leave-answer">
+                      첫 답변을 작성해주세요
                     </div>
                   )}
                 </div>
-                <div className="respondent-info">
-                  <span>
-                    <img
-                      className="questioner-answerer-img"
-                      src="/images/profile_default.png"
-                      alt=""
-                    />
-                  </span>
-                  <span>
-                    {post.answers && post.answers.length > 0 ? (
-                      <div className="answerer-userName">
-                        {post.answers[0].answerer}
-                      </div>
-                    ) : (
-                      <div className="answerer-userName">{post.questioner}</div>
-                    )}
-                    {post.questioner ? (
-                      <div className="post-date">
-                        {formattedDateYYMMDD(post.createdAt)}
-                      </div>
-                    ) : (
-                      <div className="post-date">
-                        {formattedDateYYMMDD(post.createdAt)}
-                      </div>
-                    )}
-                  </span>
-                </div>
-              </div>
-
-              <div className="question-box-wrapper">
-                <div className="question-box">
-                  <div className="q-symbol">
-                    <div>Q.</div>
+                <div>
+                  <div className="like-count">좋아요{post.likeCount}</div>
+                  <div className="like-comment">
+                    <span className="icons">
+                      <AiOutlineLike />
+                    </span>
+                    <span>좋아요</span>
+                    <span className="icons">
+                      <BiCommentDots />
+                    </span>
+                    <span>
+                      댓글{" "}
+                      {post.answers && post.answers ? post.answers.length : "0"}
+                    </span>
                   </div>
-                  <div className="post-title">{post.title}</div>
-                  <div className="post-question">{post.content}</div>
                 </div>
-
-                {post.answers && post.answers.length > 0 ? (
-                  <div className="post-answer">{post.answers[0].content}</div>
-                ) : (
-                  <div className="pls-leave-answer">첫 답변을 작성해주세요</div>
-                )}
-              </div>
-              <div>
-                <div className="like-count">좋아요{post.likeCount}</div>
-                <div className="like-comment">
-                  <span className="icons">
-                    <AiOutlineLike />
-                  </span>
-                  <span>좋아요</span>
-                  <span className="icons">
-                    <BiCommentDots />
-                  </span>
-                  <span>
-                    댓글{" "}
-                    {post.answers && post.answers ? post.answers.length : "0"}
-                  </span>
-                </div>
-              </div>
-            </button>
-          ))}
+              </button>
+            ))}
         </div>
 
         <div id="sentinel">
-          {currentPage == totalPages && "더이상 로드할 글이 없습니다"}
+          {currentPage == totalPages && "불러올 글이 없습니다"}
         </div>
         {/* show Loading icon when loading*/}
         {isLoading && <div className="loading"></div>}

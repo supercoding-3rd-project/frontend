@@ -22,6 +22,7 @@ $alco-yellow2-darker: #ffe640;
   justify-content: center;
   width: 800px;
   height: 100%;
+  font-family: "SUITE-Regular";
 }
 .write-button {
   display: flex;
@@ -36,32 +37,38 @@ $alco-yellow2-darker: #ffe640;
   background-color: white;
   font-size: 1.125rem;
   color: #9ea8b7;
+  font-family: "SUITE-Regular";
   &:hover {
     cursor: pointer;
     background-color: $lightergrey;
+    font-family: "SUITE-Regular";
   }
   .write-button-left-box {
     display: flex;
     align-items: center;
+    font-family: "SUITE-Regular";
   }
 
   .user-img {
     width: 70px;
     height: auto;
+    font-family: "SUITE-Regular";
   }
   .write-button-text-container {
     display: flex;
     align-items: center;
-
     height: 100%;
+    font-family: "SUITE-Regular";
     .write-button-text {
       font-size: 1rem;
       padding: none;
+      font-family: "SUITE-Regular";
     }
   }
 
   .write-button-text {
     font-size: 1rem;
+    font-family: "SUITE-Regular";
   }
   .user-img-wrapper {
     display: flex;
@@ -69,6 +76,7 @@ $alco-yellow2-darker: #ffe640;
     align-items: cener;
     font-size: 2.5rem;
     margin-right: 5px;
+    font-family: "SUITE-Regular";
   }
 
   span {
@@ -77,6 +85,7 @@ $alco-yellow2-darker: #ffe640;
     align-items: cener;
     margin-right: 20px;
     font-size: 1.75rem;
+    font-family: "SUITE-Regular";
   }
 }
 
@@ -86,29 +95,35 @@ $alco-yellow2-darker: #ffe640;
   border-bottom: 1px solid $lightgrey;
   margin: 15px 0 30px 0;
   padding: 20px 10px 20px 10px;
+  font-family: "SUITE-Regular";
   .post-container-header {
     .respondent-description {
       display: flex;
       align-items: ceter;
       color: #666666;
       padding-left: 7px;
+      font-family: "SUITE-Regular";
       span {
         display: flex;
         align-items: center;
         margin-right: 7px;
         font-size: 1.25rem;
+        font-family: "SUITE-Regular";
         .profile-img {
           width: 60px;
           height: auto;
+          font-family: "SUITE-Regular";
         }
       }
       .questioner-answerer-desc {
         display: flex;
         align-items: center;
+        font-family: "SUITE-Regular";
 
         .questioner-answerer-text {
           font-size: 1rem;
           font-weight: 600;
+          font-family: "SUITE-Regular";
         }
       }
     }
@@ -116,23 +131,27 @@ $alco-yellow2-darker: #ffe640;
       display: flex;
       align-items: center;
       margin-top: 20px;
+      font-family: "SUITE-Regular";
 
       .questioner-answerer-img {
         display: flex;
         align-items: center;
         width: 80px;
         margin-right: 3px;
+        font-family: "SUITE-Regular";
       }
       span {
         .answerer-userName {
           color: black;
           font-weight: 850;
           font-size: 1.25rem;
+          font-family: "SUITE-Regular";
         }
         .post-date {
           color: #9ea8b7;
           font-weight: 600;
           font-size: 0.75rem;
+          font-family: "SUITE-Regular";
         }
       }
     }
@@ -146,6 +165,7 @@ $alco-yellow2-darker: #ffe640;
   padding: 20px;
   border: 1px solid $lightgrey;
   border-radius: 0.25rem;
+  font-family: "SUITE-Regular";
   .q-symbol {
     display: flex;
     justify-content: center;
@@ -157,11 +177,13 @@ $alco-yellow2-darker: #ffe640;
     font-size: 1.1rem;
     font-weight: 600;
     background-color: $alco-yellow2;
+    font-family: "SUITE-Regular";
   }
 }
 
 .question-box:hover {
   cursor: pointer;
+  font-family: "SUITE-Regular";
 }
 
 .post-title {
@@ -171,6 +193,7 @@ $alco-yellow2-darker: #ffe640;
   font-size: 1.125rem;
   line-height: 2;
   letter-spacing: 0.01rem;
+  font-family: "SUITE-Regular";
 }
 
 .post-question {
@@ -182,6 +205,7 @@ $alco-yellow2-darker: #ffe640;
   line-height: 1.5;
   color: #666666;
   font-size: 1rem;
+  font-family: "SUITE-Regular";
 }
 
 .post-answer {
@@ -195,6 +219,7 @@ $alco-yellow2-darker: #ffe640;
   letter-spacing: 0.01rem;
   color: #666666;
   font-size: 1rem;
+  font-family: "SUITE-Regular";
 }
 
 .pls-leave-answer {
@@ -202,9 +227,11 @@ $alco-yellow2-darker: #ffe640;
   letter-spacing: 0.01rem;
   color: #666666;
   font-size: 1rem;
+  font-family: "SUITE-Regular";
 }
 .pls-leave-answer:hover {
   cursor: pointer;
+  font-family: "SUITE-Regular";
 }
 
 .like-count {
@@ -212,10 +239,12 @@ $alco-yellow2-darker: #ffe640;
   color: #666666;
   line-height: 1.5;
   letter-spacing: 0.01rem;
+  font-family: "SUITE-Regular";
 }
 
 .like-count:hover {
   cursor: pointer;
+  font-family: "SUITE-Regular";
 }
 
 .like-comment {
@@ -227,27 +256,34 @@ $alco-yellow2-darker: #ffe640;
   letter-spacing: 0.01rem;
   font-size: 1.15rem;
   font-weight: 550;
+  font-family: "SUITE-Regular";
   span {
     margin-right: 5px;
+    font-family: "SUITE-Regular";
   }
   span:nth-child(2) {
     margin-right: 20px;
+    font-family: "SUITE-Regular";
   }
   .icons {
     display: flex;
     align-items: center;
+    font-family: "SUITE-Regular";
   }
 }
 
 .like-comment:hover {
   cursor: pointer;
+  font-family: "SUITE-Regular";
 }
 
 .like-count {
   margin: 25px 0 15px 0;
+  font-family: "SUITE-Regular";
 }
 
 .sidepanel-wrapper {
+  font-family: "SUITE-Regular";
 }
 
 .loading {
@@ -258,6 +294,7 @@ $alco-yellow2-darker: #ffe640;
   width: 30px;
   height: 30px;
   animation: spinner 3s linear infinite;
+  font-family: "SUITE-Regular";
 }
 @keyframes spinner {
   0% {

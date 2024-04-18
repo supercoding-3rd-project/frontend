@@ -26,7 +26,7 @@ export default function Router() {
       <Route path="/notification" element={<NotificationsPage />} />
       <Route path="/qnas" element={<QnaListPage />} />
       <Route path="/qnas/:id" element={<QnaDetailPage />} />
-      <Route path="/qnas/create/:userid" element={<QnaCreatePage />} />
+      <Route path="/qnas/create" element={<QnaCreatePage />} />
       <Route path="/search" element={<SearchPage />} />
       <Route path="/intro" element={<IntroPage />} />
       {/* <Route path="*" element={<Navigate replace to="/" />} /> */}

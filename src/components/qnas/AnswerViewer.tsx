@@ -43,7 +43,7 @@ const AnswerViewer: React.FC<AnswerViewerProps> = ({
   questionerId,
 }) => {
   //추후 수정 필요
-  const apiUrl = "";
+  const apiUrl = "https://api.alco4dev.com";
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

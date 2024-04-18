@@ -8,7 +8,7 @@ import { IoIosArrowRoundUp } from "react-icons/io";
 import { IoIosArrowRoundDown } from "react-icons/io";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Comments {
   commentId: number; //코멘트번호
@@ -55,10 +55,13 @@ interface Question {
 
 export default function QnaDetailPage() {
   //추후 수정 필요
-  const apiUrl = "";
+  const apiUrl = "https://api.alco4dev.com";
 
   const [loggedIn, setLoggedIn] = useState(true);
   //const [loggedInUserId, setLoggedInUserId] = useState<number>(1234567); //추후 로그인관련 로직 추가 필요
+
+  //이전 페이지에서 postId클릭해서 넘어왔을때 url의 고유식별자(postId)를 추출. 이를 이용해 useEffect로 데이터 요청
+  const { postId } = useParams();
 
   const mockData: Question = {
     questionId: 6,
@@ -173,10 +176,11 @@ export default function QnaDetailPage() {
   };
 
   //임의로넣은 상태. 추후 데이터 형식에 따라서 수정 필요
-  const [question, setQuestion] = useState<Question>(mockData);
+  const [question, setQuestion] = useState<Question | null>(null);
 
   //날짜, 시간 포멧팅
-  const formattedDateYYMMDD = (dateString: string) => {
+  const formattedDateYYMMDD = (dateString: string | undefined) => {
+    if (!dateString) return ""; // dateString이 없으면 빈 문자열 반환
     const date = new Date(dateString);
     return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
   };
@@ -195,7 +199,7 @@ export default function QnaDetailPage() {
   const [questionDislikeCount, setQuestionDislikeCount] = useState<
     Question["dislikeCount"]
   >(question ? question.dislikeCount : 0); //싫어요 수
-  const questionId = question.questionId;
+  const questionId = question?.questionId;
 
   //유저정보 어떻게 보내는지 확인필요 (수정 필요할 수 있음)
   const handleLikeClick = async () => {
@@ -205,7 +209,7 @@ export default function QnaDetailPage() {
 
       // 헤더에 사용자 토큰을 포함시켜 PATCH 요청을 보냄
       const response = await axios.patch(
-        `${apiUrl}/v1/question/${questionId}/like`,
+        `${apiUrl}/api/v1/question/${questionId}/like`,
         {},
         {
           headers: {
@@ -228,7 +232,7 @@ export default function QnaDetailPage() {
   const handleDislikeClick = async () => {
     try {
       const response = await axios.patch(
-        `${apiUrl}/v1/question/${questionId}/dislike`
+        `${apiUrl}/api/v1/question/${questionId}/dislike`
       );
       const { liked, disliked, likeCount, dislikeCount } = response.data;
       setIsQuestionLiked(liked);
@@ -247,7 +251,9 @@ export default function QnaDetailPage() {
   const questionDelBtnClickHandler = async () => {
     try {
       // 삭제 요청 보내기
-      await axios.delete(`${apiUrl}/v1/question/${question.questionId}/delete`);
+      await axios.delete(
+        `${apiUrl}/api/v1/question/${question?.questionId}/delete`
+      );
 
       // 성공 메시지 얼럿을 보여줌
       window.alert("질문이 삭제되었습니다.");
@@ -268,7 +274,7 @@ export default function QnaDetailPage() {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/api/question/1`); // API 요청
+        const response = await axios.get(`${apiUrl}/api/question/${postId}`); // API 요청, postId는 usePrams사용해서 요청
         setQuestion(response.data); // 성공적으로 데이터를 가져왔을 때 상태 업데이트
         console.log("Question 데이터 GET 성공");
       } catch (error) {
@@ -283,7 +289,7 @@ export default function QnaDetailPage() {
     <div className="qna-detail-page-layout">
       <div className="viewer-answer-wrapper">
         <div className="quetion-delete-btn-container">
-          {question.canDelete && (
+          {question?.canDelete && (
             <button
               className="quetion-delete-btn"
               onClick={questionDelBtnClickHandler}
@@ -294,15 +300,15 @@ export default function QnaDetailPage() {
         </div>
 
         <div className="viewer-container">
-          <div className="title">{question.title}</div>
+          <div className="title">{question?.title}</div>
           <div className="post-info">
-            <div>{formattedDateYYMMDD(question.createdAt)}</div>
+            <div>{formattedDateYYMMDD(question?.createdAt) ?? ""}</div>
             <div className="dot-btw-title-postinfo">•</div>
             <div>조회 29</div>
           </div>
 
           <div className="viewer-component-wrapper">
-            <Viewer initialValue={question.content} />
+            <Viewer initialValue={question?.content} />
           </div>
 
           <div className="viewer-footer">
@@ -321,7 +327,7 @@ export default function QnaDetailPage() {
                     </span>
                   </div>
                   추천해요
-                  <span>{question.likeCount}</span>
+                  <span>{question?.likeCount}</span>
                 </button>
 
                 <button onClick={handleDislikeClick} className="dislike-button">
@@ -331,7 +337,7 @@ export default function QnaDetailPage() {
                     </span>
                   </div>
                   보충이 필요해요
-                  <span>{question.dislikeCount}</span>
+                  <span>{question?.dislikeCount}</span>
                 </button>
               </div>
             </div>
@@ -341,12 +347,12 @@ export default function QnaDetailPage() {
                 src="/images/profile_default.png"
                 alt=""
               />
-              {`${question.questioner} `}님의 질문
+              {`${question?.questioner} `}님의 질문
             </div>
           </div>
         </div>
         <AnswerEditor />
-        {question.answers && question.answers.length > 0 ? (
+        {question?.answers && question.answers.length > 0 ? (
           <div className="answer-count">
             <div>답변 {question.answers.length}</div>
           </div>
@@ -354,8 +360,8 @@ export default function QnaDetailPage() {
 
         <AnswerViewer
           loggedIn={loggedIn}
-          answers={question.answers}
-          questionerId={question.questionerId}
+          answers={question ? question.answers : []}
+          questionerId={question ? question.questionerId : 0}
         />
       </div>
     </div>
