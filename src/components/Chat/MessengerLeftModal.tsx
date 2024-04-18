@@ -46,6 +46,8 @@ const MLMProfileDate = styled.div`
 
 type ModalProps = {
   chat: {
+    onClick: Function;
+    roomId: number;
     id: number;
     name: string;
     date: string;
@@ -55,13 +57,17 @@ type ModalProps = {
 
 const MessengerLeftModal: React.FC<ModalProps> = ({ chat }) => {
   return (
-    <MLMContainer>
+    <MLMContainer
+      onClick={() => {
+        chat.onClick();
+      }}
+    >
       <MLMProfileImg>
         <CgProfile className="Profile-image" />
       </MLMProfileImg>
       <MLMProfileInfo>
         <div className="row-div">
-          <MLMProfileName>{chat.name}</MLMProfileName>
+          <MLMProfileName>채팅방 {chat.roomId}</MLMProfileName>
           <MLMProfileDate>{chat.date}</MLMProfileDate>
         </div>
         <div>{chat.content}</div>
