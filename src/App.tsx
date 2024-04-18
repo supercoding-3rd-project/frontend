@@ -4,7 +4,7 @@ import Router from "./components/Router";
 
 const App: React.FC = () => {
   return (
-    <Layout>
+    <Layout isLoggedIn={true}>
       <Router />
     </Layout>
   );

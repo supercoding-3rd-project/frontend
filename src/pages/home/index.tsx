@@ -9,7 +9,7 @@ const MainContainer = styled.div`
   overflow: hidden;
   margin-top: 60px;
   margin-bottom: 60px;
-  height: 70vh;
+  height: 60vh;
 `;
 
 const SliderWrapper = styled.div`
@@ -23,7 +23,7 @@ const SliderWrapper = styled.div`
 
 const SlideImage = styled.img`
   width: 100vw;
-  height: 70vh;
+  height: 60vh;
 `;
 
 const SliderText = styled.p`
@@ -31,7 +31,7 @@ const SliderText = styled.p`
   font-weight: 600;
   letter-spacing: 5px;
   color: #ffffff;
-  z-index: 9999;
+  z-index: 1;
   position: absolute;
   top: 30%;
   left: 10%;

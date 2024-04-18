@@ -112,6 +112,7 @@
       font-size: 28px;
       font-weight: 600;
       margin-bottom: 20px;
+      color: #222;
     }
   }
 }
@@ -129,7 +130,9 @@
       white-space: pre-line;
       font-size: 16px;
       line-height: 1.5;
+      letter-spacing: 0.5px;
       background-color: #fff;
+      color: #222;
 
       &.active {
         display: block;
@@ -171,6 +174,7 @@
     justify-content: center;
     align-items: center;
     font-size: 32px;
+    color: #222;
 
     &-img {
       margin-right: 20px;
@@ -192,5 +196,6 @@
     letter-spacing: 1.1px;
     line-height: 1.4;
     padding: 10px 20px;
+    color: #222;
   }
 }
