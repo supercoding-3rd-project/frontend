@@ -1,42 +1,9 @@
 import React, { useRef } from "react";
+import "./main.scss";
 import Slider from "react-slick";
-import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import QnaListPage from "../qnas";
-
-const MainContainer = styled.div`
-  width: 100%;
-  overflow: hidden;
-  margin-top: 60px;
-  margin-bottom: 60px;
-  height: 60vh;
-`;
-
-const SliderWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-  text-align: center;
-  overflow: hidden;
-  position: relative;
-`;
-
-const SlideImage = styled.img`
-  width: 100vw;
-  height: 60vh;
-`;
-
-const SliderText = styled.p`
-  font-size: 30px;
-  font-weight: 600;
-  letter-spacing: 5px;
-  color: #ffffff;
-  z-index: 1;
-  position: absolute;
-  top: 30%;
-  left: 10%;
-`;
 
 export default function HomePage() {
   const sliderRef = useRef(null);
@@ -58,18 +25,8 @@ export default function HomePage() {
   };
 
   return (
-    <MainContainer>
-      <SliderWrapper>
-        <Slider {...settings} ref={sliderRef}>
-          {images.map((image, index) => (
-            <div key={index}>
-              <SlideImage src={image} alt={`slide-${index}`} />
-            </div>
-          ))}
-        </Slider>
-        <SliderText>알코에 오신 것을 환영합니다!</SliderText>
-      </SliderWrapper>
-      <QnaListPage />
-    </MainContainer>
+    <div className="main">
+      <QnaListPage />;
+    </div>
   );
 }

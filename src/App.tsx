@@ -5,7 +5,9 @@ import Router from "./components/Router";
 const App: React.FC = () => {
   return (
     <Layout isLoggedIn={false}>
-      <Router />
+      <div className="router-container">
+        <Router />
+      </div>
     </Layout>
   );
 };
