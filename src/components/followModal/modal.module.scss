@@ -1,0 +1,43 @@
+// modal.module.scss
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1050; // 충분히 높은 값으로 설정하여 다른 요소 위에 오도록 함
+}
+
+.modal {
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1100; // 모달 창은 배경보다 더 높아야 함
+  transition: transform 0.3s ease-out;
+  transform: scale(0.95); // 초기 상태는 약간 축소
+  &.open {
+    transform: scale(1); // 활성화 시 정상 크기로 확대
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  &:hover {
+    color: #000;
+  }
+}

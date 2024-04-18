@@ -1,13 +1,11 @@
-$darkergrey: #3d4755;
-$darkgrey: #7a828c;
+$darkergrey: #222222;
+$darkgrey: #64748b;
 $midgrey: #b6b9bb;
-$lightgrey: #d7dbdf;
+$lightgrey: #9ea8b7;
 $lightergrey: #ecedee;
 $alco-yellow: #ffed71;
-$alco-peach: #ffc597;
-$alco-pink: #ff7eb1;
-$alco-purple: #9367ff;
-$alco-blue: #6bd7ff;
+$alco-yellow2: #ffed72;
+$alco-yellow2-darker: #ffe640;
 
 .modal-overlay {
   position: fixed;
@@ -21,11 +19,14 @@ $alco-blue: #6bd7ff;
   padding: 0; //added due to other buttons' properties affecting this selector
   background-color: rgba(black, 0.3);
   z-index: 3000;
+  font-family: "SUITE-Regular";
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
 }
 
 .modal {
   background-color: white;
-  width: 40%;
+  width: 50%;
   height: 75%;
   padding-top: 20px;
   border-radius: 0.5rem;
@@ -39,6 +40,8 @@ $alco-blue: #6bd7ff;
   width: 100%;
   padding-bottom: 15px;
   border-bottom: 1px solid $lightgrey;
+  font-weight: 700;
+  color: $darkgrey;
 
   position: relative;
   div {
@@ -63,10 +66,11 @@ $alco-blue: #6bd7ff;
 
 .temp-saved-post-container {
   display: flex;
-  align-items: center;
+  align-items: end;
   width: 100%;
-  padding: 15px 0 15px 0;
-  border-bottom: 1px solid $lightgrey;
+  height: 60px;
+  padding: 18px 0 15px 0;
+  border-bottom: 1px solid $lightergrey;
   position: relative;
   &:hover {
     background-color: $lightergrey;
@@ -79,7 +83,9 @@ $alco-blue: #6bd7ff;
   .temp-saved-post-title {
     margin-left: 15px;
   }
-  .temp-saved-post-content {
+  .temp-saved-post-created-at {
+    font-size: 0.75rem;
+    padding-bottom: 2px;
   }
   .bin-btn {
     display: flex;
@@ -87,7 +93,7 @@ $alco-blue: #6bd7ff;
     margin-right: 10px;
     border: none;
     background-color: rgba(white, 0);
-    color: $alco-purple;
+    color: #8464d4;
     font-size: 1.375rem;
     position: absolute;
     right: 0;

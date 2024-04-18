@@ -1,33 +1,26 @@
-$darkergrey: #3d4755;
-$darkgrey: #7a828c;
+$darkergrey: #222222;
+$darkgrey: #64748b;
 $midgrey: #b6b9bb;
-$lightgrey: #d7dbdf;
+$lightgrey: #9ea8b7;
 $lightergrey: #ecedee;
 $alco-yellow: #ffed71;
-$alco-peach: #ffc597;
-$alco-pink: #ff7eb1;
-$alco-purple: #9367ff;
-$alco-blue: #6bd7ff;
-$alco-test-butter: #faedb2;
-$alco-test-pink: #f8bdeb;
-$alco-test-blue: #5272f2;
-$alco-test-navy: #082541;
+$alco-yellow2: #ffed72;
+$alco-yellow2-darker: #ffe640;
 
 .qna-detail-page-layout {
-  width: 100%;
+  width: 100vw;
   display: flex;
   justify-content: center;
 
   .viewer-answer-wrapper {
-    width: 40%;
+    width: 800px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-right: 1px solid $lightgrey;
-    border-left: 1px solid $lightgrey;
-    padding: 50px 70px 100px 70px;
+    margin-top: 90px;
+    padding: 30px 70px 100px 70px;
     background-color: white;
   }
 }
@@ -36,16 +29,18 @@ $alco-test-navy: #082541;
   display: flex;
   justify-content: end;
   width: 100%;
-  button {
-    width: 50px;
+  .quetion-delete-btn {
+    width: 60px;
     height: 32px;
-    background-color: $lightergrey;
+    background-color: #ffed72;
     border: none;
     border-radius: 0.5rem;
     font-size: 1rem;
-    color: $darkergrey;
+    font-weight: 700;
+    color: $darkgrey;
     &:hover {
-      background-color: $lightgrey;
+      color: black;
+      background-color: #ffe640;
       cursor: pointer;
     }
   }
@@ -55,19 +50,26 @@ $alco-test-navy: #082541;
   width: 100%;
   height: 100%;
 }
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: 0.15rem;
+}
 
 .post-info {
   display: flex;
-  div {
-    color: $darkgrey;
-  }
-  div:nth-child(2) {
+  margin: 8px 0 10px 0;
+  color: $lightgrey;
+  letter-spacing: 0.05rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  .dot-btw-title-postinfo {
     margin: 0 3px 0 3px;
   }
 }
 
 .viewer-component-wrapper {
-  padding: 30px 0 55px 0;
+  padding: 20px 0 55px 0;
 }
 
 .viewer-footer {
@@ -80,50 +82,88 @@ $alco-test-navy: #082541;
 .like-dislike-wrapper {
   display: flex;
   flex-direction: column;
-  color: $darkgrey;
+  justify-content: center;
+  color: $midgrey;
 
-  .like-dislike {
+  .is-this-useful {
+    font-weight: 600;
+    margin-left: 15px;
+    padding: 10px 0 10px 0;
+    font-size: 0.875rem;
+  }
+}
+
+.like-dislike {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  button {
     display: flex;
-    button {
-      display: flex;
-      align-items: end;
-      background-color: white;
-      border: none;
-      font-size: 0.875rem;
-      color: $darkgrey;
-      div {
-        padding-right: 2px;
-        margin-right: 3px;
-      }
-    }
-    .like-button {
-      width: 95px;
-      &.like-button-clicked {
-        color: $alco-test-pink;
-      }
-    }
-    .dislike-button {
-      width: 125px;
-      display: flex;
-
-      span {
-        padding-left: 4.5px;
-      }
+    align-items: center;
+    background-color: white;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $midgrey;
+    div {
+      padding-right: 2px;
+      margin-right: 3px;
     }
   }
 }
 
+.like-button {
+  display: flex;
+}
+
+.like-button:hover {
+  cursor: pointer;
+}
+
+.like-button.like-button-clicked {
+  color: $alco-yellow2;
+}
+
+.arrow-btn-wrapper {
+  height: 100%;
+}
+
+.arrow-btn {
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: end;
+}
+
+.dislike-button {
+  display: flex;
+  span {
+    padding-left: 4.5px;
+  }
+}
+.dislike-button:hover {
+  cursor: pointer;
+}
+
 .writer-info {
   display: flex;
-  align-items: start;
+  align-items: center;
   color: $darkgrey;
-  span {
-    font-size: 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02rem;
+  .questioner-profile-img {
+    width: 55px;
+    height: auto;
   }
 }
 
 .answer-count {
   display: flex;
   width: 100%;
-  margin: 5px 0 5px 0;
+  margin: 50px 0 25px 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.02rem;
 }

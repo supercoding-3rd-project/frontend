@@ -1,251 +1,258 @@
 import "./index.scss";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SidePanel from "src/components/qnas/SidePanel";
 import { PiUserCircle } from "react-icons/pi";
 import { BiSolidPencil } from "react-icons/bi";
 import { BiCommentDots } from "react-icons/bi";
 import { AiOutlineLike } from "react-icons/ai";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-interface Post {
-  [pageNumber: number]: Question[];
+import { AxiosResponse } from "axios";
+
+//apiUrl,endpoint추가필요. 그때 mockData두가지(initial,load more post) 삭제하기. 페이지3,4,5,6...도 잘 불러와지는지 확인하기
+interface Posts {
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalItems: number;
+  mainAllQuestionDto: Question[];
 }
+
 interface Question {
-  id: number;
+  questionId: number;
   title: string;
   content: string;
   questionerId: number;
   questioner: string;
+  profileImg: string;
   createdAt: string;
-  updatedAt: string | null;
   likeCount: number;
-  answers?: Answer[];
+  dislikeCount: number;
+  answers: Answer[];
 }
 
 interface Answer {
-  id?: number;
-  content?: string;
-  answererId?: number;
-  answerer?: string;
-  createdAt?: string;
-  updatedAt?: string | null;
-  likeCount?: number;
-  comments?: Comment[];
-}
-
-interface Comment {
   id: number;
   content: string;
-  commenterId: number;
-  commenter: string;
+  answererId: number;
+  answerer: string;
+  likeCount: number;
   createdAt: string;
   updatedAt: string | null;
 }
 
-//
-const initialPosts: Post = {
-  "1": [
+//interface User {
+//  id: string;
+//  photoURL?: string; // photoURL은 선택적 속성으로, 있을 수도 있고 없을 수도 있습니다.
+// 여기에 더 많은 사용자 관련 속성을 추가할 수 있습니다.
+//}
+
+//fetch실패시 받아오는 mockData.추후 api주소 넣고 삭제예정
+const mockData: Posts = {
+  currentPage: 1,
+  totalPages: 2,
+  pageSize: 5,
+  totalItems: 6,
+  mainAllQuestionDto: [
     {
-      id: 7,
-      title: "질문글 제목인데요",
-      content: "거기 누구 없나요?",
+      questionId: 6,
+      title: "6번글입니다",
+      content: "무라!",
       questionerId: 1,
-      questioner: "병아리",
-      createdAt: "2024-04-13T00:44:04.624507",
-      updatedAt: null,
-      likeCount: 1,
+      questioner: "나까무라",
+      profileImg: "anonymous.png",
+      createdAt: "2024-04-17T20:09:07.052803",
+      likeCount: 0,
+      dislikeCount: 0,
       answers: [],
     },
     {
-      id: 6,
-      title: "챗지피티를 이용한 학습",
-      content:
-        "안녕하세요 자바 개발자 목표로 준비중인 취준생입니다.제가 공부하는 방식이 옳은지 잘 몰라서 질문드려봅니다.일단 1. 이런 단계로 작업하면 되겠다 생각 2. 제가 직접 작업 3. 그래도 안풀리면 챗지피티한테 질문 또는 예시",
+      questionId: 5,
+      title: "5번글입니다",
+      content: "무라!",
       questionerId: 1,
-      questioner: "삐약이",
-      createdAt: "2024-04-13T00:44:03.943922",
-      updatedAt: null,
-      likeCount: 7,
+      questioner: "나까무라",
+      profileImg: "anonymous.png",
+      createdAt: "2024-04-17T20:09:02.481032",
+      likeCount: 0,
+      dislikeCount: 0,
+      answers: [],
+    },
+    {
+      questionId: 4,
+      title: "4번글입니다",
+      content: "무라!",
+      questionerId: 1,
+      questioner: "나까무라",
+      profileImg: "anonymous.png",
+      createdAt: "2024-04-17T20:08:58.381366",
+      likeCount: 0,
+      dislikeCount: 0,
+      answers: [],
+    },
+    {
+      questionId: 3,
+      title: "3번글입니다",
+      content: "무라!",
+      questionerId: 1,
+      questioner: "나까무라",
+      profileImg: "anonymous.png",
+      createdAt: "2024-04-17T20:08:54.72818",
+      likeCount: 0,
+      dislikeCount: 0,
+      answers: [],
+    },
+    {
+      questionId: 2,
+      title: "2번글입니다",
+      content: "무라!",
+      questionerId: 1,
+      questioner: "나까무라",
+      profileImg: "anonymous.png",
+      createdAt: "2024-04-17T20:08:50.755407",
+      likeCount: 0,
+      dislikeCount: 0,
       answers: [
         {
-          id: 1,
-          content:
-            "남이 써둔 코드를 보고 배우는것도 큰 공부 입니다. 챗 지피티는 내가 생각했던걸 알기쉽게 코딩해주니 더할나위없이 좋죠. GPT이전에는 내가 생각한걸 그대로 코딩해둔 예시를 찾는 것 자체가 어려웠습니다.화이팅하세요",
+          id: 3,
+          content: "무엇이 문제인 거죠",
           answererId: 1,
-          answerer: "부엉이",
-          likeCount: 5,
-          createdAt: "2024-04-13T00:44:11.551289",
-          updatedAt: "2024-04-13T00:44:11.551289",
-          comments: [
-            {
-              id: 1,
-              content: "댓글이라네",
-              commenterId: 1,
-              commenter: "민달팽이",
-              createdAt: "2024-04-13T00:44:20.089146",
-              updatedAt: "2024-04-13T00:44:20.089146",
-            },
-            {
-              id: 2,
-              content: "댓글댓글",
-              commenterId: 1,
-              commenter: "쥐며느리",
-              createdAt: "2024-04-13T00:44:20.756373",
-              updatedAt: "2024-04-13T00:44:20.756373",
-            },
-            {
-              id: 3,
-              content: "윙윙윙",
-              commenterId: 1,
-              commenter: "꿀벌",
-              createdAt: "2024-04-13T00:44:21.467602",
-              updatedAt: "2024-04-13T00:44:21.467602",
-            },
-          ],
+          answerer: "나까무라",
+          likeCount: 0,
+          createdAt: "2024-04-17T20:10:27.734717",
+          updatedAt: "2024-04-17T20:10:27.734717",
         },
       ],
     },
   ],
 };
 export default function QnaListPage() {
-  const [mockPosts, setMockPosts] = useState<Post>(initialPosts); //data status
-  const [loading, setLoading] = useState<boolean>(false); //data loading status. to show users 'Loading...' during Loaded.
-  //서버에서 받아온 데이터를 재가공 하는 로직
-  const processedData = Object.values(initialPosts).flatMap((questions) => {
-    return questions.map((question: Question) => {
-      const mostLikedAnswer: any = question.answers?.reduce(
-        (prevAnswer: Answer | undefined, currentAnswer: Answer) => {
-          // 좋아요 수가 가장 많은 answer추출
-          if (
-            !prevAnswer ||
-            (currentAnswer.likeCount ?? 0) > (prevAnswer.likeCount ?? 0)
-          ) {
-            return currentAnswer;
-          }
+  const apiUrl: string = "https://api.alco4dev.com"; // 추후수정필요
+  const [mainData, setMainData] = useState<Posts | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(2);
+  const [isLoading, setIsLoading] = useState(false);
+  const observer = useRef<IntersectionObserver | null>(null);
 
-          return prevAnswer;
-        },
-        // 초기 값
-        undefined
-      );
+  //글쓰기 버튼 클릭시 사용
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); //추후 로그인관련 로직 추가 필요
 
-      // 만약 answers가 빈 배열이라면 mostLikedAnswer에는 null이 할당됨
-      if (
-        !mostLikedAnswer &&
-        question.answers &&
-        question.answers.length === 0
-      ) {
-        // 빈 배열일 경우에 대한 처리를 수행
-      }
+  //글쓰기 버튼 클릭 핸들러 //로그인을 전역상태로 관리하는게 맞는듯. 지금은 토큰여부만 확인하는 로직으로 넣음
 
-      return {
-        questionId: question.id,
-        questionTitle: question.title,
-        questionContent: question.content,
-        questioner: question.questioner,
-        questionCreaetedAt: question.createdAt,
-        questionUpdatedAt: question.updatedAt,
-        questionLikeCount: question.likeCount,
-        mostLikedAnswerId: mostLikedAnswer ? mostLikedAnswer.id : null,
-        mostLikedAnswerContent: mostLikedAnswer
-          ? mostLikedAnswer.content
-          : null,
-        answerer: mostLikedAnswer ? mostLikedAnswer.answerer : null,
-        mostLikedAnswerLikeCount: mostLikedAnswer
-          ? mostLikedAnswer.likeCount
-          : null,
-        mostLikedAnswerCreatedAt: mostLikedAnswer
-          ? mostLikedAnswer.createdAt
-          : null,
-        mostLikedAnswerUpdatedAt: mostLikedAnswer
-          ? mostLikedAnswer.updatedAt
-          : null,
-      };
-    });
-  });
+  const writeBtnClickHandler = () => {
+    const token = localStorage.getItem("token");
 
-  //additional data load function
-  const loadMorePosts = () => {
-    //API request simulation (add addtional data after 1 sec) 추후 수정 예정
-    setTimeout(() => {
-      //create new data. 현재 API 가 없어서 테스트 위한 mock data임
-      const newPosts: Post = {
-        "1": [
-          {
-            id: 8,
-            title: "글인데요",
-            content: "잘 부탁드려요",
-            questionerId: 1,
-            questioner: "나까무라",
-            createdAt: "2024-04-13T00:44:04.624507",
-            updatedAt: null,
-            likeCount: 0,
-            answers: [],
-          },
-        ],
-      };
-      //기존 mock data에 새로운 데이터 추가
-      setLoading(false);
-      setMockPosts((prevPosts) => ({ ...prevPosts, ...newPosts }));
-    }, 1000); //가상의 API 응답 시간 (1초)
+    token ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    if (isLoggedIn) {
+      navigate(`/qnas/create`);
+    }
+    if (!isLoggedIn) {
+      alert("로그인을 해주세요."); // 사용자에게 메시지 표시
+      navigate("/login"); // 로그인 페이지로 이동
+    }
   };
 
-  //scroll event handler
-  //const handleScroll = () => {
-  // y-coordinate of the content bottom user can see
-  //  const scrollPosition = window.innerHeight + window.scrollY;
-  // total height of the document in pixel
-  //  const pageHeight = document.documentElement.offsetHeight;
-  //  const distanceFromBottom = pageHeight - scrollPosition;
+  //날짜, 시간 포멧팅
+  const formattedDateYYMMDD = (dateString: string) => {
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+  };
 
-  // When the user is within 10px from the bottom, load additional data
-  //   if (!loading && distanceFromBottom < 10) {
-  //    console.log("scroll event handler working");
-  //    loadMorePosts();
-  //  }
-  //};
+  //포스트 클릭했을때 해당 글 상세 페이지로 이동하는 핸들러
+  const handlePostClick = (postId: number) => {
+    navigate(`${apiUrl}/qnas/${postId}`);
+  };
 
-  //add scroll event listner when component mounted
-  //useEffect(() => {
-  //  window.addEventListener("scroll", handleScroll);
-  //  return () => window.removeEventListener("scroll", handleScroll); //remove event listener when //component unmounted
-  //}, []);
+  // 질문 데이터 가져오기
+  const fetchQuestions = useCallback(
+    async (page: number) => {
+      try {
+        setIsLoading(true);
+
+        const response: AxiosResponse<Posts> = await axios.get<Posts>(
+          `${apiUrl}/api/search?page=${page}`
+        );
+        const data = response.data;
+        setMainData((prevData) => (prevData ? { ...prevData, ...data } : data));
+        setCurrentPage(data.currentPage); // 숫자로 된 페이지 번호를 상태로 설정
+        setTotalPages(data.totalPages);
+        setIsLoading(false);
+        console.log(
+          "데이터 GET요청 성공, 전체 데이터:",
+          data,
+          "요청페이지:",
+          page,
+          data.currentPage
+        );
+      } catch (error) {
+        console.error("데이터 GET요청 실패:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [setIsLoading, setMainData, setCurrentPage, setTotalPages]
+  );
+
+  // Intersection Observer 콜백 함수, 요소가 교차(intersect)할 때 실행할 로직
+  const handleObserver = (entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      console.log(entry.isIntersecting);
+      if (entry.isIntersecting && !isLoading && totalPages > currentPage) {
+        // 로딩 중 상태로 변경
+        setIsLoading(true);
+
+        fetchQuestions(currentPage + 1)
+          .then(() => {
+            // 데이터 로딩이 완료되면 로딩 중 상태 해제
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+            // 데이터 로딩이 실패하더라도 로딩 중 상태 해제
+            setIsLoading(false);
+          });
+      }
+    });
+  };
 
   useEffect(() => {
-    const target = document.querySelector(".target");
-
-    const observer = new IntersectionObserver((mockPosts) => {
-      mockPosts.forEach((post) => {
-        console.log(post.isIntersecting);
-        if (post.isIntersecting && !loading) {
-          loadMorePosts();
-          setLoading(true);
-        }
-      });
-    });
-    if (target) {
-      observer.observe(target);
+    if (currentPage === 1) {
+      fetchQuestions(currentPage);
     }
-  }, []);
-  const target = document.querySelector(".target");
+  }, [fetchQuestions, currentPage]);
 
-  const observer = new IntersectionObserver((mockPosts) => {
-    mockPosts.forEach((post) => {
-      console.log(post.isIntersecting);
-    });
-  });
-  if (target) {
-    observer.observe(target);
-  }
+  useEffect(() => {
+    //타켓 설정
+    const sentinel = document.getElementById("sentinel");
+    if (sentinel && mainData) {
+      //1페이지가 로드 되어 mainData가 null이 아닐때만
+      // Intersection Observer 설정
+      observer.current = new IntersectionObserver(handleObserver, {
+        threshold: 0.5,
+      });
+      observer.current.observe(sentinel); // sentinel 요소를 관찰 대상으로 추가
+    }
+  }, [totalPages, currentPage]); // 의존성 추가
 
   return (
     <div className="qnalist-layout">
-      <div className="layout-left">
-        <button className="write-button">
-          <div>
-            <span>
-              <PiUserCircle />
+      <div className="layout">
+        <button className="write-button" onClick={writeBtnClickHandler}>
+          <div className="write-button-left-box">
+            <span className="user-img-wrapper">
+              <img
+                className="user-img"
+                src={"/images/profile_default.png"}
+                alt=""
+              />
             </span>
-            <div>나누고 싶은 생각이 있으신가요?</div>
+            <div className="write-button-text-container">
+              <div className="write-button-text">
+                나누고 싶은 생각이 있으신가요?
+              </div>
+            </div>
           </div>
 
           <span>
@@ -255,77 +262,111 @@ export default function QnaListPage() {
         {/*mapping mock data*/}
 
         <div>
-          {processedData.map((post: any) => (
-            <div className="post-container" key={post.questionId}>
-              <div className="post-container-header">
-                <div className="respondent-description">
-                  <span>
-                    <BiCommentDots />
-                  </span>
-                  {post.answerer ? (
-                    <div>{post.answerer} 님이 질문에 답변을 남겼어요</div>
+          {mainData &&
+            mainData.mainAllQuestionDto &&
+            mainData.mainAllQuestionDto.map((post: Question) => (
+              <button
+                onClick={() => handlePostClick(post.questionId)}
+                className="post-container"
+                key={post.questionId}
+              >
+                <div className="post-container-header">
+                  <div className="respondent-description">
+                    <span>
+                      <img
+                        className="profile-img"
+                        src="/images/profile_default.png"
+                        alt=""
+                      />
+                    </span>
+                    {post.answers && post.answers.length > 0 ? (
+                      <div className="questioner-answerer-desc">
+                        <div className="questioner-answerer-text">
+                          {post.answers[0].answerer} 님이 질문에 답변을 남겼어요
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="questioner-answerer-desc">
+                        <div className="questioner-answerer-text">
+                          {post.questioner} 님이 질문을 남겼어요
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="respondent-info">
+                    <span>
+                      <img
+                        className="questioner-answerer-img"
+                        src="/images/profile_default.png"
+                        alt=""
+                      />
+                    </span>
+                    <span>
+                      {post.answers && post.answers.length > 0 ? (
+                        <div className="answerer-userName">
+                          {post.answers[0].answerer}
+                        </div>
+                      ) : (
+                        <div className="answerer-userName">
+                          {post.questioner}
+                        </div>
+                      )}
+                      {post.questioner ? (
+                        <div className="post-date">
+                          {formattedDateYYMMDD(post.createdAt)}
+                        </div>
+                      ) : (
+                        <div className="post-date">
+                          {formattedDateYYMMDD(post.createdAt)}
+                        </div>
+                      )}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="question-box-wrapper">
+                  <div className="question-box">
+                    <div className="q-symbol">
+                      <div>Q.</div>
+                    </div>
+                    <div className="post-title">{post.title}</div>
+                    <div className="post-question">{post.content}</div>
+                  </div>
+
+                  {post.answers && post.answers.length > 0 ? (
+                    <div className="post-answer">{post.answers[0].content}</div>
                   ) : (
-                    <div>{post.questioner} 님이 질문을 남겼어요</div>
+                    <div className="pls-leave-answer">
+                      첫 답변을 작성해주세요
+                    </div>
                   )}
                 </div>
-                <div className="respondent-info">
-                  <span className="profile-img">
-                    <PiUserCircle />
-                  </span>
-                  <span>
-                    {post.answerer ? (
-                      <div>{post.answerer}</div>
-                    ) : (
-                      <div>{post.questioner}</div>
-                    )}
-
-                    <div className="post-date">{post.questionCreatedAt}</div>
-                  </span>
-                </div>
-              </div>
-
-              <div>
-                <div className="question-box">
-                  <div className="q-symbol">Q.</div>
-                  <div className="post-title">{post.questionTitle}</div>
-                  <div className="post-question">{post.questionContent}</div>
-                </div>
-
-                {post.mostLikedAnswerContent ? (
-                  <div className="post-answer">
-                    {post.mostLikedAnswerContent}
+                <div>
+                  <div className="like-count">좋아요{post.likeCount}</div>
+                  <div className="like-comment">
+                    <span className="icons">
+                      <AiOutlineLike />
+                    </span>
+                    <span>좋아요</span>
+                    <span className="icons">
+                      <BiCommentDots />
+                    </span>
+                    <span>
+                      댓글{" "}
+                      {post.answers && post.answers ? post.answers.length : "0"}
+                    </span>
                   </div>
-                ) : (
-                  <div>첫 답변을 작성해주세요</div>
-                )}
-              </div>
-              <div>
-                <div className="like-count">좋아요{post.questionLikeCount}</div>
-                <div className="like-comment">
-                  <span className="icons">
-                    <AiOutlineLike />
-                  </span>
-                  <span>좋아요</span>
-                  <span className="icons">
-                    <BiCommentDots />
-                  </span>
-                  <span>
-                    댓글{" "}
-                    {post.answers && post.answers.comments
-                      ? post.answers.comments.length
-                      : "0"}
-                  </span>
                 </div>
-              </div>
-            </div>
-          ))}
+              </button>
+            ))}
         </div>
 
-        <div className="target">target</div>
+        <div id="sentinel">
+          {currentPage == totalPages && "불러올 글이 없습니다"}
+        </div>
         {/* show Loading icon when loading*/}
-        {loading && <div className="loading"></div>}
+        {isLoading && <div className="loading"></div>}
       </div>
-      <SidePanel />
     </div>
   );
 }

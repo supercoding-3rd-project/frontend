@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Signup.module.scss";
 import { Link } from "react-router-dom";
+import TermsPopup from "../TermsPopup";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -13,6 +14,7 @@ const Signup = () => {
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [termsAgreed, setTermsAgreed] = useState(false);
+  const [showTermsPopup, setShowTermsPopup] = useState(false);
 
   const navigate = useNavigate();
 
@@ -62,6 +64,10 @@ const Signup = () => {
     return true;
   };
 
+  const handleTermsClick = () => {
+    setShowTermsPopup(true);
+  };
+
   // 타입을 'React.FormEvent<HTMLFormElement>'로 명시
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -76,7 +82,7 @@ const Signup = () => {
       try {
         // 회원가입 요청 로직
         const signupResponse = await fetch(
-          "http://13.209.98.14:8080/api/signup",
+          `https://api.alco4dev.com/api/signup`,
           {
             method: "POST",
             headers: {
@@ -94,9 +100,9 @@ const Signup = () => {
           throw new Error("회원가입 요청 실패");
         }
 
-        // 여기서부터 로그인 요청 로직
+        // 회원가입 성공 후 로그인 요청 로직
         const loginResponse = await fetch(
-          "http://13.209.98.14:8080/api/login",
+          `https://api.alco4dev.com/api/login`,
           {
             method: "POST",
             headers: {
@@ -113,9 +119,10 @@ const Signup = () => {
           throw new Error("로그인 요청 실패");
         }
 
-        const loginData = await loginResponse.json();
-        // 로그인 성공 처리, 예: 로컬 스토리지에 토큰 저장
-        localStorage.setItem("userToken", loginData.token);
+        const { accessToken, refreshToken } = await loginResponse.json();
+        // 토큰 저장 로직
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
 
         // 로그인 성공 후 메인 페이지로 이동
         navigate("/");
@@ -129,103 +136,110 @@ const Signup = () => {
   };
 
   return (
-    <div className={styles.signupContainer}>
-      <h2>회원가입</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">이메일</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="이메일 주소를 입력해주세요."
-            value={email}
-            onBlur={() => !email && setEmailError("이메일을 입력해주세요.")}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setEmailError("");
-            }}
-          />
-          {emailError && (
-            <div className={styles.errorMessage}>{emailError}</div>
-          )}
+    <div className={styles.signupstlye}>
+      <div className={styles.signupContainer}>
+        <h2>회원가입</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">이메일</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="이메일 주소를 입력해주세요."
+              value={email}
+              onBlur={() => !email && setEmailError("이메일을 입력해주세요.")}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError("");
+              }}
+            />
+            {emailError && (
+              <div className={styles.errorMessage}>{emailError}</div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="username">닉네임</label>
+            <input
+              type="text"
+              id="username"
+              placeholder="닉네임을 입력해주세요."
+              value={username}
+              onBlur={() =>
+                !username && setUsernameError("닉네임을 입력해주세요.")
+              }
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setUsernameError("");
+              }}
+            />
+            {usernameError && (
+              <div className={styles.errorMessage}>{usernameError}</div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="password">비밀번호</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="비밀번호를 입력해주세요."
+              value={password}
+              onBlur={() =>
+                !password && setPasswordError("패스워드를 입력해주세요.")
+              }
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError("");
+              }}
+            />
+            {passwordError && (
+              <div className={styles.errorMessage}>{passwordError}</div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="confirmPassword">비밀번호 확인</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="비밀번호를 다시 한 번 입력해주세요."
+              value={confirmPassword}
+              onBlur={() =>
+                !confirmPassword &&
+                setConfirmPasswordError("패스워드를 입력해주세요.")
+              }
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setConfirmPasswordError("");
+              }}
+            />
+            {confirmPasswordError && (
+              <div className={styles.errorMessage}>{confirmPasswordError}</div>
+            )}
+          </div>
+          <div className={`${styles.checkboxContainer} ${styles.checkbox}`}>
+            <input
+              className={styles.customCheckbox}
+              type="checkbox"
+              id="termsAgreed"
+              checked={termsAgreed}
+              onChange={(e) => setTermsAgreed(e.target.checked)}
+            />
+            <span onClick={handleTermsClick} className={styles.checkboxLabel}>
+              (필수) 개인정보 수집 및 이용약관 동의
+            </span>
+          </div>
+          <button type="submit" className={styles.signupButton}>
+            회원가입
+          </button>
+        </form>
+        <div className={styles.signupPrompt}>
+          <span className={styles.signupText}>계정이 있으신가요?</span>
+          <Link to="/users/login" className={styles.signupLink}>
+            로그인하기
+          </Link>
         </div>
-        <div>
-          <label htmlFor="username">닉네임</label>
-          <input
-            type="text"
-            id="username"
-            placeholder="닉네임을 입력해주세요."
-            value={username}
-            onBlur={() =>
-              !username && setUsernameError("닉네임을 입력해주세요.")
-            }
-            onChange={(e) => {
-              setUsername(e.target.value);
-              setUsernameError("");
-            }}
-          />
-          {usernameError && (
-            <div className={styles.errorMessage}>{usernameError}</div>
-          )}
-        </div>
-        <div>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="비밀번호를 입력해주세요."
-            value={password}
-            onBlur={() =>
-              !password && setPasswordError("패스워드를 입력해주세요.")
-            }
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setPasswordError("");
-            }}
-          />
-          {passwordError && (
-            <div className={styles.errorMessage}>{passwordError}</div>
-          )}
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">비밀번호 확인</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            placeholder="비밀번호를 다시 한 번 입력해주세요."
-            value={confirmPassword}
-            onBlur={() =>
-              !confirmPassword &&
-              setConfirmPasswordError("패스워드를 입력해주세요.")
-            }
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-              setConfirmPasswordError("");
-            }}
-          />
-          {confirmPasswordError && (
-            <div className={styles.errorMessage}>{confirmPasswordError}</div>
-          )}
-        </div>
-        <div className={`${styles.checkboxContainer} ${styles.checkbox}`}>
-          <input
-            className={styles.customCheckbox}
-            type="checkbox"
-            id="termsAgreed"
-            checked={termsAgreed}
-            onChange={(e) => setTermsAgreed(e.target.checked)}
-          />
-          <label htmlFor="termsAgreed" className={styles.checkboxLabel}>
-            (필수) 개인정보 수집 및 이용약관 동의
-          </label>
-        </div>
-        <button type="submit">회원가입</button>
-      </form>
-      <div className={styles.signupPrompt}>
-        <span className={styles.signupText}>계정이 있으신가요?</span>
-        <Link to="/users/login" className={styles.signupLink}>
-          로그인하기
-        </Link>
+        {showTermsPopup && (
+          <TermsPopup onClose={() => setShowTermsPopup(false)} />
+        )}
       </div>
     </div>
   );
