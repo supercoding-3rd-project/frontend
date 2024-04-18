@@ -128,8 +128,8 @@ const mockData: Posts = {
   ],
 };
 export default function QnaListPage() {
-  const apiUrl: string = "https://ade8-218-233-42-240.ngrok-free.app"; // 추후수정필요
-  const [mainData, setMainData] = useState<Posts | null>(null);
+  const apiUrl: string = ""; // 추후수정필요
+  const [mainData, setMainData] = useState<Posts | null>(mockData);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(2);
   const [isLoading, setIsLoading] = useState(false);

@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function QnaCreatePage() {
   //추후 수정 필요
-  const apiUrl: string = "https://ade8-218-233-42-240.ngrok-free.app";
+  const apiUrl: string = "";
 
   //title
   const [title, setTitle] = useState("");
