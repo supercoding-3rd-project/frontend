@@ -1,65 +1,93 @@
-$darkergrey: #3d4755;
-$darkgrey: #7a828c;
+$darkergrey: #222222;
+$darkgrey: #64748b;
 $midgrey: #b6b9bb;
-$lightgrey: #d7dbdf;
+$lightgrey: #9ea8b7;
 $lightergrey: #ecedee;
 $alco-yellow: #ffed71;
-$alco-peach: #ffc597;
-$alco-pink: #ff7eb1;
-$alco-purple: #9367ff;
-$alco-blue: #6bd7ff;
+$alco-yellow2: #ffed72;
+$alco-yellow2-darker: #ffe640;
 
 .qna-create-page-layout {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100vw;
+  font-family: "SUITE-Regular";
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
 }
 
 .header {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   width: 100%;
+  height: 90px;
   border-bottom: 1px solid $midgrey;
   margin-top: 90px;
   padding: 10px 0 10px 0;
+  font-family: "SUITE-Regular";
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
 
   .temporary-storage-btn {
+    width: 120px;
+    height: 50px;
     margin-right: 10px;
     padding: 10px;
-    color: black;
+    color: $darkgrey;
+    font-size: 1.125rem;
     font-weight: 700;
     border: none;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     background-color: white;
+    font-family: "SUITE-Regular";
+    line-height: 1.5;
+    letter-spacing: 0.08rem;
     &:hover {
-      background-color: $lightergrey;
+      background-color: rgba($alco-yellow2, 0.2);
       cursor: pointer;
+      color: black;
     }
   }
   .save-btn {
-    border: 1px solid $midgrey;
-    border-radius: 0.25rem;
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 0.5rem;
     margin-right: 10px;
     padding: 10px;
+    background-color: rgba($alco-yellow2, 0.2);
     color: $midgrey;
+    font-size: 1.125rem;
+    font-family: "SUITE-Regular";
+    line-height: 1.5;
+    letter-spacing: 0.08rem;
     font-weight: 700;
     &.btn-enabled {
       color: $darkgrey;
-      border: 1px solid $darkgrey;
+      border: none;
+      background-color: $alco-yellow2;
       &:hover {
-        background-color: $lightgrey;
         cursor: pointer;
+        background-color: $alco-yellow2-darker;
+        color: black;
       }
     }
   }
   .submit-btn {
-    border: 1px solid $midgrey;
-    border-radius: 0.25rem;
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 0.5rem;
     margin-right: 10px;
     padding: 10px;
     color: $midgrey;
+    font-size: 1.125rem;
+    font-family: "SUITE-Regular";
+    line-height: 1.5;
+    letter-spacing: 0.08rem;
     font-weight: 700;
-    border: none;
     background-color: $lightgrey;
     &.btn-enabled {
       color: white;
@@ -73,21 +101,12 @@ $alco-blue: #6bd7ff;
 }
 
 .write-wrapper {
-  width: 60%;
+  width: 800px;
   height: 100%;
-  .title-add-btn {
-    display: flex;
-    margin: 30px 0 30px 0;
-    color: $midgrey;
-    font-size: 1.25rem;
-    font-weight: bold;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    &:hover {
-      color: $darkgrey;
-    }
-  }
+  font-family: "SUITE-Regular";
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
+
   .title-add-wrapper {
     display: grid;
     justify-items: start;
@@ -97,23 +116,48 @@ $alco-blue: #6bd7ff;
       align-items: center;
       width: 100%;
     }
-    button {
-      width: 100px;
+    .title-add-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      margin: 30px 0 30px 0;
+      color: $midgrey;
+      font-size: 1.25rem;
+      font-weight: bold;
+      border: none;
+      background-color: transparent;
+      font-family: "SUITE-Regular";
+      line-height: 1.5;
+      letter-spacing: 0.08rem;
+      cursor: pointer;
+      &:hover {
+        color: $darkgrey;
+      }
     }
 
     .count-title {
       justify-content: end;
       color: $midgrey;
       font-size: 1.1rem;
+      font-family: "SUITE-Regular";
+      line-height: 1.5;
+      letter-spacing: 0.08rem;
+      font-weight: 700;
     }
 
     .title-cancel-btn {
+      display: flex;
+      align-items: center;
+      width: 100%;
       margin: 30px 0 30px 0;
       border: none;
       background-color: transparent;
       color: $darkgrey;
       font-size: 1.25rem;
-      font-weight: bold;
+      font-weight: 700;
+      font-family: "SUITE-Regular";
+      line-height: 1.5;
+      letter-spacing: 0.08rem;
       cursor: pointer;
       &:hover {
         color: $darkergrey;
@@ -127,9 +171,15 @@ $alco-blue: #6bd7ff;
       width: 100%;
       outline: none; //포커스시 테두리 효과 없애기
       border: none; //포커스시 테두리 효과 없애기
-    }
-    .input-title::placeholder {
-      color: $midgrey;
+      font-family: "SUITE-Regular";
+      line-height: 1.5;
+      letter-spacing: 0.08rem;
+      &::placeholder {
+        color: $midgrey;
+        font-family: "SUITE-Regular";
+        line-height: 1.5;
+        letter-spacing: 0.08rem;
+      }
     }
   }
 }

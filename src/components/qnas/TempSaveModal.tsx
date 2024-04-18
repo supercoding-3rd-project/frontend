@@ -49,6 +49,15 @@ const TempSaveModal = ({
     event.stopPropagation();
   };
 
+  //날짜, 시간 포멧팅
+  const formattedDateYYMMDD = (dateString: string | undefined) => {
+    if (!dateString) {
+      return ""; // 또는 다른 기본값을 반환할 수 있습니다.
+    }
+    const date = new Date(dateString);
+    return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+  };
+
   return (
     <button className="modal-overlay" onClick={closeModalHandler}>
       <div className="modal" onClick={handleModalClick}>
@@ -63,7 +72,9 @@ const TempSaveModal = ({
           <div key={post.tempId} className="temp-saved-post-container">
             <div className="temp-saved-post-title">{post.title}</div>
             <div>|</div>
-            <div className="temp-saved-post-content">{post.content}</div>
+            <div className="temp-saved-post-created-at">
+              {formattedDateYYMMDD(post.createdAt)}
+            </div>
             <button className="bin-btn" onClick={deleteBtnHandler}>
               <IoTrashOutline />
             </button>

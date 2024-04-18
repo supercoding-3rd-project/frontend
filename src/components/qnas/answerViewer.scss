@@ -1,17 +1,11 @@
-$darkergrey: #3d4755;
-$darkgrey: #7a828c;
+$darkergrey: #222222;
+$darkgrey: #64748b;
 $midgrey: #b6b9bb;
-$lightgrey: #d7dbdf;
+$lightgrey: #dddddd;
 $lightergrey: #ecedee;
 $alco-yellow: #ffed71;
-$alco-peach: #ffc597;
-$alco-pink: #ff7eb1;
-$alco-purple: #9367ff;
-$alco-blue: #6bd7ff;
-$alco-test-butter: #faedb2;
-$alco-test-pink: #f8bdeb;
-$alco-test-blue: #5272f2;
-$alco-test-navy: #082541;
+$alco-yellow2: #ffed72;
+$alco-yellow2-darker: #ffe640;
 
 .answer-viewer-layout {
   width: 100%;
@@ -22,26 +16,29 @@ $alco-test-navy: #082541;
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 5px 0 8px 0;
+  padding: 5px 0 25px 0;
   border: 1px solid $lightgrey;
-
-  background-color: rgba($alco-test-blue, 0.5);
+  background-color: white;
 
   .answer-viewer-header {
     display: flex;
-    padding: 15px 5px 10px 5px;
+    align-items: center;
+    padding: 5px 5px 10px 5px;
     width: 100%;
     height: 100%;
     position: relative;
     .answer-viewer-header-user-photo {
       display: flex;
       align-items: center;
-      font-size: 2.75rem;
-      color: $darkergrey;
       height: 100%;
       display: flex;
       align-items: center;
       margin-right: 5px;
+    }
+
+    .answerer-profile-image {
+      width: 65px;
+      height: auto;
     }
 
     .answer-header-block {
@@ -53,10 +50,18 @@ $alco-test-navy: #082541;
         font-size: 0.875rem;
         font-size: 1.125rem;
         color: black;
+        .answerer-name {
+          color: $darkgrey;
+          font-size: 1.1rem;
+          font-weight: 700;
+          line-height: 1.5;
+          letter-spacing: 0.08rem;
+        }
       }
     }
     .user-date-text {
-      color: $darkgrey;
+      color: $midgrey;
+      font-weight: 700;
     }
     .author-badge-container {
       display: flex;
@@ -66,14 +71,15 @@ $alco-test-navy: #082541;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 45px;
-        height: 17px;
+        width: 55px;
+        height: 20px;
         margin: 3px 0 0 5px;
         border-radius: 0.5rem;
-        background-color: $darkgrey;
+        background-color: $alco-yellow;
         .author-text {
-          font-size: 0.6rem;
-          color: white;
+          font-size: 0.875rem;
+          font-weight: 700;
+          color: black;
         }
       }
     }
@@ -82,13 +88,17 @@ $alco-test-navy: #082541;
       right: 15px;
 
       .answer-delete-btn {
-        background-color: rgba(white, 0.3);
+        background-color: $alco-yellow2;
+        width: 60px;
+        height: 32px;
         border: none;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        font-weight: 700;
         color: $darkgrey;
         &:hover {
-          background-color: rgba(white, 0.5);
-          color: $darkergrey;
+          background-color: $alco-yellow2-darker;
+          color: black;
           cursor: pointer;
         }
       }
@@ -97,18 +107,22 @@ $alco-test-navy: #082541;
 }
 
 .answer-content {
-  padding: 10px;
+  padding: 25px 15px 40px 15px;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
+  color: black;
 }
 
 .answer-viewer-footer {
   display: flex;
   align-items: center;
-  padding-left: 5px;
+  padding-left: 8px;
 
   button {
     display: flex;
     align-items: end;
-    color: $darkergrey;
+    color: $darkgrey;
     border: none;
     background-color: rgba(white, 0);
 
@@ -116,20 +130,26 @@ $alco-test-navy: #082541;
       display: flex;
       align-items: center;
       padding-right: 3px;
-      font-size: 1rem;
+      font-size: 1.25rem;
     }
     div {
-      font-size: 0.875rem;
+      font-size: 1rem;
+      font-weight: 700;
       padding-right: 2px;
     }
   }
   .like-button {
-    width: 80px;
+    width: 100px;
     &:hover {
       color: black;
       cursor: pointer;
     }
   }
+  .answer-like-count {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
   .reply-button {
     &:hover {
       color: black;
@@ -147,7 +167,7 @@ $alco-test-navy: #082541;
   border-left: 1px solid $lightgrey;
   border-bottom: 1px solid $lightgrey;
   padding: 5px 0 5px 0;
-  background-color: rgba($alco-test-blue, 0.5);
+  background-color: white;
 
   .comment-textarea {
     border: none;
@@ -158,7 +178,19 @@ $alco-test-navy: #082541;
     height: 34px;
     min-height: 34px;
     max-height: none;
-    background-color: rgba($alco-test-blue, 0);
+    background-color: rgba(white, 0);
+    color: $darkgrey;
+    font-size: 1.125rem;
+    font-family: "SUITE-Regular";
+    line-height: 1.5;
+    letter-spacing: 0.08rem;
+    &::placeholder {
+      color: $midgrey;
+      font-size: 1.125rem;
+      font-family: "SUITE-Regular";
+      line-height: 1.5;
+      letter-spacing: 0.08rem;
+    }
   }
   .button-wrapper {
     display: flex;
@@ -169,15 +201,17 @@ $alco-test-navy: #082541;
       height: 32px;
       border: none;
       border-radius: 0.5rem;
-      background-color: $lightergrey;
+      background-color: rgba($alco-yellow2, 0.8);
       font-size: 1rem;
+      font-weight: 700;
       color: $midgrey;
-      margin-right: 5px;
+      margin-right: 15px;
       &.enabled {
-        background-color: $darkergrey;
-        color: white;
+        background-color: $alco-yellow2;
+        color: $darkgrey;
         &:hover {
-          background-color: black;
+          background-color: $alco-yellow2-darker;
+          color: black;
           cursor: pointer;
         }
       }
@@ -193,24 +227,36 @@ $alco-test-navy: #082541;
   border-right: 1px solid $lightgrey;
   border-left: 1px solid $lightgrey;
   border-bottom: 1px solid $lightgrey;
-  padding: 5px 0 5px 0;
-  background-color: rgba($alco-test-blue, 0.5);
+  padding: 5px 0 15px 0;
+  background-color: white;
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
 }
 
 .comment-viewer-header {
   display: flex;
   justify-content: start;
+  align-items: center;
   width: 100%;
   padding-left: 15px;
   position: relative;
   span {
-    font-size: 2.125rem;
-    color: $darkergrey;
+    margin-top: 3px;
+    .commenter-profile-img {
+      width: 55px;
+      height: auto;
+    }
   }
   .user-date-info {
     margin-left: 10px;
     .user-badge-container {
       display: flex;
+      .commenter-name {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: $darkgrey;
+      }
+
       .author-badge-container-2 {
         display: flex;
         justify-content: start;
@@ -220,22 +266,23 @@ $alco-test-navy: #082541;
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 45px;
-          height: 17px;
-
+          width: 55px;
+          height: 20px;
           border-radius: 0.5rem;
-          background-color: $darkgrey;
+          background-color: $alco-yellow2;
           .author-text-2 {
-            font-size: 0.6rem;
-            color: white;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: black;
           }
         }
       }
     }
 
     .user-date-text {
-      color: $darkergrey;
+      color: $midgrey;
       font-size: 0.875rem;
+      font-weight: 700;
     }
   }
 
@@ -243,13 +290,17 @@ $alco-test-navy: #082541;
     position: absolute;
     right: 15px;
     button {
-      background-color: rgba(white, 0.3);
+      width: 60px;
+      height: 32px;
+      background-color: rgba($alco-yellow2, 0.8);
       border: none;
-      border-radius: 0.25rem;
+      border-radius: 0.5rem;
       color: $darkgrey;
+      font-size: 1rem;
+      font-weight: 700;
       &:hover {
-        background-color: rgba(white, 0.5);
-        color: $darkergrey;
+        background-color: $alco-yellow2-darker;
+        color: black;
         cursor: pointer;
       }
     }
@@ -260,13 +311,16 @@ $alco-test-navy: #082541;
   display: flex;
   justify-content: end;
   width: 100%;
+  margin-left: 19px;
+  background-color: rgba(white, 0);
+  font-size: 1.125rem;
 
   div {
     width: 90%;
     border-radius: 0.5rem;
     margin-right: 5px;
-    padding: 5px;
-    background-color: rgba(white, 0.7);
+    padding: 10px;
+    background-color: rgba(white, 0);
     color: $darkergrey;
   }
 }

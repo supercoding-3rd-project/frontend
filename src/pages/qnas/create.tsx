@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function QnaCreatePage() {
   //추후 수정 필요
-  const apiUrl = "";
+  const apiUrl: string = "https://ade8-218-233-42-240.ngrok-free.app";
 
   //title
   const [title, setTitle] = useState("");
@@ -70,7 +70,10 @@ export default function QnaCreatePage() {
     };
     try {
       axios
-        .post(`${apiUrl}/v1/question/create/submit`, postData)
+        .post(
+          `https://cors-anywhere.herokuapp.com/${apiUrl}/v1/question/create/submit`,
+          postData
+        )
         .then((response) => {
           console.log("글 제출 POST 요청 성공:", response.data);
 
@@ -99,13 +102,21 @@ export default function QnaCreatePage() {
   const [isTempSavedPostPresent, setIsTempSavedPostPresent] = useState(true);
   //임시저장 글을 GET요청하여 저장된 글이 있을 경우 불러오는 로직
   const savedPostRequest = () => {
+    const userBearer =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ0NDU1OSwiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ. -X6sCmOPlCc87RGBNhp9UFBBJSzdnn58qIStuSQNEC4Xlv01Nb1-pgMDPPiSdBCa5X_kooCwSfRIgHGlDbTwDg";
     axios
-      .get(`${apiUrl}/v1/question/create`)
+      .get(`https://cors-anywhere.herokuapp.com/${apiUrl}/v1/question/create`, {
+        headers: {
+          "ngrok-skip-browser-warning": "any-value", //삭제예정
+          Authorization: `Bearer ${userBearer}`,
+        },
+      })
+
       .then((response) => {
         if (response.data.length > 0) {
           setTempSavedPosts(response.data);
           setIsTempSavedPostPresent(true);
-          console.log("임시저장 글 get요청 성공");
+          console.log("임시저장 글 get요청 성공", response.data);
         } else {
           setIsTempSavedPostPresent(false);
         }
@@ -141,6 +152,7 @@ export default function QnaCreatePage() {
       await savedPostRequest();
     } catch (error) {
       console.error("임시 저장된 글 삭제 실패:", error);
+      alert("앗! 삭제하는 데 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.");
     }
     return false; //기본동작취소
   };
@@ -220,7 +232,7 @@ export default function QnaCreatePage() {
       </div>
       <div className="write-wrapper">
         {!isTitleBtnClicked ? (
-          <div>
+          <div className="title-add-wrapper">
             <button
               className="title-add-btn"
               onClick={() => setIsTitleBtnClicked(true)}

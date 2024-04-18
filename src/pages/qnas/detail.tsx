@@ -6,45 +6,48 @@ import AnswerViewer from "src/components/qnas/AnswerViewer";
 import { PiUserCircle } from "react-icons/pi";
 import { IoIosArrowRoundUp } from "react-icons/io";
 import { IoIosArrowRoundDown } from "react-icons/io";
-
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 interface Comments {
-  id: number; //코멘트번호
+  commentId: number; //코멘트번호
   content: string;
   commenterId: number; //댓글자 유저 아이디 번호
-  commenter: string;
+  commenter: string; //댓글자 닉네임
+  profileImage: string;
+  canDelete: boolean;
   createdAt: string;
-  updatedAt: string;
   answerId?: number; //answerId속성을 선택적으로 만듬
 }
 
 interface Answers {
-  id: number; //답변글 id (questionId, 하향식);
-  content: string; //답변내용
-  answerId: number; //답변번호
   questionId: number; //답변이 어떤 질문에 대한 답변인지.질문글id
-  userId: number; //답변자id
-  username: string; //답변자 닉네임
+  answerId: number; //답변글 id (questionId, 하향식);
+  answererId: number; //답변자id
+  profileImg: string;
+  answerer: string; //답변자 닉네임
+  content: string; //답변내용
   createdAt: string;
   updatedAt: string;
   likeCount: number;
+  canDelete: boolean;
   answerComments: Comments[];
   liked: boolean | null;
 }
 
 interface Question {
-  id: number;
-  title: string;
-  content: string;
+  questionId: number;
   questionerId: number;
   questioner: string;
+  profileImg: string;
+  title: string;
+  content: string;
   createdAt: string;
   updatedAt: null;
   likeCount: number;
   dislikeCount: number;
+  canDelete: false;
   answers: Answers[];
   liked: boolean;
   disliked: boolean;
@@ -52,101 +55,114 @@ interface Question {
 
 export default function QnaDetailPage() {
   //추후 수정 필요
-  const apiUrl = "";
-  //로그인상태, 추후 useEffect로 수정해서 처음 랜더링시 로그인 여부 판단하기
+  const apiUrl = "https://83b4-218-233-42-240.ngrok-free.app/";
+
   const [loggedIn, setLoggedIn] = useState(true);
-  const [loggedInUserId, setLoggedInUserId] = useState<number>(1234567); //추후 로그인관련 로직 추가 필요
+  //const [loggedInUserId, setLoggedInUserId] = useState<number>(1234567); //추후 로그인관련 로직 추가 필요
 
   const mockData: Question = {
-    id: 6,
-    title: "질문입니다.",
-    content: "이유를알고싶다 왜안되니",
+    questionId: 6,
     questionerId: 1234567,
     questioner: "메추리",
+    profileImg: "anonymous.png",
+    title: "질문입니다.",
+    content:
+      "현재 중소기업에서 데이터분석가로 일하고 있습니다. 하지만 데이터분석일은 하지않고 거의 파이썬 개발일, 프로젝트관리 정도만 하고 있습니다. 국가과제를 주로 하는 회사의 특성상 제안서가 떨어지면 그마저도 일이 없습니다. 복지도 줄어드는 것이 보입니다. 지금 2년차고, 회사에 데이터 직무 선배는 커녕 개발자도 없습니다. 이직이 정말 간절한데, 회사에서 배운게 없어 포폴 할만한 것도 없고, 코테도 점점 자신이 없어 집니다. 배우고 성장하는게 중요한 사람인데, 먼거리 출퇴근할 때마다, 너무 괴롭고 눈물이 납니다.",
     createdAt: "2024-04-12T18:10:46.656117",
     updatedAt: null,
     likeCount: 0,
     dislikeCount: 5,
+    canDelete: false,
     answers: [
       {
-        id: 1,
-        content: "뭐가 궁금하신데요?",
-        answerId: 1,
         questionId: 6,
-        userId: 1,
-        username: "나까무라답변자",
+        answerId: 1,
+        answererId: 1,
+        profileImg: "anonymous.png",
+        answerer: "나까무라답변자",
+        content: "뭐가 궁금하신데요?",
         createdAt: "2024-04-13T18:11:00.046106",
         updatedAt: "2024-04-13T18:11:00.046106",
-        likeCount: 0,
+        likeCount: 1,
+        canDelete: false,
         answerComments: [],
-        liked: false,
+        liked: true,
       },
 
       {
-        id: 2,
-        content: "죄송합니다. 쓰다가 말았네요.",
-        answerId: 2,
         questionId: 6,
-        userId: 1234567,
-        username: "메추리",
+        answerId: 2,
+        answererId: 1234567,
+        profileImg: "anonymous.png",
+        answerer: "메추리",
+        content: "죄송합니다. 쓰다가 말았네요.",
         createdAt: "2024-04-13T18:11:00.822348",
         updatedAt: "2024-04-13T18:11:00.822348",
         likeCount: 0,
-
+        canDelete: false,
         answerComments: [],
         liked: false,
       },
       {
-        id: 3,
-        content: "??",
-        answerId: 3,
         questionId: 6,
-        userId: 1,
-        username: "나까무라복사품",
+        answerId: 3,
+        answererId: 1,
+        profileImg: "anonymous.png",
+        answerer: "나까무라복사품",
+        content: "??",
         createdAt: "2024-04-13T18:11:01.470863",
         updatedAt: "2024-04-13T18:11:01.470863",
         likeCount: 0,
-
+        canDelete: false,
         answerComments: [
           {
-            id: 1,
+            commentId: 1,
             content: "뭐라는걸까요 궁금",
             commenterId: 1,
             commenter: "코멘터1",
+            profileImage: "anonymous.png",
+
             createdAt: "2024-04-14T18:11:15.262025",
-            updatedAt: "2024-04-15T18:11:15.262025",
+            canDelete: false,
           },
           {
-            id: 2,
+            commentId: 2,
             content: "기다리고 있습니다",
             commenterId: 1,
             commenter: "코멘터2",
+            profileImage: "anonymous.png",
+
             createdAt: "2024-04-16T18:11:16.048811",
-            updatedAt: "2024-04-17T18:11:16.048811",
+            canDelete: false,
           },
           {
-            id: 3,
+            commentId: 3,
             content: "작성자입니다. 해결되었습니다. 감사합니다.",
             commenterId: 1234567,
             commenter: "메추리",
+            profileImage: "anonymous.png",
+
             createdAt: "2024-04-18T18:11:16.709377",
-            updatedAt: "2024-04-19T18:11:16.709377",
+            canDelete: false,
           },
           {
-            id: 4,
+            commentId: 4,
             content: "여태 기다렸는데...",
             commenterId: 1,
             commenter: "코멘터4",
+            profileImage: "anonymous.png",
+
             createdAt: "2024-04-20T18:11:17.23705",
-            updatedAt: "2024-04-20T18:11:17.23705",
+            canDelete: false,
           },
           {
-            id: 5,
+            commentId: 5,
             content: "5~~~~~",
             commenterId: 2,
             commenter: "코멘터5",
+            profileImage: "anonymous.png",
             createdAt: "2024-04-21T23:02:22.853126",
-            updatedAt: "2024-04-21T23:02:22.853126",
+            canDelete: false,
           },
         ],
         liked: false,
@@ -165,111 +181,76 @@ export default function QnaDetailPage() {
     return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
   };
 
-  //좋아요 관련
-  const [liked, setLiked] = useState<Question["liked"]>(
-    question ? question.liked : false
-  ); //좋아요상태
-  const [disliked, setDisliked] = useState<Question["disliked"]>(
-    question ? question.liked : false
-  ); //싫어요상태
-  const [likeCount, setLikeCount] = useState<Question["likeCount"]>(
-    question ? question.likeCount : 0
-  ); //좋아요 수
-  const [dislikeCount, setDislikeCount] = useState<Question["dislikeCount"]>(
-    question ? question.dislikeCount : 0
-  ); //싫어요 수
+  /////질문글 좋아요 관련/////
+  //유저가 질문글에 좋아요,싫어요 했는지 여부
+  const [isQuestionLiked, setIsQuestionLiked] = useState<Question["liked"]>(
+    question && loggedIn ? question.liked : false
+  );
+  const [isQuestionDisliked, setIsQuestionDisliked] = useState<
+    Question["disliked"]
+  >(question && loggedIn ? question.liked : false); //싫어요상태
+  const [questionlikeCount, setQuestionLikeCount] = useState<
+    Question["likeCount"]
+  >(question ? question.likeCount : 0); //좋아요 수
+  const [questionDislikeCount, setQuestionDislikeCount] = useState<
+    Question["dislikeCount"]
+  >(question ? question.dislikeCount : 0); //싫어요 수
+  const questionId = question.questionId;
 
-  // const postLikeStatus = (id: number, userId: number, liked: boolean) => {
-  //   axios
-  //     //추후 엔드포인트 수정 필요
-  //     .post(`${apiUrl}`, {
-  //       id: 11,
-  //       liked: false, //추후수정필요 상태값으로해서 클릭할때마다 바뀌게 해야할듯
-  //     })
-  //     .then((response) => {
-  //       console.log("요청이 성공했습니다");
-  //     });
-  // };
+  //유저정보 어떻게 보내는지 확인필요 (수정 필요할 수 있음)
+  const handleLikeClick = async () => {
+    try {
+      // 사용자 토큰을 가져오는 작업 (예시: localStorage에 저장된 토큰을 사용)
+      const userToken = localStorage.getItem("userToken");
 
-  // //when Like button clikced
-  // const handleLike = () => {
-  //   if (loggedIn) {
-  //     //0이거나-1일때 (좋아요버튼 안눌렀었던 상태)
-  //     if (!liked) {
-  //       setLiked(true);
+      // 헤더에 사용자 토큰을 포함시켜 PATCH 요청을 보냄
+      const response = await axios.patch(
+        `${apiUrl}/v1/question/${questionId}/like`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`, // 헤더에 토큰을 포함시킴
+          },
+        }
+      );
 
-  //       //서버교류없이 브라우저에서 바로 증가숫자 보여줌
-  //       setLikeCount(likeCount + 1);
-  //       //서버에 요청 보내기
-  //       postLikeStatus(question.id, question.id, 1);
+      // 응답 데이터 처리
+      const { liked, disliked, likeCount, dislikeCount } = response.data;
+      setIsQuestionLiked(liked);
+      setIsQuestionDisliked(disliked);
+      setQuestionLikeCount(likeCount);
+      setQuestionDislikeCount(dislikeCount);
+    } catch (error) {
+      console.error("좋아요 PATCH요청 에러:", error);
+    }
+  };
 
-  //       //-1싫어요 상태였다면
-  //       if (disliked) {
-  //         setDisliked(false); //싫어요 취소
-  //         setDislikeCount(dislikeCount - 1);
-  //         //서버에 요청 보내기
-  //         postLikeStatus(question.id, question.id, 1);
-  //       }
-  //     }
-  //     //1 좋아요 상태였다면
-  //     else {
-  //       setLiked(false);
-  //       setLikeCount(likeCount - 1);
-  //       //서버에 요청 보내기
-  //       postLikeStatus(question.id, question.id, 1);
-  //     }
-  //   }
-  // };
-
-  // //when Dislike button clikced
-  // const handleDislike = () => {
-  //   if (loggedIn) {
-  //     if (!disliked) {
-  //       setDisliked(true);
-  //       setDislikeCount(dislikeCount + 1);
-  //       postLikeStatus(question.id, question.id, -1);
-  //       if (liked) {
-  //         setLiked(false);
-  //         setLikeCount(likeCount - 1);
-  //         postLikeStatus(question.id, question.id, -1);
-  //       }
-  //     } else {
-  //       setDisliked(false);
-  //       setDislikeCount(dislikeCount - 1);
-  //       postLikeStatus(question.id, question.id, -1);
-  //     }
-  //   }
-  // };
-
-  /////처음 렌더링시 데이터 가져오기/////
-
-  useEffect(() => {
-    const getPost = async () => {
-      try {
-        const response = await axios.get(apiUrl); // API 요청
-        setQuestion(response.data); // 성공적으로 데이터를 가져왔을 때 상태 업데이트
-        console.log("Question 데이터 GET 성공");
-      } catch (error) {
-        setQuestion(mockData); // 실패 시 mock data를 사용하여 상태 업데이트
-        console.log("Question 데이터 GET 실패:", error);
-      }
-    };
-
-    getPost(); // 함수 호출
-  }, []);
+  const handleDislikeClick = async () => {
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/v1/question/${questionId}/dislike`
+      );
+      const { liked, disliked, likeCount, dislikeCount } = response.data;
+      setIsQuestionLiked(liked);
+      setIsQuestionDisliked(disliked);
+      setQuestionLikeCount(likeCount);
+      setQuestionDislikeCount(dislikeCount);
+    } catch (error) {
+      console.error("싫어요 PATCH요청 에러:", error);
+    }
+  };
 
   /////삭제 버튼 클릭시 /////
-  const [deleted, setDeleted] = useState(false);
+
   const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 가져옴
   //질문글 삭제 버튼 클릭시
   const questionDelBtnClickHandler = async () => {
     try {
       // 삭제 요청 보내기
-      await axios.delete(`${apiUrl}/v1/question/${question.id}/delete`);
-      // 삭제가 성공하면 deleted 상태를 true로 업데이트
-      setDeleted(true);
+      await axios.delete(`${apiUrl}/v1/question/${question.questionId}/delete`);
+
       // 성공 메시지 얼럿을 보여줌
-      window.alert("삭제되었습니다.");
+      window.alert("질문이 삭제되었습니다.");
       // 메인 페이지로 이동
       navigate("/");
     } catch (error) {
@@ -279,15 +260,30 @@ export default function QnaDetailPage() {
       window.alert("삭제 요청이 실패했습니다.");
     }
   };
-  //답변글 삭제 버튼 클릭시
 
   //코멘트 삭제 버튼 클릭시
+
+  /////처음 렌더링시 데이터 가져오기/////
+
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const response = await axios.get(`${apiUrl}/api/question/1`); // API 요청
+        setQuestion(response.data); // 성공적으로 데이터를 가져왔을 때 상태 업데이트
+        console.log("Question 데이터 GET 성공");
+      } catch (error) {
+        console.log("Question 데이터 GET 실패:", error);
+      }
+    };
+
+    getPost(); // 함수 호출
+  }, []);
 
   return (
     <div className="qna-detail-page-layout">
       <div className="viewer-answer-wrapper">
         <div className="quetion-delete-btn-container">
-          {loggedIn && loggedInUserId === question.questionerId && (
+          {question.canDelete && (
             <button
               className="quetion-delete-btn"
               onClick={questionDelBtnClickHandler}
@@ -298,10 +294,10 @@ export default function QnaDetailPage() {
         </div>
 
         <div className="viewer-container">
-          <h2>{question.title}</h2>
+          <div className="title">{question.title}</div>
           <div className="post-info">
             <div>{formattedDateYYMMDD(question.createdAt)}</div>
-            <div>•</div>
+            <div className="dot-btw-title-postinfo">•</div>
             <div>조회 29</div>
           </div>
 
@@ -311,47 +307,53 @@ export default function QnaDetailPage() {
 
           <div className="viewer-footer">
             <div className="like-dislike-wrapper">
-              <div>이 질문이 도움이 되었나요?</div>
+              <div className="is-this-useful">이 질문이 도움이 되었나요?</div>
               <div className="like-dislike">
                 <button
+                  onClick={handleLikeClick}
                   className={`like-button ${
-                    liked ? "like-button-clicked" : ""
+                    isQuestionLiked ? "like-button-clicked" : ""
                   }`}
                 >
-                  <div>
-                    <span>
+                  <div className="arrow-btn-wrapper">
+                    <span className="arrow-btn">
                       <IoIosArrowRoundUp />
                     </span>
-                    추천해요
                   </div>
+                  추천해요
                   <span>{question.likeCount}</span>
                 </button>
 
-                <button className="dislike-button">
-                  <span>
-                    <IoIosArrowRoundDown />
-                  </span>
+                <button onClick={handleDislikeClick} className="dislike-button">
+                  <div className="arrow-btn-wrapper">
+                    <span className="arrow-btn">
+                      <IoIosArrowRoundDown />
+                    </span>
+                  </div>
                   보충이 필요해요
                   <span>{question.dislikeCount}</span>
                 </button>
               </div>
             </div>
             <div className="writer-info">
-              <span>
-                <PiUserCircle />
-              </span>
+              <img
+                className="questioner-profile-img"
+                src="/images/profile_default.png"
+                alt=""
+              />
               {`${question.questioner} `}님의 질문
             </div>
           </div>
         </div>
         <AnswerEditor />
-        <div className="answer-count">
-          <h2>답변 {question.answers.length}</h2>
-        </div>
+        {question.answers && question.answers.length > 0 ? (
+          <div className="answer-count">
+            <div>답변 {question.answers.length}</div>
+          </div>
+        ) : null}
 
         <AnswerViewer
           loggedIn={loggedIn}
-          loggedInUserId={loggedInUserId}
           answers={question.answers}
           questionerId={question.questionerId}
         />
