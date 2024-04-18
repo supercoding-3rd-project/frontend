@@ -10,6 +10,7 @@ import { IoSearch } from "react-icons/io5";
 import ChatDummy from "./ChatDummy";
 import NewChatModal from "./NewChatModal";
 import MessengerChatWindowModal from "./MessengerChatWindowModal";
+import { RiChatNewLine } from "react-icons/ri";
 
 //socket io connect
 import io from "socket.io-client";
@@ -114,6 +115,11 @@ const MChatContents = styled.div`
   justify-content: center;
   align-items: center;
   border-right: 1px solid #e2e8f0;
+`;
+
+const StyledChatIconImg = styled(RiChatNewLine)`
+  font-size: 10rem;
+  color: #ff8743;
 `;
 
 interface Chat {
@@ -246,8 +252,8 @@ const Messenger: React.FC = () => {
         <ChatList chats={currentChats} me={loginUser} onSend={handleSend} />
       ) : (
         <MChatContents>
-          <div>
-            <img id="smile-icon" src="/웃는아이콘.png" alt="웃는 아이콘" />
+          <div style={{ height: "160px" }}>
+            <StyledChatIconImg />
           </div>
           <div className="lets-new-chat">새로운 채팅을 시작해보세요!</div>
           <button className="new-chat-button" onClick={openNCModal}>
