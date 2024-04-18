@@ -59,6 +59,7 @@ const CWMChatBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
+  background-color: #d89f2f;
   align-items: center; /////
 `;
 
@@ -76,18 +77,3 @@ const 채팅: React.FC = () => {
 };
 
 export default MessengerChatWindowModal;
-
-// <button
-// onClick={() => {
-//   axios
-//     .get("https://codingapple1.github.io/shop/data2.json")
-//     .then((res) => {
-//       console.log(res.data);
-//     })
-//     .catch(() => {
-//       console.log("에러뜸");
-//     });
-// }}
-// >
-// 그버튼
-// </button>
