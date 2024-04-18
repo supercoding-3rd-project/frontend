@@ -31,8 +31,8 @@ const Signup = () => {
   // 타입을 'string'으로 명시
   const validateUsername = (username: string) => {
     const length = new TextEncoder().encode(username).length;
-    if (length < 4 || length > 10) {
-      setUsernameError("닉네임은 4~10자 내외여야 합니다.");
+    if (length < 4 || length > 20) {
+      setUsernameError("닉네임은 4~20자 내외여야 합니다.");
       return false;
     }
     setUsernameError("");
