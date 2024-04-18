@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function QnaCreatePage() {
   //추후 수정 필요
-  const apiUrl = "";
+  const apiUrl: string = "";
 
   //title
   const [title, setTitle] = useState("");
@@ -37,61 +37,130 @@ export default function QnaCreatePage() {
     setIsTitleChanged(newTitle.trim() !== "");
   };
 
-  interface tempPosts {
-    post_id: number;
+  interface SaveSubmitPosts {
+    tempId: number;
     title: string;
     content: string;
+    createdAt?: "2024-04-16...";
   }
 
-  const tempSavedPosts: tempPosts[] = [
+  const tempSavedPostsMockData: SaveSubmitPosts[] = [
     {
-      post_id: 1,
+      tempId: 1,
       title: "임시저장제목1",
       content: "임시저장글1",
+      createdAt: "2024-04-16...",
     },
     {
-      post_id: 2,
+      tempId: 2,
       title: "임시저장제목2",
       content: "임시저장글2",
+      createdAt: "2024-04-16...",
     },
   ];
 
+  /////완료 버튼 클릭시 (글 제출)/////
+  //POST요청 보내기 + 헤더의 questionId값 받아서 그 페이지로 이동
+
+  const submitClickHandler = () => {
+    const postData = {
+      title: title,
+      content: content,
+      statusType: "SUBMIT",
+    };
+    try {
+      axios
+        .post(
+          `https://cors-anywhere.herokuapp.com/${apiUrl}/v1/question/create/submit`,
+          postData
+        )
+        .then((response) => {
+          console.log("글 제출 POST 요청 성공:", response.data);
+
+          // 응답 데이터로부터 ID 값을 추출
+          const newPostId = response.data.questionId; // 응답 데이터의 ID 키에 따라 조정
+
+          // 새로운 페이지 URL 생성, 해당 페이지로 이동
+          const newPageUrl = `${apiUrl}/qnas/${newPostId}`; // 수정필요
+
+          // 페이지 이동
+          window.location.href = newPageUrl;
+        })
+        .catch((error) => {
+          console.error("글 제출 POST 요청 실패:", error);
+        });
+    } catch (error) {
+      console.error("글 제출 요청 중 예기치 않은 오류 발생:", error);
+    }
+  };
+
+  /////임시저장 관련/////
+
   //임시저장된 글들
-  const [tempSaved, setTempSaved] = useState<tempPosts[]>(tempSavedPosts);
+  const [tempSavedPosts, setTempSavedPosts] = useState<SaveSubmitPosts[]>([]);
   //임시저장된 글들이 있는지 여부를 나타내는 상태
   const [isTempSavedPostPresent, setIsTempSavedPostPresent] = useState(true);
-
-  const deleteBtnHandler = () => {
-    const postData = {
-      status: "delete",
-      deleted_at: new Date(),
-    };
+  //임시저장 글을 GET요청하여 저장된 글이 있을 경우 불러오는 로직
+  const savedPostRequest = () => {
+    const userBearer =
+      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ0NDU1OSwiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ. -X6sCmOPlCc87RGBNhp9UFBBJSzdnn58qIStuSQNEC4Xlv01Nb1-pgMDPPiSdBCa5X_kooCwSfRIgHGlDbTwDg";
     axios
-      .post(apiUrl, postData)
+      .get(`https://cors-anywhere.herokuapp.com/${apiUrl}/v1/question/create`, {
+        headers: {
+          "ngrok-skip-browser-warning": "any-value", //삭제예정
+          Authorization: `Bearer ${userBearer}`,
+        },
+      })
+
       .then((response) => {
-        console.log("임시저장 글 delete request성공:", postData);
+        if (response.data.length > 0) {
+          setTempSavedPosts(response.data);
+          setIsTempSavedPostPresent(true);
+          console.log("임시저장 글 get요청 성공", response.data);
+        } else {
+          setIsTempSavedPostPresent(false);
+        }
       })
       .catch((error) => {
-        console.error("임시저장 글 delete request실패:", error);
+        setTempSavedPosts(tempSavedPostsMockData); //수정필요. 나중에 mockdata지우기
+        console.log("임시저장 글 get요청 성공");
       });
   };
-  //when mounted get temporary saved posts if there are.추후수정필요
-  useEffect(() => {
-    const getSavedPostRequest = async () => {
-      try {
-        const response = await axios.get("api/end-point");
-        const savedPosts = response.data;
 
-        if (savedPosts.length > 0) {
-          setIsTempSavedPostPresent(true);
-          console.log("임시저장 글 GET 요청 성공");
-        }
-      } catch (error) {
-        console.error("임시저장 글 GET 요청 실패", error);
-      }
-    };
-    getSavedPostRequest();
-  }, [tempSaved]);
+  //임시저장 버튼 눌렀을때
+  const tempSaveBtnHandler = async () => {
+    try {
+      // 임시 저장할 데이터
+      const tempPostData = {
+        title: title,
+        content: content,
+        statusType: "TEMP_SAVE",
+      };
+      // 임시 저장 요청 보내기
+      await axios.patch(`${apiUrl}/v1/question/create/temp`, tempPostData); //추후 수정필요
+      // 최신 글 목록 다시 가져오기
+      await savedPostRequest();
+    } catch (error) {
+      console.error("임시 저장 실패:", error);
+    }
+  };
+  //임시저장글 삭제버튼 클릭시
+  const deleteBtnHandler = async () => {
+    try {
+      await axios.patch(`api/v1/question/temp/{post.tempId}/delete`);
+      //업데이트 된 임시저장 리스트 GET요청
+      await savedPostRequest();
+    } catch (error) {
+      console.error("임시 저장된 글 삭제 실패:", error);
+      alert("앗! 삭제하는 데 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+    }
+    return false; //기본동작취소
+  };
+
+  //페이지 진입시 임시저장 글이 있을 경우 받아오기.추후 수정필요
+  useEffect(() => {
+    savedPostRequest();
+  }, []);
 
   //open modal when temporary save storage clicked
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -128,41 +197,6 @@ export default function QnaCreatePage() {
     return isTitleChanged && isContentChanged ? "btn-enabled" : "btn-disabled";
   };
 
-  const tempSaveBtnHandler = () => {
-    const postData = {
-      title: title,
-      markdown_content: content,
-      status: "save",
-      created_at: new Date(),
-    };
-    axios
-      .post(apiUrl, postData)
-      .then((response) => {
-        console.log("save request successful:", postData);
-      })
-      .catch((error) => {
-        console.error("save request fail:", error);
-      });
-  };
-
-  //when submit button clicked
-  const submitClickHandler = () => {
-    const postData = {
-      title: title,
-      markdown_content: content,
-      status: "submit",
-      created_at: new Date(),
-    };
-    axios
-      .post(apiUrl, postData)
-      .then((response) => {
-        console.log("post request successful:", postData);
-      })
-      .catch((error) => {
-        console.error("post request fail:", error);
-      });
-  };
-
   return (
     <div className="qna-create-page-layout">
       <div className="header">
@@ -176,7 +210,7 @@ export default function QnaCreatePage() {
           <TempSaveModal
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
-            tempSaved={tempSaved}
+            tempSavedPosts={tempSavedPosts}
             deleteBtnHandler={deleteBtnHandler}
           />
         )}
@@ -198,7 +232,7 @@ export default function QnaCreatePage() {
       </div>
       <div className="write-wrapper">
         {!isTitleBtnClicked ? (
-          <div>
+          <div className="title-add-wrapper">
             <button
               className="title-add-btn"
               onClick={() => setIsTitleBtnClicked(true)}

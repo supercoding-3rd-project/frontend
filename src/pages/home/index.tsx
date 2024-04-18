@@ -37,6 +37,8 @@ const SliderText = styled.p`
   left: 10%;
 `;
 
+import QnaListPage from "../qnas";
+
 export default function HomePage() {
   const sliderRef = useRef(null);
 
@@ -68,6 +70,7 @@ export default function HomePage() {
         </Slider>
         <SliderText>알코에 오신 것을 환영합니다!</SliderText>
       </SliderWrapper>
-    </MainContainer>
+      <QnaListPage />
+          </MainContainer>
   );
 }

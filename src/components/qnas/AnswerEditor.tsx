@@ -73,11 +73,15 @@ const AnswerEditor = () => {
       <div className="answer-container">
         <div className="answer-container-left">
           <span>
-            <PiUserCircle />
+            <img
+              className="answerer-profile-img"
+              src="/images/profile_default.png"
+              alt=""
+            />
           </span>
         </div>
         <div className="answer-container-right">
-          답변하기
+          <div className="answer-text">답변하기</div>
           <textarea
             className="text-textarea"
             onChange={combinedHandler}
