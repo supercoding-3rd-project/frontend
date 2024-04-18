@@ -60,18 +60,23 @@ export default function LoginForm() {
         throw new Error(`로그인 요청 실패: ${response.status}`);
       }
 
-      // 서버가 정상적으로 응답할 경우의 처리
-      const { accessToken, refreshToken } = await response.json();
+      // 응답 헤더에서 토큰 추출
+      const accessToken = response.headers.get("Authorization");
+      const refreshToken = response.headers.get("Authorization-Refresh");
 
-      // 받은 토큰을 로컬 스토리지에 저장
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      if (accessToken && refreshToken) {
+        // 로컬 스토리지에 토큰 저장
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
 
-      // 메인 페이지로 이동
-      navigate("/");
+        // 메인 페이지로 이동
+        navigate("/");
+      } else {
+        throw new Error("토큰을 받지 못했습니다.");
+      }
     } catch (error) {
       console.error("로그인 에러:", error);
-      // 에러 처리, 예를 들어 사용자에게 에러 메시지 표시
+      // 에러 메시지 표시 등의 처리
     }
   };
 
