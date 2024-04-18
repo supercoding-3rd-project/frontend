@@ -64,7 +64,7 @@ const MyPage: React.FC = () => {
           return;
         }
         const response = await axios.get(
-          "http://localhost:8080/api/v1/user/myPage",
+          `https://api.alco4dev.com/api/v1/user/myPage`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

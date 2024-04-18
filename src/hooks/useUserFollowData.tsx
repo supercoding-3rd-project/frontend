@@ -14,7 +14,7 @@ interface Following {
 }
 
 // 사용자 정의 훅
-const useUserFollowData = (userId: string) => {
+const useUserFollowData = (username: string) => {
   const [followers, setFollowers] = useState<Follower[]>([]);
   const [followings, setFollowings] = useState<Following[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -25,13 +25,13 @@ const useUserFollowData = (userId: string) => {
       try {
         // 팔로워 리스트 가져오기
         const followersResponse = await axios.get(
-          `http://localhost:8080/api/user/follower/${userId}`
+          `https://api.alco4dev.com/api/user/follower/${username}`
         );
         setFollowers(followersResponse.data || []);
 
         // 팔로잉 리스트 가져오기
         const followingsResponse = await axios.get(
-          `http://localhost:8080/api/user/following/${userId}`
+          `https://api.alco4dev.com/api/user/following/${username}`
         );
         setFollowings(followingsResponse.data || []);
       } catch (error) {
@@ -42,7 +42,7 @@ const useUserFollowData = (userId: string) => {
     };
 
     fetchFollowData();
-  }, [userId]);
+  }, [username]);
 
   return {
     followers,

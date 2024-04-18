@@ -31,7 +31,7 @@ const UserPage: React.FC = () => {
       try {
         // 이 예시에서는 hard-coded된 URL을 사용하지만, 실제 사용자 ID를 동적으로 적용해야 합니다.
         const response = await axios.get(
-          `http://localhost:8080/api/user/${username}`
+          `https://api.alco4dev.com/api/user/${username}`
         );
         // 서버 응답에서 사용자 데이터를 가져와 상태를 업데이트합니다.
         setUser({
