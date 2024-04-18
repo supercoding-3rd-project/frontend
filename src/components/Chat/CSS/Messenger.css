@@ -170,6 +170,9 @@ input {
 .custom-scroll::-webkit-scrollbar {
   width: 5px;
 }
+.custom-scroll::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리 등 웹킷 기반 브라우저에서 스크롤바를 숨깁니다 */
+}
 .custom-scroll::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
@@ -182,4 +185,16 @@ input {
 .custom-scroll {
   scrollbar-width: thin;
   scrollbar-color: #888 #f1f1f1;
+}
+
+.chatroom-header {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.chatroom-header-name {
+  margin-left: 10px;
+  font-size: 1.5rem;
 }

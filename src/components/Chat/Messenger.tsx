@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MessengerLeftModal from "./MessengerLeftModal";
 import ChatList from "./ChatList";
-// import { useMediaQuery } from "react-responsive";
 import styled from "styled-components";
 import "./CSS/Messenger.css";
 import { BsEnvelopePlus } from "react-icons/bs";
@@ -9,7 +8,6 @@ import { TbTriangleInverted } from "react-icons/tb";
 import { IoSearch } from "react-icons/io5";
 import ChatDummy from "./ChatDummy";
 import NewChatModal from "./NewChatModal";
-import MessengerChatWindowModal from "./MessengerChatWindowModal";
 import { RiChatNewLine } from "react-icons/ri";
 
 //socket io connect
@@ -132,12 +130,15 @@ interface Chat {
   chats: any;
 }
 
+interface Props {
+  chats: any;
+  me: string;
+  onSend: (message: any) => void;
+  onClickBack: () => void;
+}
+
 const Messenger: React.FC = () => {
   const [searching, setSearching] = useState(""); ///검색창 인풋태그
-  const [isChatModalOpen, setIsChatModalOpen] = useState([]); ///오른쪽 채팅창 띄우기
-  // const [임시채팅, set임시채팅] = useState(["여친1", "남친1", "남친2"]);
-  // const [추가할내용, set추가할내용] = useState("");
-  // const [chatContentModal, SetChatContentModal] = useState(false); /// 새 채팅 시작하기 모달
   const [newChatModal, setNewChatModal] = useState(false); /// 새 채팅 시작하기 모달
   const [showChatWindow, setShowChatWindow] = useState(false); /// 채팅창 여닫기 모달
   const [chatlist, setChatlist] = useState<Chat[]>([]);
@@ -146,6 +147,14 @@ const Messenger: React.FC = () => {
   const closeNCModal = () => setNewChatModal(false);
   const [loginUser, setLoginUser] = useState("");
   const [socket, setSocket] = useState<Socket | null>(null);
+
+  const onClickBack = () => {
+    setShowChatWindow(false);
+  };
+
+  const setShowChatWindowExternal = (value: boolean) => {
+    setShowChatWindow(value);
+  };
 
   const initSocketConnect = (roomId: any) => {
     if (socket != null) {
@@ -192,9 +201,7 @@ const Messenger: React.FC = () => {
   };
 
   useEffect(() => {
-    fetch(
-      "https://raw.githubusercontent.com/Regulus55/ChatDummy/main/ChatDummy.json"
-    )
+    fetch("https://api.alco4dev.com/api/rooms/get-or-create")
       .then((response) => response.json())
       .then((data) => {
         setChatlist(data);
@@ -241,15 +248,16 @@ const Messenger: React.FC = () => {
 
             return <MessengerLeftModal key={chat.id} chat={chat} />;
           })}
-
-          {/* {chatlist.map((chat) => (
-            <MessengerLeftModal key={chat.id} chat={chat} />
-          ))} */}
         </MChatModals>
       </MChatList>
 
       {showChatWindow ? (
-        <ChatList chats={currentChats} me={loginUser} onSend={handleSend} />
+        <ChatList
+          chats={currentChats}
+          me={loginUser}
+          onSend={handleSend}
+          // onClickBack={onClickBack}
+        />
       ) : (
         <MChatContents>
           <div style={{ height: "160px" }}>

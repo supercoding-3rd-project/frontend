@@ -1,4 +1,4 @@
-import Messenger from "src/components/Chat/Messenger";
+import Messenger from "../../components/Chat/Messenger";
 
 export default function MessengerService() {
   return (

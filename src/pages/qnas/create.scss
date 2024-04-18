@@ -22,80 +22,95 @@ $alco-yellow2-darker: #ffe640;
   justify-content: flex-end;
   align-items: center;
   width: 100%;
-  height: 90px;
-  border-bottom: 1px solid $midgrey;
+  height: 60px;
+  border-bottom: 1px solid $lightergrey;
   margin-top: 90px;
   padding: 10px 0 10px 0;
   font-family: "SUITE-Regular";
   line-height: 1.5;
   letter-spacing: 0.08rem;
+}
 
-  .temporary-storage-btn {
-    width: 120px;
-    height: 50px;
-    margin-right: 10px;
-    padding: 10px;
-    color: $darkgrey;
-    font-size: 1.125rem;
-    font-weight: 700;
-    border: none;
-    border-radius: 0.5rem;
-    background-color: white;
-    font-family: "SUITE-Regular";
-    line-height: 1.5;
-    letter-spacing: 0.08rem;
-    &:hover {
-      background-color: rgba($alco-yellow2, 0.2);
-      cursor: pointer;
-      color: black;
-    }
-  }
-  .save-btn {
-    width: 120px;
-    height: 50px;
-    border: none;
-    border-radius: 0.5rem;
-    margin-right: 10px;
-    padding: 10px;
+.temporary-storage-btn {
+  width: 95px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  padding: 10px;
+  color: $darkgrey;
+  font-size: 1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.5rem;
+  background-color: white;
+  font-family: "SUITE-Regular";
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
+  &:hover {
     background-color: rgba($alco-yellow2, 0.2);
-    color: $midgrey;
-    font-size: 1.125rem;
+    cursor: pointer;
+    color: black;
+  }
+}
+.save-btn {
+  width: 90px;
+  height: 35px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 0.5rem;
+  margin-right: 10px;
+  padding: 10px;
+  background-color: rgba($alco-yellow2, 0.2);
+  color: $midgrey;
+  font-size: 1rem;
+  font-family: "SUITE-Regular";
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
+  font-weight: 700;
+  &.btn-enabled {
+    color: $darkgrey;
+    border: none;
+    background-color: $alco-yellow2;
     font-family: "SUITE-Regular";
-    line-height: 1.5;
-    letter-spacing: 0.08rem;
-    font-weight: 700;
-    &.btn-enabled {
-      color: $darkgrey;
-      border: none;
-      background-color: $alco-yellow2;
-      &:hover {
-        cursor: pointer;
-        background-color: $alco-yellow2-darker;
-        color: black;
-      }
+    &:hover {
+      cursor: pointer;
+      background-color: $alco-yellow2-darker;
+      color: black;
+      font-family: "SUITE-Regular";
     }
   }
-  .submit-btn {
-    width: 120px;
-    height: 50px;
-    border: none;
-    border-radius: 0.5rem;
-    margin-right: 10px;
-    padding: 10px;
-    color: $midgrey;
-    font-size: 1.125rem;
+}
+.submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 35px;
+  border: none;
+  border-radius: 0.5rem;
+  margin-right: 30px;
+  padding: 10px;
+  color: $midgrey;
+  font-size: 1rem;
+  font-family: "SUITE-Regular";
+  line-height: 1.5;
+  letter-spacing: 0.08rem;
+  font-weight: 700;
+  background-color: $lightgrey;
+  font-family: "SUITE-Regular";
+  &.btn-enabled {
+    color: white;
+    background-color: $darkgrey;
     font-family: "SUITE-Regular";
-    line-height: 1.5;
-    letter-spacing: 0.08rem;
-    font-weight: 700;
-    background-color: $lightgrey;
-    &.btn-enabled {
-      color: white;
-      background-color: $darkgrey;
-      &:hover {
-        background-color: $darkergrey;
-        cursor: pointer;
-      }
+    &:hover {
+      background-color: $darkergrey;
+      cursor: pointer;
+      font-family: "SUITE-Regular";
     }
   }
 }
@@ -106,15 +121,18 @@ $alco-yellow2-darker: #ffe640;
   font-family: "SUITE-Regular";
   line-height: 1.5;
   letter-spacing: 0.08rem;
+  font-family: "SUITE-Regular";
 
   .title-add-wrapper {
     display: grid;
     justify-items: start;
     width: 100%;
+    font-family: "SUITE-Regular";
     div {
       display: flex;
       align-items: center;
       width: 100%;
+      font-family: "SUITE-Regular";
     }
     .title-add-btn {
       width: 100%;
@@ -186,4 +204,5 @@ $alco-yellow2-darker: #ffe640;
 
 .editor-box {
   font-size: 1rem;
+  font-family: "SUITE-Regular";
 }
