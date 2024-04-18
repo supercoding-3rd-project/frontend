@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import styled from "styled-components";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import QnaListPage from "../qnas";
 
 const MainContainer = styled.div`
   width: 100%;
@@ -37,8 +38,6 @@ const SliderText = styled.p`
   left: 10%;
 `;
 
-import QnaListPage from "../qnas";
-
 export default function HomePage() {
   const sliderRef = useRef(null);
 
@@ -71,6 +70,6 @@ export default function HomePage() {
         <SliderText>알코에 오신 것을 환영합니다!</SliderText>
       </SliderWrapper>
       <QnaListPage />
-          </MainContainer>
+    </MainContainer>
   );
 }
