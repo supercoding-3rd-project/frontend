@@ -5,7 +5,7 @@ import { CgAddR } from "react-icons/cg";
 import { MdCancel } from "react-icons/md";
 import { Editor } from "@toast-ui/react-editor";
 import EditorComponent from "../../components/qnas/EditorComponent";
-import TempSaveModal from "components/qnas/TempSaveModal";
+import TempSaveModal from "../../components/qnas/TempSaveModal";
 import axios from "axios";
 
 interface SaveSubmitPosts {
