@@ -1,8 +1,4 @@
 import "./header.scss";
-import { IoIosSearch } from "react-icons/io";
-import { SlSpeech } from "react-icons/sl";
-import { IoNotificationsOutline } from "react-icons/io5";
-import { FaRegCircleUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
