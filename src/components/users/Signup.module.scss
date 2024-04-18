@@ -13,6 +13,7 @@
     display: block; // 라벨을 새 줄에 표시
     text-align: left; // 텍스트를 왼쪽으로 정렬
     margin: 15px 0 10px; // 라벨 주위 여백 조정
+    font-weight: 600;
   }
 
   input {
@@ -33,7 +34,7 @@
 
   .checkboxLabel {
     margin-left: 1px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -74,6 +75,7 @@
   }
 
   .signupPrompt {
+    margin-left: 5px;
     text-align: left; // 중앙 정렬
     margin-top: 2px; // 위쪽 여백
     font-size: 0.9rem;

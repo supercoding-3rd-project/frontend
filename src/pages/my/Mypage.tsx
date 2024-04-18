@@ -1,109 +1,112 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Mypage.module.scss";
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaSignOutAlt } from "react-icons/fa";
+import axios from "axios";
+import FollowModal from "../../components/followModal/FollowModal";
 
 interface User {
   id: string;
-  photoURL?: string; // photoURL은 선택적 속성으로, 있을 수도 있고 없을 수도 있습니다.
-  // 여기에 더 많은 사용자 관련 속성을 추가할 수 있습니다.
+  name: string;
+  username: string;
+  email: string;
+  about: string;
+  followersCount: number;
+  followingCount: number;
+  photoURL?: string;
+  questionBoardResDtoList?: QuestionBoardResDto[]; // 질문과 답변 목록
+}
+
+interface QuestionBoardResDto {
+  questionId: string;
+  title: string;
+  content: string;
+  answers: Answer[]; // 답변 목록
+}
+
+interface Answer {
+  answerId: string;
+  content: string;
 }
 
 const MyPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [about, setAbout] = useState("");
-  const [followersCount, setFollowersCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
-  const [activeTab, setActiveTab] = useState("answers");
-
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<"answers" | "questions">(
+    "answers"
+  ); // 초기 탭을 'answers'로 설정
 
-  // 사용자 인증 상태를 확인하는 함수
-  const checkAuthStatus = useCallback(async () => {
-    try {
-      const response = await fetch("/api/auth/status", {
-        credentials: "include",
-      });
-      if (!response.ok) {
-        throw new Error("Please log in to access your profile.");
+  const [modalActiveTab, setModalActiveTab] = useState<
+    "followers" | "followings"
+  >("followers");
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openFollowersModal = () => {
+    setModalActiveTab("followers");
+    setModalOpen(true);
+  };
+
+  const openFollowingsModal = () => {
+    setModalActiveTab("followings");
+    setModalOpen(true);
+  };
+
+  const closeModal = () => setModalOpen(false);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setIsLoading(true);
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          navigate("/login");
+          return;
+        }
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/user/myPage",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setUser(response.data); // 이제 response.data에는 백엔드에서 받은 사용자 정보가 포함되어 있습니다.
+      } catch (error) {
+        console.error("사용자 정보를 불러오는 데 실패했습니다.", error);
+      } finally {
+        setIsLoading(false);
       }
-      // 인증된 경우 사용자 정보를 가져옵니다
-      const userDataResponse = await fetch("/api/user/info", {
-        credentials: "include",
-      });
-      if (!userDataResponse.ok) {
-        throw new Error("Failed to fetch user info");
-      }
-      const userData = await userDataResponse.json();
-      // 가져온 사용자 정보를 상태에 업데이트합니다
-      setName(userData.name);
-      setUsername(userData.username);
-      setEmail(userData.email);
-      setAbout(userData.about);
-      setFollowersCount(userData.followersCount);
-      setFollowingCount(userData.followingCount);
-    } catch (error) {
-      console.error(error);
-      alert("로그인을 해주세요."); // 사용자에게 메시지 표시
-      navigate("/users/login"); // 로그인 페이지로 이동
-    }
+    };
+
+    fetchUserData();
   }, [navigate]);
 
-  // 사용자 정보를 불러오는 함수
-  const fetchUserInfo = useCallback(async () => {
-    // 저장된 토큰을 가져옵니다
-    const token = localStorage.getItem("userToken");
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // 토큰 삭제
+    navigate("/users/login"); // 로그인 페이지로 리다이렉트
+  };
+  // 로딩 상태 렌더링
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
 
-    // 토큰이 있는지 확인합니다
-    if (!token) {
-      console.error("토큰을 찾을 수 없습니다");
-      return;
-    }
-
-    try {
-      // Authorization 헤더와 함께 엔드포인트에 GET 요청을 보냅니다
-      const response = await fetch("http://localhost:8080/api/v1/user/myPage", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`, // Bearer 토큰을 사용한다고 가정합니다
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("사용자 정보를 가져오는데 실패했습니다");
-      }
-
-      const data = await response.json();
-      // 가져온 데이터로 상태를 업데이트합니다
-      setUser({
-        id: data.userId.toString(), // 상태가 문자열을 기대한다면 문자열로 변환
-        photoURL: data.imageUrl,
-        // ... 그 외의 사용자 데이터
-      });
-    } catch (error) {
-      console.error(error);
-      // 에러를 처리합니다, 예를 들어 상태에 에러 메시지를 설정합니다
-    }
-  }, []);
-
-  useEffect(() => {
-    checkAuthStatus();
-  }, [checkAuthStatus]); // checkAuthStatus를 의존성 배열에 포함
-
-  useEffect(() => {
-    fetchUserInfo();
-  }, [fetchUserInfo]); // fetchUserInfo를 의존성 배열에 포함
+  // 사용자 정보가 없을 경우 에러 처리
+  if (!user) {
+    return <div>사용자 정보를 불러오는데 실패했습니다.</div>;
+  }
 
   const handleEdit = () => {
-    navigate("/myupdate");
+    // navigate 함수와 함께 목데이터를 state로 전달하여 편집 페이지로 이동
+    navigate("/my/update", { state: { user: user } });
+  };
+
+  const changeTab = (tabName: "answers" | "questions") => {
+    setActiveTab(tabName);
   };
 
   return (
     <div className={styles.mypageContainer}>
-      <h1>Welcome to My Page</h1>
       <div className={styles.userContent}>
         <div className={styles.profilePicContainer}>
           <img
@@ -113,56 +116,80 @@ const MyPage: React.FC = () => {
         </div>
       </div>
       <div className={styles.userInfo}>
-        <p>
-          이름:{name}
+        <p className={styles.userName}>
+          {user?.name}
           <Link
             to="/my/update"
             className={styles.editbutton}
             onClick={handleEdit}
           >
-            <FaEdit />
+            <FaEdit className={styles.editIcon} />
+          </Link>
+          <Link
+            to="/users/login"
+            className={styles.logoutbutton}
+            onClick={handleLogout}
+          >
+            <FaSignOutAlt className={styles.logoutIcon} />
           </Link>
         </p>
-        <p>유저이름:{username}</p>
         <div className={styles.followInfo}>
-          <p>팔로워: {followersCount}</p>
-          <p>팔로잉: {followingCount}</p>
+          <div onClick={openFollowersModal}>팔로워 {user.followersCount}</div>
+          <div onClick={openFollowingsModal}>팔로잉 {user.followingCount}</div>
         </div>
-        <p>이메일:{email}</p>
-        <p>자기소개:{about}</p>
+        <p>{user?.about}</p>
       </div>
-      {/* 탭 버튼 */}
-      <div className={styles.tabs}>
-        <button
-          className={`${styles.tab} ${
-            activeTab === "answers" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("answers")}
-        >
-          답변
-        </button>
-        <button
-          className={`${styles.tab} ${
-            activeTab === "questions" ? styles.active : ""
-          }`}
-          onClick={() => setActiveTab("questions")}
-        >
-          질문
-        </button>
+      <div className={styles.tabContainer}>
+        {/* 탭 버튼 */}
+        <div className={styles.tabs}>
+          <button
+            className={`${styles.tab} ${
+              activeTab === "answers" ? styles.active : ""
+            }`}
+            onClick={() => changeTab("answers")}
+          >
+            답변
+          </button>
+          <button
+            className={`${styles.tab} ${
+              activeTab === "questions" ? styles.active : ""
+            }`}
+            onClick={() => changeTab("questions")}
+          >
+            질문
+          </button>
+        </div>
       </div>
       {/* 탭 내용 */}
-      {activeTab === "answers" && (
-        <div className={styles.tabContent}>
-          {/* 답변 컨텐츠를 여기에 렌더링 */}
-          내가 한 답변들...
-        </div>
-      )}
-
-      {activeTab === "questions" && (
-        <div className={styles.tabContent}>
-          {/* 질문 컨텐츠를 여기에 렌더링 */}
-          내가 한 질문들...
-        </div>
+      <div className={styles.tabContent}>
+        {activeTab === "answers" && user && user.questionBoardResDtoList && (
+          <div>
+            {user.questionBoardResDtoList
+              .flatMap((item) => item.answers)
+              .map((answer) => (
+                <div key={answer.answerId}>
+                  <p>{answer.content}</p>
+                </div>
+              ))}
+          </div>
+        )}
+        {activeTab === "questions" && user && user.questionBoardResDtoList && (
+          <div>
+            {user.questionBoardResDtoList.map((question) => (
+              <div key={question.questionId}>
+                <h3>{question.title}</h3>
+                <p>{question.content}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      {isModalOpen && (
+        <FollowModal
+          userId={user.id}
+          activeTab={modalActiveTab}
+          onClose={closeModal}
+        />
       )}
     </div>
   );

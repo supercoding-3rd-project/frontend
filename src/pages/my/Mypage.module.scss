@@ -1,52 +1,119 @@
 .mypageContainer {
-  margin: 20px auto;
+  width: 100%; // 또는 고정된 너비
+  max-width: 800px; // 최대 너비
+  margin: 150px auto;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
 }
 
 .profilePicContainer {
-  width: 100px; /* 원하는 컨테이너 크기로 설정 */
-  height: 100px; /* 컨테이너와 같은 크기로 설정하여 원형이 되도록 함 */
+  width: 160px; /* 프로필 이미지 컨테이너 크기 */
+  height: 160px; /* 프로필 이미지 컨테이너 크기 */
   border-radius: 50%; /* 원형으로 만들기 */
-  border: 2px solid #fff;
-  overflow: hidden; /* 컨테이너를 초과하는 이미지 부분을 숨김 */
-  display: flex; /* 이미지를 가운데 정렬하기 위한 설정 */
-  justify-content: center; /* 중앙 정렬 */
-  align-items: center; /* 중앙 정렬 */
+  border: 1px solid black;
+  overflow: hidden; /* 이미지가 컨테이너를 넘어갈 경우 처리 */
+  margin-bottom: 5px; /* 하단 여백 추가 */
 }
 
 .profilePicContainer img {
-  width: auto; /* 이미지의 원래 비율을 유지 */
-  height: 100%; /* 컨테이너의 높이에 맞춤 */
-  object-fit: cover; /* 이미지가 컨테이너를 초과할 경우 중앙 부분이 보이도록 조정 */
+  width: 100%; /* 이미지를 컨테이너 크기에 맞게 조정 */
+  height: 100%; /* 이미지를 컨테이너 크기에 맞게 조정 */
+  object-fit: cover; /* 이미지가 잘리지 않고 꽉 채워지도록 설정 */
 }
 
 .userInfo {
-  text-align: center; /* 텍스트 중앙 정렬 */
-  font-size: 1.2rem; /* 폰트 크기 조정 */
-  color: #333; /* 텍스트 색상 */
-  /* 추가적인 스타일링 */
+  display: flex; // 추가: flexbox 사용
+  flex-direction: column; // 추가: 아이템들을 세로로 나열
+  align-items: center; // 추가: 중앙 정렬
+  text-align: center;
+  font-size: 1.2rem;
+  color: black;
+  margin-bottom: 20px;
+
+  p {
+    margin: 10px 0; // 기존 마진 유지
+    font-weight: bold;
+    font-size: 1.2rem; // 이름과 소개 문구의 폰트 크기를 동일하게 조정
+  }
+
+  // 만약 이름에만 별도의 스타일을 적용하고 싶다면 추가적인 클래스를 지정할 수 있습니다.
+  .userName {
+    font-size: 1.4rem; // '홍길동' 이름에만 더 큰 폰트 크기 적용
+    margin-bottom: 0; // '홍길동' 이름 아래의 마진 제거 또는 조정
+  }
+}
+
+.editIcon {
+  font-size: 0.7em; /* 아이콘 크기 조정 */
+  margin-left: 3px; /* 이름과 아이콘 간격 조정 */
+  vertical-align: middle; /* 세로 정렬을 아이콘의 하단으로 설정 */
+}
+
+.logoutIcon {
+  font-size: 0.7em; /* 아이콘 크기 조정 */
+  margin-left: 3px; /* 이름과 아이콘 간격 조정 */
+  vertical-align: middle; /* 세로 정렬을 아이콘의 하단으로 설정 */
 }
 
 .followInfo {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; /* 팔로워와 팔로잉 사이의 간격을 균등하게 설정 */
+  margin-bottom: 10px;
+}
+
+.followInfo p {
+  color: #757575;
+  margin-right: 10px; /* 각 요소 사이의 간격을 조절 */
+  font-size: 0.7rem;
+}
+
+.followInfo p:last-child {
+  margin-right: 0; /* 마지막 요소의 오른쪽 마진을 없애줌 */
+}
+
+.tabContainer {
+  width: 100%;
+  border-top: 1px solid #ccc; // 구분선을 추가합니다.
+  padding-top: 20px; // 구분선 위의 내용과의 간격을 추가합니다.
+  display: flex;
+  flex-wrap: wrap; /* 줄 바꿈 설정 */
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  align-items: center; /* 세로 가운데 정렬 */
+  margin-bottom: 30px; /* 하단 여백 추가 */
+}
+
+.tabs {
+  display: flex; /* 탭 버튼을 가로로 나열하기 위한 설정 */
 }
 
 .tab {
   background-color: transparent;
-  border: none;
-  padding: 10px 20px;
+  border: 1px solid #ccc; // 탭의 테두리를 설정합니다.
+  border-radius: 4px; // 탭의 모서리를 약간 둥글게 합니다.
+  padding: 5px 10px; // 탭 내부의 여백을 설정합니다.
   cursor: pointer;
+  font-weight: bold; // 글씨를 굵게 합니다.
+  margin: 20px 5px; // 탭 사이의 간격을 설정합니다.
+  transition: background-color 0.3s, color 0.3s; // 배경 및 글씨 색상 변경시 애니메이션 효과를 적용합니다.
+
+  &:hover {
+    background-color: #f0f0f0; // 호버시 탭의 배경색 변경
+  }
 }
 
+// 활성화된 탭의 스타일
 .active {
-  color: blue; /* 활성 탭의 색상 */
-  border-bottom: 2px solid blue; /* 활성 탭을 나타내는 밑줄 */
+  color: white; // 활성 탭의 글씨색
+  background-color: #007bff; // 활성 탭의 배경색
+  border-color: #007bff; // 활성 탭의 테두리 색상을 배경색과 같게 설정
+}
+
+.tabContent {
+  display: flex; /* 요소들을 행으로 나열합니다. */
+  justify-content: flex-start; /* 요소들을 왼쪽으로 정렬합니다. */
+  align-items: flex-start;
 }
