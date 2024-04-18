@@ -53,30 +53,34 @@
     &:first-of-type {
       background-color: #ff8743;
       color: white;
+      &:hover {
+        background-color: darken(#ff8743, 10%);
+      }
     }
   }
-}
-.signupPrompt {
-  text-align: center;
-  margin-top: 5px; // 링크 위의 여백 설정
-  margin-bottom: 15px; //링크 아래의 여백 설정
-}
 
-.signupText {
-  margin-right: 5px; // "회원가입하기" 링크와의 간격
-  font-size: 0.9em; // 문구의 글씨 크기 설정
-}
+  .signupPrompt {
+    text-align: center;
+    margin-top: 5px; // 링크 위의 여백 설정
+    margin-bottom: 15px; //링크 아래의 여백 설정
+  }
 
-.signupLink {
-  color: #5f5e5e; // 텍스트 컬러 설정
-  text-decoration: none; // 밑줄 스타일
-  cursor: pointer; // 마우스 오버 시 포인터 모양으로 변경
-  background-color: transparent; // 배경색 투명
-  border: none; // 테두리 없음
-  padding: 0; // 패딩 없음
-  font-size: 0.8em;
+  .signupText {
+    margin-right: 5px; // "회원가입하기" 링크와의 간격
+    font-size: 0.9em; // 문구의 글씨 크기 설정
+  }
 
-  &:hover {
-    text-decoration: underline; // 호버 시 밑줄 없앰
+  .signupLink {
+    color: #5f5e5e; // 텍스트 컬러 설정
+    text-decoration: none; // 밑줄 스타일
+    cursor: pointer; // 마우스 오버 시 포인터 모양으로 변경
+    background-color: transparent; // 배경색 투명
+    border: none; // 테두리 없음
+    padding: 0; // 패딩 없음
+    font-size: 0.8em;
+
+    &:hover {
+      text-decoration: underline; // 호버 시 밑줄 없앰
+    }
   }
 }

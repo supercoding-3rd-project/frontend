@@ -77,6 +77,9 @@
     &:first-of-type {
       background-color: #ff8743;
       color: white;
+      &:hover {
+        background-color: darken(#ff8743, 10%);
+      }
     }
   }
 
