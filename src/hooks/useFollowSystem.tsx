@@ -1,58 +1,53 @@
 import { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 
-/**
- * 대상 사용자의 팔로우 상태와 팔로우/언팔로우 액션을 관리하는 훅입니다.
- * @param {string} targetUserId 대상 사용자의 ID입니다.
- * @returns 팔로우 상태와 팔로우/언팔로우 액션을 수행하는 함수를 반환합니다.
- */
-const useFollowSystem = (targetUserId: unknown) => {
-  const [isFollowing, setIsFollowing] = useState(false);
+// 사용자 ID와 현재 팔로우 상태를 받는 훅
+const useFollowSystem = (username: string, initialIsFollowing: boolean) => {
+  const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
 
-  // 팔로우 상태를 확인하는 함수
-  const checkFollowStatus = useCallback(async () => {
+  // 팔로우 상태를 서버에 요청하여 확인하는 함수
+  const fetchFollowStatus = useCallback(async () => {
     try {
-      const response = await fetch(`/api/follow/status/${targetUserId}`, {
-        method: "GET",
-        // 필요한 경우 인증 토큰 등을 헤더에 추가
-      });
-      if (!response.ok) {
-        throw new Error("Failed to check follow status");
-      }
-      const { following } = await response.json();
-      setIsFollowing(following);
+      const response = await axios.get(
+        `http://api.alco4dev.com/api/v1/user/follow/${username}`,
+        {
+          headers: {
+            /* ... 인증 헤더 ... */
+          },
+        }
+      );
+      setIsFollowing(response.data.isFollowing);
     } catch (error) {
-      console.error("Error checking follow status:", error);
+      console.error("Failed to fetch follow status", error);
     }
-  }, [targetUserId]);
+  }, [username]);
 
-  // 팔로우/언팔로우 액션을 수행하는 함수
-  const handleFollowAction = useCallback(async () => {
+  // 사용자를 팔로우/언팔로우하는 함수
+  const toggleFollow = useCallback(async () => {
     try {
-      const response = await fetch(`/api/follow/${targetUserId}`, {
-        method: "POST",
-        body: JSON.stringify({ follow: !isFollowing }),
+      const method = isFollowing ? "DELETE" : "POST";
+      const response = await axios({
+        method,
+        url: `https://api.alco4dev.com/api/v1/user/follow/${username}`,
         headers: {
-          "Content-Type": "application/json",
-          // 필요한 경우 인증 토큰 등을 헤더에 추가
+          /* ... 인증 헤더 ... */
         },
       });
-      if (!response.ok) {
-        throw new Error("Failed to update follow status");
+      // 성공적으로 팔로우/언팔로우 처리가 되면 상태 업데이트
+      if (response.status === 200) {
+        setIsFollowing(!isFollowing);
       }
-      setIsFollowing(!isFollowing); // 팔로우 상태를 업데이트
     } catch (error) {
-      console.error("Error updating follow status:", error);
+      console.error("Failed to toggle follow status", error);
     }
-  }, [targetUserId, isFollowing]);
+  }, [username, isFollowing]);
 
-  // 컴포넌트 마운트 시 팔로우 상태를 확인
+  // 컴포넌트 마운트 시 팔로우 상태 확인
   useEffect(() => {
-    if (targetUserId) {
-      checkFollowStatus();
-    }
-  }, [targetUserId, checkFollowStatus]);
+    fetchFollowStatus();
+  }, [fetchFollowStatus]);
 
-  return { isFollowing, handleFollowAction };
+  return { isFollowing, toggleFollow };
 };
 
 export default useFollowSystem;
