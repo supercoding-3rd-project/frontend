@@ -78,7 +78,7 @@ export default function IntroPage() {
                   <div className="intro__body__people__name">김학준</div>
                 </div>
                 <div className="intro__body__people__section">
-                  <img src="./images/myb_profile.png" alt="" />
+                  <img src="./images/myb_profile3.png" alt="" />
                   <div className="intro__body__people__name">민예빈</div>
                 </div>
                 <div className="intro__body__people__section">
@@ -100,7 +100,7 @@ export default function IntroPage() {
                   <div className="intro__body__people__name">윤승현</div>
                 </div>
                 <div className="intro__body__people__section">
-                  <img src="./images/cyg_profile2.png" alt="" />
+                  <img src="./images/cyg_profile3.png" alt="" />
                   <div className="intro__body__people__name">최영규</div>
                 </div>
               </div>

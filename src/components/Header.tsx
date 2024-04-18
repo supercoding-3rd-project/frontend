@@ -7,6 +7,7 @@ export default function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const [messageArrived, setMessageArrived] = useState(false);
   const [notificationArrived, setNotificationArrived] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -37,6 +38,21 @@ export default function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
     if (notificationArrived) {
       setNotificationArrived(false);
     }
+  };
+
+  // 마이페이지로 이동
+  const goToMyPage = () => {
+    navigate("/my");
+  };
+
+  // 로그아웃
+  const handleLogout = () => {
+    // 로그아웃 처리하는 코드 작성
+  };
+
+  // 드롭다운 토글
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
   };
 
   return (
@@ -115,12 +131,19 @@ export default function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
                   ></span>
                 )}
               </li>
-              <li className="Header__menu__right__list-item mypage">
-                <img
-                  src="./asset/mypage.svg"
-                  alt=""
-                  onClick={() => navigate("/my")}
-                />
+              <li
+                className="Header__menu__right__list-item mypage"
+                onClick={toggleDropdown}
+              >
+                <img src="./asset/mypage.svg" alt="" />
+                {showDropdown && (
+                  <div className="dropdown-menu">
+                    <ul>
+                      <li onClick={goToMyPage}>마이페이지</li>
+                      <li onClick={handleLogout}>로그아웃</li>
+                    </ul>
+                  </div>
+                )}
               </li>
             </>
           ) : (
