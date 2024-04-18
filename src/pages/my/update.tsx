@@ -73,7 +73,8 @@ const EditPage: React.FC = () => {
 
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
+      const userId = localStorage.getItem("userId");
+      if (!token || !userId) {
         // 토큰이 없는 경우 로그인으로 유도
         navigate("/login");
         return;
@@ -91,7 +92,7 @@ const EditPage: React.FC = () => {
 
       // PUT 요청을 보냅니다.
       await axios.put(
-        "http://localhost:8080/api/v1/user/update/3",
+        `https://api.alco4dev.com/api/v1/user/update/${userId}`,
         updateData,
         {
           headers: {

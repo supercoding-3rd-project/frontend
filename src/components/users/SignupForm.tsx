@@ -82,7 +82,7 @@ const Signup = () => {
       try {
         // 회원가입 요청 로직
         const signupResponse = await fetch(
-          "http://13.209.98.14:8080/api/signup",
+          `https://api.alco4dev.com/api/signup`,
           {
             method: "POST",
             headers: {
@@ -102,7 +102,7 @@ const Signup = () => {
 
         // 회원가입 성공 후 로그인 요청 로직
         const loginResponse = await fetch(
-          "http://13.209.98.14:8080/api/login",
+          `https://api.alco4dev.com/api/login`,
           {
             method: "POST",
             headers: {
