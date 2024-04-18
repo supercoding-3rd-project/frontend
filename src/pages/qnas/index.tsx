@@ -132,6 +132,8 @@ export default function QnaListPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
+  //페이지 중복 로딩 방지를 위한 플래그 값
+  const [loadingPage, setLoadingPage] = useState<number | null>(null);
   const observer = useRef<IntersectionObserver | null>(null);
 
   //글쓰기 버튼 클릭시 사용
@@ -168,6 +170,11 @@ export default function QnaListPage() {
   const fetchQuestions = useCallback(
     async (page: number) => {
       try {
+        /// 중복요청 방지를 위한 플래그값.이미 다른 페이지를 로딩 중인 경우 무시
+        if (loadingPage !== null) return;
+
+        /// 현재 페이지를 로딩 중으로 설정
+        setLoadingPage(page);
         setIsLoading(true);
 
         const response: AxiosResponse<Posts> = await axios.get<Posts>(
@@ -188,10 +195,12 @@ export default function QnaListPage() {
       } catch (error) {
         console.error("데이터 GET요청 실패:", error);
       } finally {
+        // 로딩이 완료되면 로딩 중인 페이지를 초기화
+        setLoadingPage(null);
         setIsLoading(false);
       }
     },
-    [setIsLoading, setMainData, setCurrentPage, setTotalPages]
+    [setIsLoading, setMainData, setCurrentPage, setTotalPages, loadingPage]
   );
 
   // Intersection Observer 콜백 함수, 요소가 교차(intersect)할 때 실행할 로직
@@ -199,18 +208,10 @@ export default function QnaListPage() {
     entries.forEach((entry) => {
       console.log(entry.isIntersecting);
       if (entry.isIntersecting && !isLoading && totalPages > currentPage) {
-        // 로딩 중 상태로 변경
-        setIsLoading(true);
-
         fetchQuestions(currentPage + 1)
-          .then(() => {
-            // 데이터 로딩이 완료되면 로딩 중 상태 해제
-            setIsLoading(false);
-          })
+          .then(() => {})
           .catch((error) => {
             console.error("Error fetching data:", error);
-            // 데이터 로딩이 실패하더라도 로딩 중 상태 해제
-            setIsLoading(false);
           });
       }
     });
@@ -364,7 +365,9 @@ export default function QnaListPage() {
           {currentPage == totalPages && "불러올 글이 없습니다"}
         </div>
         {/* show Loading icon when loading*/}
-        {isLoading && <div className="loading"></div>}
+        <div className="loading-wrapper">
+          {isLoading && <div className="loading"></div>}
+        </div>
       </div>
     </div>
   );
