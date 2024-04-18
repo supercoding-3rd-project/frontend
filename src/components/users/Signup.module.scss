@@ -1,17 +1,25 @@
+.signupstlye {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
 .signupContainer {
   background-color: #ffc597; // 배경색 설정
+  background-color: rgba(255, 237, 113, 0.2); // 투명도 20% 적용
   padding: 20px; // 적당한 패딩
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // 그림자 효과
-  border-radius: 8px; // 둥근 모서리
+  border-radius: 50px; // 둥근 모서리
   width: 100%; // 또는 고정된 너비
   max-width: 400px; // 최대 너비
-  margin: 40px auto; // 페이지 중앙 정렬
+  margin: 100px auto; // 페이지 중앙 정렬
   text-align: center; // 텍스트 중앙 정렬
 
   label {
     display: block; // 라벨을 새 줄에 표시
     text-align: left; // 텍스트를 왼쪽으로 정렬
     margin: 15px 0 10px; // 라벨 주위 여백 조정
+    font-weight: 600;
   }
 
   input {
@@ -19,7 +27,7 @@
     padding: 10px;
     margin-bottom: 15px; // 입력란 간 여백
     border: 1px solid #ccc; // 테두리 스타일
-    border-radius: 4px; // 둥근 테두리
+    border-radius: 30px; // 둥근 테두리
     margin-bottom: 5px;
   }
 
@@ -27,19 +35,24 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   .checkboxLabel {
     margin-left: 1px;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    cursor: pointer; // 커서를 포인터 모양으로 변경
+    &:hover {
+      text-decoration: underline; // 호버 시 밑줄 표시
+      color: #0056b3; // 호버 시 색상 변경 (예시 색상)
+    }
   }
 
   .customCheckbox {
-    margin-top: 13px;
+    margin-top: 10px;
     padding: 0;
     width: auto;
     // 여기에 더 많은 스타일을 추가할 수 있습니다.
@@ -53,28 +66,29 @@
     font-size: 0.9rem; // 에러 메시지의 폰트 크기
   }
 
-  button {
+  .signupButton {
     width: 100%;
     padding: 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 30px;
     margin-bottom: 5px; // 버튼 간 여백
     cursor: pointer;
 
     &:first-of-type {
-      background-color: #007bff;
+      background-color: #ff8743;
       color: white;
     }
   }
 
   .signupPrompt {
+    margin-left: 5px;
     text-align: left; // 중앙 정렬
     margin-top: 2px; // 위쪽 여백
     font-size: 0.9rem;
   }
 
   .signupLink {
-    color: #1a73e8; // 링크 색상
+    color: #5f5e5e; // 링크 색상
     text-decoration: none; // 밑줄 없음
     cursor: pointer; // 포인터
 
