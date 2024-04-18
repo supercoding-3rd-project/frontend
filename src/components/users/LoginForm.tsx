@@ -57,26 +57,17 @@ export default function LoginForm() {
       });
 
       if (!response.ok) {
-        // 서버가 응답하지 않을 경우를 위한 조건부 처리
-        // 예를 들어 response.status가 0이면 네트워크 오류로 간주할 수 있습니다.
-        if (response.status === 0) {
-          // 임의의 토큰 생성하여 로컬 스토리지에 저장
-          console.warn("서버가 응답하지 않습니다. 임의의 토큰으로 대체합니다.");
-          const dummyToken = "임의의토큰";
-          localStorage.setItem("userToken", dummyToken);
-          navigate("/");
-          return;
-        } else {
-          throw new Error(`로그인 요청 실패: ${response.status}`);
-        }
+        throw new Error(`로그인 요청 실패: ${response.status}`);
       }
 
       // 서버가 정상적으로 응답할 경우의 처리
-      const data = await response.json();
-      if (!data.token) {
-        throw new Error("서버에서 토큰을 제대로 반환하지 않음");
-      }
-      localStorage.setItem("userToken", data.token);
+      const { accessToken, refreshToken } = await response.json();
+
+      // 받은 토큰을 로컬 스토리지에 저장
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+
+      // 메인 페이지로 이동
       navigate("/");
     } catch (error) {
       console.error("로그인 에러:", error);
@@ -85,39 +76,51 @@ export default function LoginForm() {
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <h2>로그인</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">이메일</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="이메일을 입력해주세요."
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+    <div className={styles.loginstyle}>
+      <div className={styles.loginContainer}>
+        <Link to="/">
+          <img
+            src="/images/alco_logo.png"
+            alt="로고 이미지"
+            className={styles.logo}
           />
-          {emailError && <div style={{ color: "red" }}>{emailError}</div>}
-        </div>
-        <div>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="비밀번호를 입력해주세요."
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {passwordError && <div style={{ color: "red" }}>{passwordError}</div>}
-        </div>
-        <div className={styles.signupPrompt}>
-          <span className={styles.signupText}>계정이 없으신가요?</span>
-          <Link to="/users/signup" className={styles.signupLink}>
-            회원가입하기
-          </Link>
-        </div>
-        <button type="submit">로그인</button>
-      </form>
+        </Link>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">이메일</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="이메일을 입력해주세요."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <div style={{ color: "red", textAlign: "left" }}>{emailError}</div>
+          </div>
+          <div>
+            <label htmlFor="password">비밀번호</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="비밀번호를 입력해주세요."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {passwordError && (
+              <div style={{ color: "red", textAlign: "left" }}>
+                {passwordError}
+              </div>
+            )}
+          </div>
+          <button type="submit">로그인</button>
+          <div className={styles.signupPrompt}>
+            <span className={styles.signupText}>계정이 없으신가요?</span>
+            <Link to="/users/signup" className={styles.signupLink}>
+              회원가입하기
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

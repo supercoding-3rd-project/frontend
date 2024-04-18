@@ -1,0 +1,67 @@
+.userPageContainer {
+  width: 100%;
+  max-width: 800px;
+  margin: 50px auto; // 상단 여백 조정
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "나눔고딕", sans-serif; // 원하는 폰트로 변경 가능
+}
+
+.profilePicContainer {
+  width: 150px; // 이미지 사이즈 조정
+  height: 150px; // 이미지 사이즈 조정
+  border-radius: 50%;
+  margin: 20px 0; // 이미지와 이름 사이 여백 조정
+  border: 5px solid #e1e1e1; // 테두리 색상과 굵기 조정
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #fff; // 배경색 지정
+}
+
+.profilePic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.username {
+  margin: 0;
+  font-size: 1.8rem; // 이름 폰트 사이즈 조정
+  color: #333; // 색상 조정
+  font-weight: 600; // 폰트 굵기 조정
+  display: flex; // 이모티콘과 이름을 가로로 정렬
+  align-items: center; // 세로 중앙 정렬
+}
+
+.followInfo {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 10px 0; // 팔로워와 팔로잉 표시 사이 여백 조정
+}
+
+.about {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: 600; // 폰트 굵기 조정 // 인사말과 버튼 사이 여백 조정
+}
+
+.followButton {
+  background-color: #007bff;
+  border: none;
+  border-radius: 20px; // 버튼 둥근 모서리 조정
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3; // 호버 색상 조정
+  }
+}
