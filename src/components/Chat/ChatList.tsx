@@ -2,11 +2,19 @@ import React, { useState, useRef, ChangeEvent } from "react";
 import styled from "styled-components";
 import { TbPaperclip } from "react-icons/tb";
 import { IoSend } from "react-icons/io5";
+import { IoChevronBack } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
+import userEvent from "@testing-library/user-event";
+import Messenger from "./Messenger";
 
 const StyledClip = styled(TbPaperclip)``;
 
 const StyledSend = styled(IoSend)`
-  font-size: 10rem;
+  font-size: 1rem;
+`;
+
+const StyledBack = styled(IoChevronBack)`
+  font-size: 1.5rem;
 `;
 
 interface Chat {
@@ -24,6 +32,7 @@ export default function ChatList({ chats, me, onSend }: Props) {
   const [text, setText] = useState<string>("");
   const [image, setImage] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showChatWindow, setShowChatWindow] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -34,6 +43,8 @@ export default function ChatList({ chats, me, onSend }: Props) {
     setText("");
     setImage(null);
   };
+
+  // const handleCloseChatRoom = Messenger.handleCloseChatRoom;
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -47,6 +58,10 @@ export default function ChatList({ chats, me, onSend }: Props) {
     }
   };
 
+  const onClickBack = () => {
+    setShowChatWindow(false); // 채팅창을 닫습니다.
+  };
+
   const handleAttachImage = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -55,16 +70,34 @@ export default function ChatList({ chats, me, onSend }: Props) {
 
   return (
     <>
-      <div style={{ width: "100%", height: "100%" }}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRight: "1px solid #e2e8f0",
+        }}
+      >
+        <div className="chatroom-header">
+          <div>
+            <StyledBack
+              style={{ margin: "0 10px", fontSize: "2rem" }}
+              onClick={() => setShowChatWindow(false)}
+            />
+          </div>
+          <div>
+            <CgProfile className="Profile-image" />
+          </div>
+          <div className="chatroom-header-name">유저이름</div>
+        </div>
         <div
           className="custom-scroll"
           style={{
             height: "76%",
             background: "#ffffff",
-            width: "100%",
-            marginTop: "100px",
-            overflow: "scroll",
+            width: "97%",
+            overflow: "auto",
             padding: "10px",
+            borderRight: "1px solid #e2e8f0",
           }}
         >
           {chats.map((chat, index) => (
