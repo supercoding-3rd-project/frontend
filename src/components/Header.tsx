@@ -122,7 +122,7 @@ export default function Header({ isLoggedIn }: { isLoggedIn: boolean }) {
                 <img
                   src="./asset/noti.svg"
                   alt=""
-                  onClick={() => navigate("/notifications")}
+                  onClick={() => navigate("/notification")}
                 />
                 {notificationArrived && (
                   <span
