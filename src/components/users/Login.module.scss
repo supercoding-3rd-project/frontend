@@ -1,3 +1,9 @@
+.loginstyle {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+}
+
 .loginContainer {
   background-color: #ffed71; // 배경색 설정
   background-color: rgba(255, 237, 113, 0.2); // 투명도 20% 적용

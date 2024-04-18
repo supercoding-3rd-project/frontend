@@ -60,7 +60,7 @@ const MyPage: React.FC = () => {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          navigate("/login");
+          navigate("/users/login");
           return;
         }
         const response = await axios.get(

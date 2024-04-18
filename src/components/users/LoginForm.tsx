@@ -76,49 +76,51 @@ export default function LoginForm() {
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <Link to="/">
-        <img
-          src="/images/alco_logo.png"
-          alt="로고 이미지"
-          className={styles.logo}
-        />
-      </Link>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">이메일</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="이메일을 입력해주세요."
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+    <div className={styles.loginstyle}>
+      <div className={styles.loginContainer}>
+        <Link to="/">
+          <img
+            src="/images/alco_logo.png"
+            alt="로고 이미지"
+            className={styles.logo}
           />
-          <div style={{ color: "red", textAlign: "left" }}>{emailError}</div>
-        </div>
-        <div>
-          <label htmlFor="password">비밀번호</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="비밀번호를 입력해주세요."
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {passwordError && (
-            <div style={{ color: "red", textAlign: "left" }}>
-              {passwordError}
-            </div>
-          )}
-        </div>
-        <button type="submit">로그인</button>
-        <div className={styles.signupPrompt}>
-          <span className={styles.signupText}>계정이 없으신가요?</span>
-          <Link to="/users/signup" className={styles.signupLink}>
-            회원가입하기
-          </Link>
-        </div>
-      </form>
+        </Link>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">이메일</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="이메일을 입력해주세요."
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <div style={{ color: "red", textAlign: "left" }}>{emailError}</div>
+          </div>
+          <div>
+            <label htmlFor="password">비밀번호</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="비밀번호를 입력해주세요."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {passwordError && (
+              <div style={{ color: "red", textAlign: "left" }}>
+                {passwordError}
+              </div>
+            )}
+          </div>
+          <button type="submit">로그인</button>
+          <div className={styles.signupPrompt}>
+            <span className={styles.signupText}>계정이 없으신가요?</span>
+            <Link to="/users/signup" className={styles.signupLink}>
+              회원가입하기
+            </Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
