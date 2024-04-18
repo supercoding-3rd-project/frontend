@@ -1,8 +1,8 @@
 import "./detail.scss";
 import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor-viewer.css";
-import AnswerEditor from "src/components/qnas/AnswerEditor";
-import AnswerViewer from "src/components/qnas/AnswerViewer";
+import AnswerEditor from "../../components/qnas/AnswerEditor";
+import AnswerViewer from "../../components/qnas/AnswerViewer";
 import { PiUserCircle } from "react-icons/pi";
 import { IoIosArrowRoundUp } from "react-icons/io";
 import { IoIosArrowRoundDown } from "react-icons/io";

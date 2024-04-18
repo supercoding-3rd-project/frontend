@@ -23,7 +23,7 @@ export default function Router() {
       <Route path="/users/:username" element={<UserPage />} />
       <Route path="/users/signup" element={<SignupPage />} />
       <Route path="/messenger" element={<MessengerService />} />
-      <Route path="/notifications" element={<NotificationsPage />} />
+      <Route path="/notification" element={<NotificationsPage />} />
       <Route path="/qnas" element={<QnaListPage />} />
       <Route path="/qnas/:id" element={<QnaDetailPage />} />
       <Route path="/qnas/create" element={<QnaCreatePage />} />

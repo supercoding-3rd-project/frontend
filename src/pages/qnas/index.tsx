@@ -1,6 +1,5 @@
 import "./index.scss";
 import { useCallback, useEffect, useRef, useState } from "react";
-import SidePanel from "src/components/qnas/SidePanel";
 import { PiUserCircle } from "react-icons/pi";
 import { BiSolidPencil } from "react-icons/bi";
 import { BiCommentDots } from "react-icons/bi";
