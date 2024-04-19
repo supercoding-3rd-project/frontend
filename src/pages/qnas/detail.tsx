@@ -270,7 +270,6 @@ export default function QnaDetailPage() {
   //코멘트 삭제 버튼 클릭시
 
   /////처음 렌더링시 데이터 가져오기/////
-
   useEffect(() => {
     const getPost = async () => {
       try {
