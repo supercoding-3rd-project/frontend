@@ -163,7 +163,7 @@ export default function QnaListPage() {
 
   //포스트 클릭했을때 해당 글 상세 페이지로 이동하는 핸들러
   const handlePostClick = (postId: number) => {
-    navigate(`${apiUrl}/qnas/${postId}`);
+    navigate(`/qnas/${postId}`);
   };
 
   // 질문 데이터 가져오기
