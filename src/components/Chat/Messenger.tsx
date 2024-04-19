@@ -6,7 +6,6 @@ import "./CSS/Messenger.css";
 import { BsEnvelopePlus } from "react-icons/bs";
 import { TbTriangleInverted } from "react-icons/tb";
 import { IoSearch } from "react-icons/io5";
-import ChatDummy from "./ChatDummy";
 import NewChatModal from "./NewChatModal";
 import { RiChatNewLine } from "react-icons/ri";
 
@@ -199,9 +198,10 @@ const Messenger: React.FC = () => {
       newSocket.disconnect();
     };
   };
-
   useEffect(() => {
-    fetch("https://api.alco4dev.com/api/rooms/get-or-create")
+    fetch(
+      "https://raw.githubusercontent.com/Regulus55/ChatDummy/main/ChatDummy.json"
+    )
       .then((response) => response.json())
       .then((data) => {
         setChatlist(data);
