@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { GrClose } from "react-icons/gr";
+import { CgProfile } from "react-icons/cg";
 
 // 빽그라운드
 const NCMBackground = styled.div<{ show: boolean }>`
@@ -61,6 +62,7 @@ const CloseIconImg = styled(GrClose)`
 const NCMFollowBox = styled.div`
   height: 60px;
   display: flex;
+  justify-content: center;
   align-items: center;
   &:hover {
     cursor: pointer;
@@ -71,6 +73,7 @@ const NCMFollower = styled.div`
   width: 250px;
   // color: true ? black : #cbd5e6;
   border-bottom: 2px solid #cbd5e6;
+
   &:hover {
     cursor: pointer;
   }
@@ -80,6 +83,67 @@ const NCMFollowing = styled.div`
   width: 250px;
   color: #cbd5e6;
   border-bottom: 2px solid #cbd5e6;
+`;
+
+/////
+
+const MLMProfileImg = styled.div`
+  width: 90px;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const MLMProfileInfo = styled.div`
+  width: 270px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+`;
+
+const MLMProfileName = styled.div`
+  height: 20px;
+`;
+
+const MLMProfileDate = styled.div`
+  height: 20px;
+  color: #64748b;
+`;
+
+const MLMFollowBottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+    background-color: #f8fafc;
+  }
+`;
+
+const MLMFollowDiv = styled.div`
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  aligncontent: center;
+`;
+
+const MLMFollowButton = styled.button`
+  width: 100px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  background-color: #e2e8f0;
+  outlind: none;
+  border: none;
+  border-radius: 10px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 interface ChatContentModalProps {
@@ -96,7 +160,7 @@ const ChatContentModal: React.FC<ChatContentModalProps> = ({ show, close }) => {
       <NCMBackground show={show} onClick={close} />
       <NCMContainer show={show}>
         <NCMHeader>
-          <NCMMyName>김학준</NCMMyName>
+          <NCMMyName>윤승현</NCMMyName>
           <CloseIcon onClick={close}>
             <CloseIconImg />
           </CloseIcon>
@@ -104,14 +168,31 @@ const ChatContentModal: React.FC<ChatContentModalProps> = ({ show, close }) => {
 
         <NCMFollowBox>
           <NCMFollower>
-            <div>팔로워</div>
-            <div>2</div>
+            <div className="follow-style">팔로워</div>
+            <div className="follow-style">2</div>
           </NCMFollower>
           <NCMFollowing>
-            <div>팔로잉</div>
-            <div>22</div>
+            <div className="follow-style">팔로잉</div>
+            <div className="follow-style">22</div>
           </NCMFollowing>
         </NCMFollowBox>
+
+        <MLMFollowBottom>
+          <div className="follow-lists">
+            <MLMProfileImg>
+              <CgProfile className="Profile-image" />
+            </MLMProfileImg>
+            <MLMProfileInfo>
+              <div className="column-div">
+                <MLMProfileName>김학준</MLMProfileName>
+                <MLMProfileDate>프론트</MLMProfileDate>
+              </div>
+            </MLMProfileInfo>
+          </div>
+          <MLMFollowDiv>
+            <MLMFollowButton>팔로우</MLMFollowButton>
+          </MLMFollowDiv>
+        </MLMFollowBottom>
       </NCMContainer>
     </>
   );

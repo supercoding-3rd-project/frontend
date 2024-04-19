@@ -59,7 +59,7 @@ export default function ChatList({ chats, me, onSend }: Props) {
   };
 
   const onClickBack = () => {
-    setShowChatWindow(false); // 채팅창을 닫습니다.
+    setShowChatWindow(false);
   };
 
   const handleAttachImage = () => {

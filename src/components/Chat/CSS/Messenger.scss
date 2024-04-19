@@ -1,15 +1,35 @@
+@font-face {
+  font-family: "pr";
+  src: url("https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
 .MCL-header-left {
   width: 360px;
   height: 50px;
+
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
   flex-direction: row;
 }
 
 .chatplus {
   width: 40px;
   height: 35px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
 }
 
@@ -17,8 +37,14 @@
   font-size: 0.8rem;
   width: 120px;
   height: 35px;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
   justify-content: center;
   border: 1px solid #ced3db;
   border-radius: 20px;
@@ -34,9 +60,161 @@
   border-radius: 13px;
   border: none;
   outline: none;
+  background-color: white;
 }
 
 #smile-icon {
   width: 300px;
   height: auto;
+}
+
+.lets-new-chat {
+  margin: 30px 0;
+}
+
+.new-chat-button {
+  width: 120px;
+  height: 50px;
+  color: white;
+  background-color: #334155;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 5px;
+}
+
+.new-chat-button:hover {
+  cursor: pointer;
+}
+/*# sourceMappingURL=Dkk.css.map */
+
+.chat-container {
+  width: 400px;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+#input-box {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #fffef1;
+  border: 1px solid #dddddd;
+}
+
+.msg-box {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.msg-box.left {
+  justify-content: flex-start;
+}
+
+.msg-box.right {
+  justify-content: flex-end;
+}
+
+.nick-tag {
+  color: #333;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.msg-box.left .bubble {
+  padding: 10px;
+  border-radius: 8px;
+  background: #f6f6f6;
+  font-size: 14px;
+  border: 1px solid #dedede;
+  max-width: 230px;
+}
+
+.msg-box.right .bubble {
+  padding: 10px;
+  border-radius: 8px;
+  background: #ffed72;
+  font-size: 14px;
+  border: 1px solid #dedede;
+  max-width: 230px;
+}
+
+input {
+  font-family: pr;
+  font-size: 16px;
+  padding-left: 4px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.btn-dark {
+  background-color: #fffef1;
+  font-weight: 700;
+  color: grey;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: pr;
+  font-size: 1.5rem;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn-dark:hover {
+  color: #000;
+}
+
+/* styles.css */
+.custom-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scroll::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리 등 웹킷 기반 브라우저에서 스크롤바를 숨깁니다 */
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+.chatroom-header {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.chatroom-header-name {
+  margin-left: 10px;
+  font-size: 1.5rem;
+}
+
+.follow-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.follow-lists {
+  /* width: 100vh; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-div {
+  display: flex;
+  direction: column;
+  justify-content: center;
+  align-items: center;
 }

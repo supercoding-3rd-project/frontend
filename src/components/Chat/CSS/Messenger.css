@@ -198,3 +198,23 @@ input {
   margin-left: 10px;
   font-size: 1.5rem;
 }
+
+.follow-style {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.follow-lists {
+  /* width: 100vh; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-div {
+  display: flex;
+  direction: column;
+  justify-content: center;
+  align-items: center;
+}
