@@ -47,7 +47,7 @@ interface Question {
   updatedAt: null;
   likeCount: number;
   dislikeCount: number;
-  canDelete: false;
+  canDelete: boolean;
   answers: Answers[];
   liked: boolean;
   disliked: boolean;
@@ -75,7 +75,7 @@ export default function QnaDetailPage() {
     updatedAt: null,
     likeCount: 3,
     dislikeCount: 0,
-    canDelete: false,
+    canDelete: true,
     answers: [
       {
         questionId: 6,
@@ -88,7 +88,7 @@ export default function QnaDetailPage() {
         createdAt: "2024-04-13T18:11:00.046106",
         updatedAt: "2024-04-13T18:11:00.046106",
         likeCount: 7,
-        canDelete: true,
+        canDelete: false,
         answerComments: [
           {
             commentId: 1,
@@ -99,7 +99,7 @@ export default function QnaDetailPage() {
             profileImage: "anonymous.png",
 
             createdAt: "2024-04-14T18:11:15.262025",
-            canDelete: false,
+            canDelete: true,
           },
           {
             commentId: 2,
@@ -229,20 +229,20 @@ export default function QnaDetailPage() {
   //코멘트 삭제 버튼 클릭시
 
   /////처음 렌더링시 데이터 가져오기/////
-  useEffect(() => {
-    const getPost = async () => {
-      try {
-        const response = await axios.get(`${apiUrl}/api/question/${postId}`); // API 요청, postId는 usePrams사용해서 요청
+  // useEffect(() => {
+  //   const getPost = async () => {
+  //     try {
+  //       const response = await axios.get(`${apiUrl}/api/question/${postId}`); // API 요청, postId는 usePrams사용해서 요청
 
-        setQuestion(response.data); // 성공적으로 데이터를 가져왔을 때 상태 업데이트
-        console.log("Question 데이터 GET 성공", response.data);
-      } catch (error) {
-        console.log("Question 데이터 GET 실패:", error);
-      }
-    };
+  //       setQuestion(response.data); // 성공적으로 데이터를 가져왔을 때 상태 업데이트
+  //       console.log("Question 데이터 GET 성공", response.data);
+  //     } catch (error) {
+  //       console.log("Question 데이터 GET 실패:", error);
+  //     }
+  //   };
 
-    getPost(); // 함수 호출
-  }, []);
+  //   getPost(); // 함수 호출
+  // }, []);
 
   return (
     <div className="qna-detail-page-layout">
