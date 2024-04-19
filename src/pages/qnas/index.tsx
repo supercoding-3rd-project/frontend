@@ -138,7 +138,7 @@ export default function QnaListPage() {
 
   //글쓰기 버튼 클릭시 사용
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); //추후 로그인관련 로직 추가 필요
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); //추후 로그인관련 로직 추가 필요
 
   //글쓰기 버튼 클릭 핸들러 //로그인을 전역상태로 관리하는게 맞는듯. 지금은 토큰여부만 확인하는 로직으로 넣음
 
@@ -151,7 +151,7 @@ export default function QnaListPage() {
     }
     if (!isLoggedIn) {
       alert("로그인을 해주세요."); // 사용자에게 메시지 표시
-      navigate("/login"); // 로그인 페이지로 이동
+      navigate("users/login"); // 로그인 페이지로 이동
     }
   };
 
