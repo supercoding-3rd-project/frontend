@@ -55,7 +55,8 @@ interface Question {
 
 export default function QnaDetailPage() {
   //추후 수정 필요
-  const apiUrl = "https://api.alco4dev.com";
+  //const apiUrl = "https://api.alco4dev.com";
+  const apiUrl: string = "https://403d-218-233-42-240.ngrok-free.app/";
 
   const [loggedIn, setLoggedIn] = useState(true);
   //const [loggedInUserId, setLoggedInUserId] = useState<number>(1234567); //추후 로그인관련 로직 추가 필요
