@@ -13,8 +13,8 @@ interface Profile {
 }
 
 interface Qna {
-  id: number;
-  question: string;
+  questionId: number;
+  title: string;
   content: string;
   answerCount: number;
   viewCount: number;
@@ -28,14 +28,21 @@ export default function SearchPage() {
 
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
   const [profileResults, setProfileResults] = useState<Profile[]>([]);
-  const [qnaResults, setQnaResults] = useState<Qna[]>([]);
+  const [qnaResults, setQnaResults] = useState<Qna[] | null>(null);
   const [profileResultsCount, setProfileResultsCount] = useState<number>(0);
   const [qnaResultsCount, setQnaResultsCount] = useState<number>(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfileResults = () => {
-      fetch(`https://api.alco4dev.com/api/search/keyword/user?q=${searchQuery}`)
+      fetch(
+        `https://api.alco4dev.com/api/search/keyword/user?q=${searchQuery}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any-value",
+          },
+        }
+      )
         .then((response) => response.json())
         .then((data: Profile[]) => {
           setProfileResults(data);
@@ -48,7 +55,12 @@ export default function SearchPage() {
 
     const fetchQnaResults = () => {
       fetch(
-        `https://api.alco4dev.com/api/search/keyword/question?q=${searchQuery}`
+        `https://api.alco4dev.com/api/search/keyword/question?q=${searchQuery}`,
+        {
+          headers: {
+            "ngrok-skip-browser-warning": "any-value",
+          },
+        }
       )
         .then((response) => response.json())
         .then((data: Qna[]) => {
@@ -57,12 +69,16 @@ export default function SearchPage() {
         })
         .catch((error) => {
           console.error("Error fetching post data:", error);
+          setQnaResults([]); // 에러 발생 시 빈 배열로 초기화
         });
     };
 
     if (searchQuery.trim() !== "") {
-      fetchProfileResults();
       fetchQnaResults();
+    } else {
+      // 검색어가 없을 때에는 빈 배열로 초기화
+      setQnaResults([]);
+      setQnaResultsCount(0);
     }
   }, [searchQuery]);
 
@@ -156,33 +172,39 @@ export default function SearchPage() {
 
         {/* 게시물 결과 표시 */}
         <div className="search__qna">
-          <div className="search__qna__title">
-            <h2>게시물 {qnaResults.length}</h2>
-          </div>
-          <div className="search__qna__list">
-            {qnaResults.map((qna) => (
-              <div key={qna.id} className="search__qna__item">
-                <div className="search__qna__item__question">
-                  <span className="search__qna__item__question__Q">Q.</span>{" "}
-                  {qna.question}
-                </div>
-                <div className="search__qna__item__content">{qna.content}</div>
-                <div className="search__qna__item__third">
-                  <div className="search__qna__item__third__answer">
-                    답변 {qna.answerCount}
+          {qnaResults && (
+            <div className="search__qna__title">
+              <h2>게시물 {qnaResults.length}</h2>
+            </div>
+          )}
+          {qnaResults && qnaResults.length > 0 && (
+            <div className="search__qna__list">
+              {qnaResults.map((qna) => (
+                <div key={qna.questionId} className="search__qna__item">
+                  <div className="search__qna__item__question">
+                    <span className="search__qna__item__question__Q">Q.</span>{" "}
+                    {qna.title}
                   </div>
-                  <div className="search__qna__item__third__right">
-                    <div className="search__qna__item__third__view">
-                      조회 {qna.viewCount}
+                  <div className="search__qna__item__content">
+                    {qna.content}
+                  </div>
+                  <div className="search__qna__item__third">
+                    <div className="search__qna__item__third__answer">
+                      답변 {qna.answerCount}
                     </div>
-                    <div className="search__qna__item__third__date">
-                      {qna.date}
+                    <div className="search__qna__item__third__right">
+                      <div className="search__qna__item__third__view">
+                        조회 {qna.viewCount}
+                      </div>
+                      <div className="search__qna__item__third__date">
+                        {qna.date}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
