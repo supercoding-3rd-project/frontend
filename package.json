@@ -65,5 +65,5 @@
     "@types/react-icons": "^3.0.0",
     "@types/styled-components": "^5.1.34"
   },
-  "proxy": "https://www.alco4dev.com/"
+  "proxy": "http://api.alco4dev.com"
 }
