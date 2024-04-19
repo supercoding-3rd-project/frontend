@@ -17,8 +17,7 @@ interface SaveSubmitPosts {
 
 export default function QnaCreatePage() {
   //추후 수정 필요
-  //const apiUrl: string = "https://api.alco4dev.com";
-  const apiUrl: string = "https://403d-218-233-42-240.ngrok-free.app/";
+  const apiUrl: string = "https://api.alco4dev.com";
 
   //title
   const [title, setTitle] = useState("");
@@ -71,15 +70,15 @@ export default function QnaCreatePage() {
     try {
       axios
         .post(
-          `https://cors-anywhere.herokuapp.com/${apiUrl}/api/v1/question/create/submit`,
-          postData,
-          {
-            headers: {
-              "ngrok-skip-browser-warning": "any-value",
-              Authorization:
-                "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ4MjY1MSwiZW1haWwiOiJ0ZXN0NzRAdGVzdC5jb20ifQ.nwN10V2qsboqqEsB6FG3VfeXrVHGKgEGCkedSUvLDT0Mql-upLcu1pKmvAREB9_H77OYQKXjI5gnxkIE7c7XSw",
-            },
-          }
+          `${apiUrl}/api/v1/question/create/submit`,
+          postData
+          // {
+          //   headers: {
+
+          //     Authorization:
+          //       ,
+          //   },
+          // }
         )
         .then((response) => {
           console.log("글 제출 POST 요청 성공:", response.data);
@@ -88,7 +87,7 @@ export default function QnaCreatePage() {
           const newPostId = response.data.questionId; // 응답 데이터의 ID 키에 따라 조정
 
           // 새로운 페이지 URL 생성, 해당 페이지로 이동
-          const newPageUrl = `https://cors-anywhere.herokuapp.com/${apiUrl}/qnas/${newPostId}`; // 수정필요
+          const newPageUrl = `${apiUrl}/qnas/${newPostId}`; // 수정필요
 
           // 페이지 이동
           window.location.href = newPageUrl;
@@ -116,15 +115,15 @@ export default function QnaCreatePage() {
     // 로그인되어 있으면 서버에 토큰을 보내 임시저장된 글을 불러옴
     axios
       .get(
-        `https://cors-anywhere.herokuapp.com/${apiUrl}/api/v1/question/create`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "any-value",
-            //Authorization: `Bearer ${token}`
-            Authorization:
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ4MzgwNywiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ.mJO_V5CHjOG4oVe4KPdoHH574LFLCYWQEpM_vqmFqCMz0KkrNel-IcV0ktQdrA76tB9i40SsLtCiI7UFbx_Jrw",
-          },
-        }
+        `${apiUrl}/api/v1/question/create`
+        // {
+        //   headers: {
+        //     "ngrok-skip-browser-warning": "any-value",
+        //     //Authorization: `Bearer ${token}`
+        //     Authorization:
+        //       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ4MzgwNywiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ.mJO_V5CHjOG4oVe4KPdoHH574LFLCYWQEpM_vqmFqCMz0KkrNel-IcV0ktQdrA76tB9i40SsLtCiI7UFbx_Jrw",
+        //   },
+        // }
       )
 
       .then((response) => {
@@ -153,15 +152,15 @@ export default function QnaCreatePage() {
       };
       // 임시 저장 요청 보내기
       await axios.patch(
-        `https://cors-anywhere.herokuapp.com/${apiUrl}/api/v1/question/create/temp`,
-        tempPostData,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "any-value",
-            Authorization:
-              "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ4MTEwMSwiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ.OiZQg_U6WHXeFLsLHon5PACjSsWlSEFdU_hZiZc_Ar1R_BfU1cdhSFnkN8QxrtBN9TMAwQQ3Lq8BpXA-v4DeLQ",
-          },
-        }
+        `${apiUrl}/api/v1/question/create/temp`,
+        tempPostData
+        // {
+        //   headers: {
+        //     "ngrok-skip-browser-warning": "any-value",
+        //     Authorization:
+        //       "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ4MTEwMSwiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ.OiZQg_U6WHXeFLsLHon5PACjSsWlSEFdU_hZiZc_Ar1R_BfU1cdhSFnkN8QxrtBN9TMAwQQ3Lq8BpXA-v4DeLQ",
+        //   },
+        // }
       ); //추후 수정필요
       // 최신 글 목록 다시 가져오기
       await savedPostRequest();
@@ -173,12 +172,12 @@ export default function QnaCreatePage() {
   const deleteBtnHandler = async () => {
     try {
       await axios.patch(
-        `https://cors-anywhere.herokuapp.com/${apiUrl}/api/v1/question/temp/{post.tempId}/delete`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "any-value",
-          },
-        }
+        `${apiUrl}/api/v1/question/temp/{post.tempId}/delete`
+        // {
+        //   headers: {
+        //     "ngrok-skip-browser-warning": "any-value",
+        //   },
+        // }
       );
       //업데이트 된 임시저장 리스트 GET요청
       await savedPostRequest();

@@ -127,8 +127,8 @@ const mockData: Posts = {
   ],
 };
 export default function QnaListPage() {
-  //const apiUrl: string = "https://api.alco4dev.com"; // 추후수정필요
-  const apiUrl: string = "https://403d-218-233-42-240.ngrok-free.app/";
+  const apiUrl: string = "https://api.alco4dev.com";
+
   const [mainData, setMainData] = useState<Posts | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -163,7 +163,7 @@ export default function QnaListPage() {
 
   //포스트 클릭했을때 해당 글 상세 페이지로 이동하는 핸들러
   const handlePostClick = (postId: number) => {
-    navigate(`https://cors-anywhere.herokuapp.com/${apiUrl}/qnas/${postId},`);
+    navigate(`${apiUrl}/qnas/${postId}`);
   };
 
   // 질문 데이터 가져오기
@@ -176,12 +176,12 @@ export default function QnaListPage() {
           setLoadingPage(page);
           setIsLoading(true);
           const response: AxiosResponse<Posts> = await axios.get<Posts>(
-            `https://cors-anywhere.herokuapp.com/${apiUrl}/api/search?page=${page}`,
-            {
-              headers: {
-                "ngrok-skip-browser-warning": "any-value",
-              },
-            }
+            `${apiUrl}/api/search?page=${page}`
+            // {
+            //   headers: {
+            //     "ngrok-skip-browser-warning": "any-value",
+            //   },
+            // }
           );
           const data = response.data;
           setMainData((prevData) =>
