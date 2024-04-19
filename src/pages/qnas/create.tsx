@@ -66,11 +66,20 @@ export default function QnaCreatePage() {
     const postData = {
       title: title,
       content: content,
-      statusType: "SUBMIT",
     };
     try {
       axios
-        .post(`${apiUrl}/api/v1/question/create/submit`, postData)
+        .post(
+          `${apiUrl}/api/v1/question/create/submit`,
+          postData
+          // {
+          //   headers: {
+
+          //     Authorization:
+          //       ,
+          //   },
+          // }
+        )
         .then((response) => {
           console.log("글 제출 POST 요청 성공:", response.data);
 
@@ -94,39 +103,43 @@ export default function QnaCreatePage() {
   /////임시저장 관련/////
 
   //임시저장된 글들
-  const [tempSavedPosts, setTempSavedPosts] =
-    useState<SaveSubmitPosts[]>(mockData);
+  const [tempSavedPosts, setTempSavedPosts] = useState<
+    SaveSubmitPosts[] | null
+  >(null);
   //임시저장된 글들이 있는지 여부를 나타내는 상태
   const [isTempSavedPostPresent, setIsTempSavedPostPresent] = useState(true);
   //임시저장 글을 GET요청하여 저장된 글이 있을 경우 불러오는 로직
   const savedPostRequest = () => {
-    const token = localStorage.getItem("token");
-    //const token =
-    //  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.///eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ0NDU1OSwiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ. -X6sCmOPlCc87RGBNhp9UFBBJSzdnn58qIStuSQNEC4Xlv01Nb1-pgMDPPiSdBCa5X_kooCwSfRIgHGlDbTwDg";
-    if (token) {
-      // 로그인되어 있으면 서버에 토큰을 보내 임시저장된 글을 불러옴
-      axios
-        .get(`${apiUrl}/api/v1/question/create`, {
-          headers: {
-            //"ngrok-skip-browser-warning": "any-value", //임시연결용
-            Authorization: `Bearer ${token}`,
-          },
-        })
+    //const token = localStorage.getItem("token");
 
-        .then((response) => {
-          if (response.data.length > 0) {
-            setTempSavedPosts(response.data);
-            setIsTempSavedPostPresent(true);
-            console.log("임시저장 글 get요청 성공", response.data);
-          } else {
-            setIsTempSavedPostPresent(false);
-          }
-        })
-        .catch((error) => {
-          setTempSavedPosts(mockData); //수정필요. 나중에 mockdata지우기
-          console.log("임시저장 글 get요청 실패", error);
-        });
-    }
+    // 로그인되어 있으면 서버에 토큰을 보내 임시저장된 글을 불러옴
+    axios
+      .get(
+        `${apiUrl}/api/v1/question/create`
+        // {
+        //   headers: {
+        //     "ngrok-skip-browser-warning": "any-value",
+        //     //Authorization: `Bearer ${token}`
+        //     Authorization:
+        //       "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ4MzgwNywiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ.mJO_V5CHjOG4oVe4KPdoHH574LFLCYWQEpM_vqmFqCMz0KkrNel-IcV0ktQdrA76tB9i40SsLtCiI7UFbx_Jrw",
+        //   },
+        // }
+      )
+
+      .then((response) => {
+        if (response.data.length > 0) {
+          console.log(response.data);
+          setTempSavedPosts(response.data);
+          setIsTempSavedPostPresent(true);
+          console.log("임시저장 글 get요청 성공", response.data);
+        } else {
+          setIsTempSavedPostPresent(false);
+        }
+      })
+      .catch((error) => {
+        setTempSavedPosts(mockData); //수정필요. 나중에 mockdata지우기
+        console.log("임시저장 글 get요청 실패", error);
+      });
   };
 
   //임시저장 버튼 눌렀을때
@@ -136,10 +149,19 @@ export default function QnaCreatePage() {
       const tempPostData = {
         title: title,
         content: content,
-        statusType: "TEMP_SAVE",
       };
       // 임시 저장 요청 보내기
-      await axios.patch(`${apiUrl}/api/v1/question/create/temp`, tempPostData); //추후 수정필요
+      await axios.patch(
+        `${apiUrl}/api/v1/question/create/temp`,
+        tempPostData
+        // {
+        //   headers: {
+        //     "ngrok-skip-browser-warning": "any-value",
+        //     Authorization:
+        //       "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBY2Nlc3NUb2tlbiIsImV4cCI6MTcxMzQ4MTEwMSwiZW1haWwiOiJ0b25lbGxkb0BuYXZlci5jb20ifQ.OiZQg_U6WHXeFLsLHon5PACjSsWlSEFdU_hZiZc_Ar1R_BfU1cdhSFnkN8QxrtBN9TMAwQQ3Lq8BpXA-v4DeLQ",
+        //   },
+        // }
+      ); //추후 수정필요
       // 최신 글 목록 다시 가져오기
       await savedPostRequest();
     } catch (error) {
@@ -149,7 +171,14 @@ export default function QnaCreatePage() {
   //임시저장글 삭제버튼 클릭시
   const deleteBtnHandler = async () => {
     try {
-      await axios.patch(`api/v1/question/temp/{post.tempId}/delete`);
+      await axios.patch(
+        `${apiUrl}/api/v1/question/temp/{post.tempId}/delete`
+        // {
+        //   headers: {
+        //     "ngrok-skip-browser-warning": "any-value",
+        //   },
+        // }
+      );
       //업데이트 된 임시저장 리스트 GET요청
       await savedPostRequest();
     } catch (error) {

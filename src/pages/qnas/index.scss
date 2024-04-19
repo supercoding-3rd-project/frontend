@@ -101,16 +101,16 @@ $alco-yellow2-darker: #ffe640;
       display: flex;
       align-items: ceter;
       color: #666666;
-      padding-left: 7px;
+      padding-left: 13px;
       font-family: "SUITE-Regular";
       span {
         display: flex;
         align-items: center;
-        margin-right: 7px;
         font-size: 1.25rem;
         font-family: "SUITE-Regular";
+        padding-right: 5px;
         .profile-img {
-          width: 60px;
+          width: 50px;
           height: auto;
           font-family: "SUITE-Regular";
         }
@@ -119,9 +119,8 @@ $alco-yellow2-darker: #ffe640;
         display: flex;
         align-items: center;
         font-family: "SUITE-Regular";
-
         .questioner-answerer-text {
-          font-size: 1rem;
+          font-size: 0.875rem;
           font-weight: 600;
           font-family: "SUITE-Regular";
         }
@@ -130,13 +129,12 @@ $alco-yellow2-darker: #ffe640;
     .respondent-info {
       display: flex;
       align-items: center;
-      margin-top: 20px;
       font-family: "SUITE-Regular";
 
       .questioner-answerer-img {
         display: flex;
         align-items: center;
-        width: 80px;
+        width: 70px;
         margin-right: 3px;
         font-family: "SUITE-Regular";
       }

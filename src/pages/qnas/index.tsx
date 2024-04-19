@@ -127,14 +127,14 @@ const mockData: Posts = {
   ],
 };
 export default function QnaListPage() {
-  const apiUrl: string = "https://api.alco4dev.com"; // 추후수정필요
+  const apiUrl: string = "https://api.alco4dev.com";
+
   const [mainData, setMainData] = useState<Posts | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(2);
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   //페이지 중복 로딩 방지를 위한 플래그 값
   const [loadingPage, setLoadingPage] = useState<number | null>(null);
-  const observer = useRef<IntersectionObserver | null>(null);
 
   //글쓰기 버튼 클릭시 사용
   const navigate = useNavigate();
@@ -171,27 +171,33 @@ export default function QnaListPage() {
     async (page: number) => {
       try {
         /// 중복요청 방지를 위한 플래그값.이미 다른 페이지를 로딩 중인 경우 무시
-        if (loadingPage !== null) return;
-
-        /// 현재 페이지를 로딩 중으로 설정
-        setLoadingPage(page);
-        setIsLoading(true);
-
-        const response: AxiosResponse<Posts> = await axios.get<Posts>(
-          `${apiUrl}/api/search?page=${page}`
-        );
-        const data = response.data;
-        setMainData((prevData) => (prevData ? { ...prevData, ...data } : data));
-        setCurrentPage(data.currentPage); // 숫자로 된 페이지 번호를 상태로 설정
-        setTotalPages(data.totalPages);
-        setIsLoading(false);
-        console.log(
-          "데이터 GET요청 성공, 전체 데이터:",
-          data,
-          "요청페이지:",
-          page,
-          data.currentPage
-        );
+        if (loadingPage === null) {
+          /// 현재 페이지를 로딩 중으로 설정
+          setLoadingPage(page);
+          setIsLoading(true);
+          const response: AxiosResponse<Posts> = await axios.get<Posts>(
+            `${apiUrl}/api/search?page=${page}`
+            // {
+            //   headers: {
+            //     "ngrok-skip-browser-warning": "any-value",
+            //   },
+            // }
+          );
+          const data = response.data;
+          setMainData((prevData) =>
+            prevData ? { ...prevData, ...data } : data
+          );
+          setCurrentPage(data.currentPage); // 숫자로 된 페이지 번호를 상태로 설정
+          setTotalPages(data.totalPages);
+          setIsLoading(false);
+          console.log(
+            "데이터 GET요청 성공, 전체 데이터:",
+            data,
+            "요청페이지:",
+            page,
+            data.currentPage
+          );
+        }
       } catch (error) {
         console.error("데이터 GET요청 실패:", error);
       } finally {
@@ -203,11 +209,17 @@ export default function QnaListPage() {
     [setIsLoading, setMainData, setCurrentPage, setTotalPages, loadingPage]
   );
 
+  const observer = useRef<IntersectionObserver | null>(null);
+
   // Intersection Observer 콜백 함수, 요소가 교차(intersect)할 때 실행할 로직
   const handleObserver = (entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry) => {
       console.log(entry.isIntersecting);
+      //화면 안에 요소가 들어왔는지 체크
       if (entry.isIntersecting && !isLoading && totalPages > currentPage) {
+        //기존 관찰하던 요소는 더 이상 관찰하지 않음
+        observer.current?.unobserve(entry.target);
+        //페이지 fetch요청
         fetchQuestions(currentPage + 1)
           .then(() => {})
           .catch((error) => {
@@ -218,13 +230,7 @@ export default function QnaListPage() {
   };
 
   useEffect(() => {
-    if (currentPage === 1) {
-      fetchQuestions(currentPage);
-    }
-  }, [fetchQuestions, currentPage]);
-
-  useEffect(() => {
-    //타켓 설정
+    //관찰할 대상을 선언하고,해당 속성을 관찰
     const sentinel = document.getElementById("sentinel");
     if (sentinel && mainData) {
       //1페이지가 로드 되어 mainData가 null이 아닐때만
@@ -234,7 +240,20 @@ export default function QnaListPage() {
       });
       observer.current.observe(sentinel); // sentinel 요소를 관찰 대상으로 추가
     }
+
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
+      }
+    };
   }, [totalPages, currentPage]); // 의존성 추가
+
+  //처음 페이지 진입시 1pg 데이터 받아오기
+  useEffect(() => {
+    if (currentPage === 1) {
+      fetchQuestions(currentPage);
+    }
+  }, []);
 
   return (
     <div className="qnalist-layout">
@@ -273,11 +292,7 @@ export default function QnaListPage() {
                 <div className="post-container-header">
                   <div className="respondent-description">
                     <span>
-                      <img
-                        className="profile-img"
-                        src="/images/profile_default.png"
-                        alt=""
-                      />
+                      <BiCommentDots />
                     </span>
                     {post.answers && post.answers.length > 0 ? (
                       <div className="questioner-answerer-desc">

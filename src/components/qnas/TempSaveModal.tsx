@@ -15,7 +15,7 @@ interface SaveSubmitPosts {
 interface TempSaveModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  tempSavedPosts: SaveSubmitPosts[];
+  tempSavedPosts: SaveSubmitPosts[] | null;
   deleteBtnHandler: () => void;
 }
 
@@ -68,7 +68,7 @@ const TempSaveModal = ({
           </button>
         </div>
 
-        {tempSavedPosts.map((post) => (
+        {tempSavedPosts?.map((post) => (
           <div key={post.tempId} className="temp-saved-post-container">
             <div className="temp-saved-post-title">{post.title}</div>
             <div>|</div>
