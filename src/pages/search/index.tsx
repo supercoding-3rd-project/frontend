@@ -1,98 +1,68 @@
-import React, { useEffect, useState, KeyboardEvent } from "react";
 import { IoIosSearch } from "react-icons/io";
 import "./search.scss";
 import { useLocation, useNavigate } from "react-router-dom";
-
-interface Profile {
-  id: number;
-  name: string;
-  job: string;
-  description: string;
-  profileImage: string;
-  followerCount: number;
-}
-
-interface Qna {
-  questionId: number;
-  title: string;
-  content: string;
-  answerCount: number;
-  viewCount: number;
-  date: string;
-}
+import { useState } from "react";
+import dummyProfiles, { Profile } from "../../dummy/profileDummy";
 
 export default function SearchPage() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const initialSearchQuery = queryParams.get("q") || "";
+  const initialSearchQuery = queryParams.get("q") || ""; // 검색어가 없을 경우 빈 문자열을 기본값으로 사용
 
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
-  const [profileResults, setProfileResults] = useState<Profile[]>([]);
-  const [qnaResults, setQnaResults] = useState<Qna[] | null>(null);
-  const [profileResultsCount, setProfileResultsCount] = useState<number>(0);
-  const [qnaResultsCount, setQnaResultsCount] = useState<number>(0);
+  const [profileResults, setProfileResults] = useState([]);
+  const [qnaResults, setQnaResults] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchProfileResults = () => {
-      fetch(
-        `https://api.alco4dev.com/api/search/keyword/user?q=${searchQuery}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "any-value",
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data: Profile[]) => {
-          setProfileResults(data);
-          setProfileResultsCount(data.length);
-        })
-        .catch((error) => {
-          console.error("Error fetching profile data:", error);
-        });
-    };
-
-    const fetchQnaResults = () => {
-      fetch(
-        `https://api.alco4dev.com/api/search/keyword/question?q=${searchQuery}`,
-        {
-          headers: {
-            "ngrok-skip-browser-warning": "any-value",
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data: Qna[]) => {
-          setQnaResults(data);
-          setQnaResultsCount(data.length);
-        })
-        .catch((error) => {
-          console.error("Error fetching post data:", error);
-          setQnaResults([]); // 에러 발생 시 빈 배열로 초기화
-        });
-    };
-
-    if (searchQuery.trim() !== "") {
-      fetchQnaResults();
-    } else {
-      // 검색어가 없을 때에는 빈 배열로 초기화
-      setQnaResults([]);
-      setQnaResultsCount(0);
-    }
-  }, [searchQuery]);
 
   const handleSearch = () => {
     if (searchQuery.trim() !== "") {
+      // 검색어가 비어있지 않은 경우에만 검색 페이지로 이동
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 
-  const handleKeyPress = (event: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
+
+  // 프로필 탭에 대한 API 요청
+  fetch("https://www.alco4dev.com/api/search/keyword/user")
+    .then((response) => response.json())
+    .then((data) => {
+      // 받은 데이터를 처리하는 로직을 여기에 작성
+      console.log(data); // 예시: 받은 데이터를 콘솔에 출력
+    })
+    .catch((error) => {
+      console.error("Error fetching profile data:", error);
+    });
+
+  // 게시물 탭에 대한 API 요청
+  fetch("https://www.alco4dev.com/api/search/keyword/question")
+    .then((response) => response.json())
+    .then((data) => {
+      // 받은 데이터를 처리하는 로직을 여기에 작성
+      console.log(data); // 예시: 받은 데이터를 콘솔에 출력
+    })
+    .catch((error) => {
+      console.error("Error fetching post data:", error);
+    });
+
+  // USER ID 통해서 작성한 게시물 출력
+  fetch("https://www.alco4dev.com/api/search/user/{userId}")
+    .then((response) => response.json())
+    .then((data) => {
+      // 받은 데이터를 처리하는 로직을 여기에 작성
+      console.log(data); // 예시: 받은 데이터를 콘솔에 출력
+    })
+    .catch((error) => {
+      console.error("Error fetching post user id:", error);
+    });
+
+  // 임의의 검색 결과 수
+  const profileResultsCount = 99; // 예시에서는 99로 가정
+  const qnaResultsCount = 999;
 
   return (
     <div className="search">
@@ -104,7 +74,7 @@ export default function SearchPage() {
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyPress}
         />
-        <div className="search__icon" onClick={handleSearch}>
+        <div className="search__icon">
           <IoIosSearch size={35} />
         </div>
       </div>
@@ -137,16 +107,26 @@ export default function SearchPage() {
             게시물 {qnaResultsCount}
           </li>
         </ul>
-        {/* 프로필 결과 표시 */}
         <div className="search__profile">
           <div className="search__profile__title">
-            <h2>프로필 {profileResults.length}</h2>
+            <h2>프로필 {profileResultsCount}</h2>
+            <div
+              className="search__profile__more"
+              onClick={() =>
+                navigate(
+                  `/search?q=${encodeURIComponent(searchQuery)}&tab=profiles`
+                )
+              }
+            >
+              모두 보기 &gt;
+            </div>
           </div>
           <div className="search__profile__list">
-            {profileResults.map((profile) => (
+            {/* 더미 프로필 데이터를 반복하여 각각의 프로필 항목을 생성 */}
+            {dummyProfiles.map((profile) => (
               <div key={profile.id} className="search__profile__item">
                 <div className="search__profile__item__first">
-                  <img src={profile.profileImage} alt="" />
+                  <img src="./images/profile_default.png" alt="" />
                 </div>
                 <ul className="search__profile__item__second">
                   <li className="search__profile__item__second__name">
@@ -169,42 +149,34 @@ export default function SearchPage() {
             ))}
           </div>
         </div>
-
-        {/* 게시물 결과 표시 */}
         <div className="search__qna">
-          {qnaResults && (
-            <div className="search__qna__title">
-              <h2>게시물 {qnaResults.length}</h2>
-            </div>
-          )}
-          {qnaResults && qnaResults.length > 0 && (
-            <div className="search__qna__list">
-              {qnaResults.map((qna) => (
-                <div key={qna.questionId} className="search__qna__item">
-                  <div className="search__qna__item__question">
-                    <span className="search__qna__item__question__Q">Q.</span>{" "}
-                    {qna.title}
-                  </div>
-                  <div className="search__qna__item__content">
-                    {qna.content}
-                  </div>
-                  <div className="search__qna__item__third">
-                    <div className="search__qna__item__third__answer">
-                      답변 {qna.answerCount}
-                    </div>
-                    <div className="search__qna__item__third__right">
-                      <div className="search__qna__item__third__view">
-                        조회 {qna.viewCount}
-                      </div>
-                      <div className="search__qna__item__third__date">
-                        {qna.date}
-                      </div>
-                    </div>
+          <div className="search__qna__title">
+            <h2>게시물 {qnaResultsCount}</h2>
+          </div>
+          <div className="search__qna__list">
+            <div className="search__qna__item">
+              <div className="search__qna__item__question">
+                <span className="search__qna__item__question__Q">Q.</span>{" "}
+                디자이너가 배우기에 리액트랑 플러터 중 어떤 게 더 좋을까요?
+              </div>
+              <div className="search__qna__item__content">
+                구멍가게 수준의 서비스를 만들어보려고 하는데요. 주제는 아직
+                명확하게 정해지지는 않았어요. 프로그래밍 경험은 유니티 3D c#으로
+                vr, ar 컨텐츠를 10개정도 만들어 본 경험이 있습니다. 주로 전시
+                컨텐츠나 기업의 프로모션으로 단발적인 프로젝트들이 위주였다면
+                긴호흡으로 사용자들이 오래 쓰는
+              </div>
+              <div className="search__qna__item__third">
+                <div className="search__qna__item__third__answer">답변 4</div>
+                <div className="search__qna__item__third__right">
+                  <div className="search__qna__item__third__view">조회 634</div>
+                  <div className="search__qna__item__third__date">
+                    2023-03-22
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
