@@ -231,10 +231,10 @@ export default function QnaCreatePage() {
     return false; //기본동작취소
   };
 
-  //페이지 진입시 임시저장 글이 있을 경우 받아오기.추후 수정필요
-  useEffect(() => {
-    savedPostRequest();
-  }, []);
+  // //페이지 진입시 임시저장 글이 있을 경우 받아오기.추후 수정필요
+  // useEffect(() => {
+  //   savedPostRequest();
+  // }, []);
 
   //open modal when temporary save storage clicked
   const [isModalOpen, setIsModalOpen] = useState(false);
