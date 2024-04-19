@@ -31,8 +31,8 @@ const Signup = () => {
   // 타입을 'string'으로 명시
   const validateUsername = (username: string) => {
     const length = new TextEncoder().encode(username).length;
-    if (length < 4 || length > 10) {
-      setUsernameError("닉네임은 4~10자 내외여야 합니다.");
+    if (length < 4 || length > 20) {
+      setUsernameError("닉네임은 4~20자 내외여야 합니다.");
       return false;
     }
     setUsernameError("");
@@ -118,20 +118,21 @@ const Signup = () => {
         if (!loginResponse.ok) {
           throw new Error("로그인 요청 실패");
         }
+        const accessToken = loginResponse.headers.get("Authorization");
+        const refreshToken = loginResponse.headers.get("Authorization-Refresh");
 
-        const { accessToken, refreshToken } = await loginResponse.json();
-        // 토큰 저장 로직
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
+        if (accessToken && refreshToken) {
+          localStorage.setItem("accessToken", accessToken);
+          localStorage.setItem("refreshToken", refreshToken);
 
-        // 로그인 성공 후 메인 페이지로 이동
-        navigate("/");
+          // 로그인 성공 후 메인 페이지로 이동
+          navigate("/");
+        } else {
+          throw new Error("토큰을 받지 못했습니다.");
+        }
       } catch (error) {
         console.error("오류 발생:", error);
-        // 오류 처리 로직, 예: 사용자에게 오류 메시지 표시
       }
-    } else {
-      alert("입력 조건을 확인해주세요.");
     }
   };
 

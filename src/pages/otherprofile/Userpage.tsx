@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import useFollowSystem from "../../hooks/useFollowSystem";
 import FollowModal from "../../components/followModal/FollowModal";
+import ChatContentModal from "../../components/Chat/NewChatModal";
 
 interface User {
   id: string;
@@ -20,6 +21,7 @@ interface User {
 const UserPage: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isModalOpen, setModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [modalActiveTab, setModalActiveTab] = useState<
     "followers" | "followings"
   >("followers");
@@ -61,6 +63,9 @@ const UserPage: React.FC = () => {
     setModalOpen(false);
   };
 
+  const openM = () => setShowModal(true);
+  const closeM = () => setShowModal(false);
+
   // UI 렌더링 부분
   if (!user) {
     return <div>Loading...</div>;
@@ -89,6 +94,7 @@ const UserPage: React.FC = () => {
       <button onClick={toggleFollow} className={styles.followButton}>
         {isFollowing ? "언팔로우" : "팔로우"}
       </button>
+      <button onClick={openM}>새 채팅 시작</button>
       {isModalOpen && (
         <FollowModal
           userId={user.id}
@@ -96,6 +102,7 @@ const UserPage: React.FC = () => {
           onClose={closeModal}
         />
       )}
+      {showModal && <ChatContentModal show={showModal} close={closeModal} />}
     </div>
   );
 };

@@ -127,16 +127,18 @@ const mockData: Posts = {
   ],
 };
 export default function QnaListPage() {
-  const apiUrl: string = "https://api.alco4dev.com"; // 추후수정필요
+  const apiUrl: string = "https://api.alco4dev.com";
+
   const [mainData, setMainData] = useState<Posts | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(2);
+  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const observer = useRef<IntersectionObserver | null>(null);
+  //페이지 중복 로딩 방지를 위한 플래그 값
+  const [loadingPage, setLoadingPage] = useState<number | null>(null);
 
   //글쓰기 버튼 클릭시 사용
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true); //추후 로그인관련 로직 추가 필요
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false); //추후 로그인관련 로직 추가 필요
 
   //글쓰기 버튼 클릭 핸들러 //로그인을 전역상태로 관리하는게 맞는듯. 지금은 토큰여부만 확인하는 로직으로 넣음
 
@@ -149,7 +151,7 @@ export default function QnaListPage() {
     }
     if (!isLoggedIn) {
       alert("로그인을 해주세요."); // 사용자에게 메시지 표시
-      navigate("/login"); // 로그인 페이지로 이동
+      navigate("users/login"); // 로그인 페이지로 이동
     }
   };
 
@@ -161,79 +163,142 @@ export default function QnaListPage() {
 
   //포스트 클릭했을때 해당 글 상세 페이지로 이동하는 핸들러
   const handlePostClick = (postId: number) => {
-    navigate(`${apiUrl}/qnas/${postId}`);
+    navigate(`/qnas/${postId}`);
   };
 
   // 질문 데이터 가져오기
   const fetchQuestions = useCallback(
     async (page: number) => {
       try {
-        setIsLoading(true);
+        /// 중복요청 방지를 위한 플래그값.이미 다른 페이지를 로딩 중인 경우 무시
+        if (loadingPage === null) {
+          /// 현재 페이지를 로딩 중으로 설정
+          setLoadingPage(page);
+          setIsLoading(true);
+          const response: AxiosResponse<Posts> = await axios.get<Posts>(
+            `${apiUrl}/api/search?page=${page}`
+          );
+          const data = response.data;
+          const eachPageData = data.mainAllQuestionDto;
+          // setMainData((prevData) =>
+          //   prevData ? { ...prevData, ...eachPageData } : eachPageData
+          // );
 
-        const response: AxiosResponse<Posts> = await axios.get<Posts>(
-          `${apiUrl}/api/search?page=${page}`
-        );
-        const data = response.data;
-        setMainData((prevData) => (prevData ? { ...prevData, ...data } : data));
-        setCurrentPage(data.currentPage); // 숫자로 된 페이지 번호를 상태로 설정
-        setTotalPages(data.totalPages);
-        setIsLoading(false);
-        console.log(
-          "데이터 GET요청 성공, 전체 데이터:",
-          data,
-          "요청페이지:",
-          page,
-          data.currentPage
-        );
+          setMainData((prevData) =>
+            prevData
+              ? {
+                  ...prevData,
+                  mainAllQuestionDto: [
+                    ...prevData.mainAllQuestionDto,
+                    ...eachPageData,
+                  ],
+                }
+              : {
+                  currentPage: 1,
+                  totalPages: 5,
+                  pageSize: 5,
+                  totalItems: 5,
+                  mainAllQuestionDto: eachPageData,
+                }
+          );
+
+          setCurrentPage(data.currentPage); // 숫자로 된 페이지 번호를 상태로 설정
+          setTotalPages(data.totalPages);
+          setIsLoading(false);
+          console.log(
+            "데이터 GET요청 성공, 전체 데이터:",
+            mainData,
+            "요청페이지:",
+            page,
+            data.currentPage
+          );
+        }
       } catch (error) {
         console.error("데이터 GET요청 실패:", error);
       } finally {
+        // 로딩이 완료되면 로딩 중인 페이지를 초기화
+        setLoadingPage(null);
         setIsLoading(false);
       }
     },
-    [setIsLoading, setMainData, setCurrentPage, setTotalPages]
+    [setIsLoading, setMainData, setCurrentPage, setTotalPages, loadingPage]
   );
 
-  // Intersection Observer 콜백 함수, 요소가 교차(intersect)할 때 실행할 로직
-  const handleObserver = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach((entry) => {
-      console.log(entry.isIntersecting);
-      if (entry.isIntersecting && !isLoading && totalPages > currentPage) {
-        // 로딩 중 상태로 변경
-        setIsLoading(true);
+  // Intersection Observer 콜백 함수
+  const handleObserver: IntersectionObserverCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !isLoading && totalPages > currentPage) {
+          observer.current?.unobserve(entry.target);
+          fetchQuestions(currentPage + 1);
+        }
+      });
+    },
+    [currentPage, fetchQuestions, isLoading, totalPages]
+  );
 
-        fetchQuestions(currentPage + 1)
-          .then(() => {
-            // 데이터 로딩이 완료되면 로딩 중 상태 해제
-            setIsLoading(false);
-          })
-          .catch((error) => {
-            console.error("Error fetching data:", error);
-            // 데이터 로딩이 실패하더라도 로딩 중 상태 해제
-            setIsLoading(false);
-          });
+  // Intersection Observer 설정
+  const observer = useRef<IntersectionObserver | null>(null);
+  useEffect(() => {
+    const sentinel = document.getElementById("sentinel");
+    if (sentinel && mainData) {
+      observer.current = new IntersectionObserver(handleObserver, {
+        threshold: 0.5,
+      });
+      observer.current.observe(sentinel);
+    }
+    return () => {
+      if (observer.current) {
+        observer.current.disconnect();
       }
-    });
-  };
+    };
+  }, [mainData]);
 
+  // const observer = useRef<IntersectionObserver | null>(null);
+
+  // // Intersection Observer 콜백 함수, 요소가 교차(intersect)할 때 실행할 로직
+  // const handleObserver = (entries: IntersectionObserverEntry[]) => {
+  //   entries.forEach((entry) => {
+  //     console.log(entry.isIntersecting);
+  //     //화면 안에 요소가 들어왔는지 체크
+  //     if (entry.isIntersecting && !isLoading && totalPages > currentPage) {
+  //       //기존 관찰하던 요소는 더 이상 관찰하지 않음
+  //       observer.current?.unobserve(entry.target);
+  //       //페이지 fetch요청
+  //       fetchQuestions(currentPage + 1)
+  //         .then(() => {})
+  //         .catch((error) => {
+  //           console.error("Error fetching data:", error);
+  //         });
+  //     }
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   //관찰할 대상을 선언하고,해당 속성을 관찰
+  //   const sentinel = document.getElementById("sentinel");
+  //   if (sentinel && mainData) {
+  //     //1페이지가 로드 되어 mainData가 null이 아닐때만
+  //     // Intersection Observer 설정
+  //     observer.current = new IntersectionObserver(handleObserver, {
+  //       threshold: 0.5,
+  //     });
+  //     observer.current.observe(sentinel); // sentinel 요소를 관찰 대상으로 추가
+  //   }
+
+  //   return () => {
+  //     if (observer.current) {
+  //       observer.current.disconnect();
+  //     }
+  //   };
+  // }, [setTotalPages, setCurrentPage]); // 의존성 추가
+
+  //처음 페이지 진입시 1pg 데이터 받아오기
   useEffect(() => {
     if (currentPage === 1) {
       fetchQuestions(currentPage);
     }
-  }, [fetchQuestions, currentPage]);
-
-  useEffect(() => {
-    //타켓 설정
-    const sentinel = document.getElementById("sentinel");
-    if (sentinel && mainData) {
-      //1페이지가 로드 되어 mainData가 null이 아닐때만
-      // Intersection Observer 설정
-      observer.current = new IntersectionObserver(handleObserver, {
-        threshold: 0.5,
-      });
-      observer.current.observe(sentinel); // sentinel 요소를 관찰 대상으로 추가
-    }
-  }, [totalPages, currentPage]); // 의존성 추가
+  }, []);
 
   return (
     <div className="qnalist-layout">
@@ -272,11 +337,7 @@ export default function QnaListPage() {
                 <div className="post-container-header">
                   <div className="respondent-description">
                     <span>
-                      <img
-                        className="profile-img"
-                        src="/images/profile_default.png"
-                        alt=""
-                      />
+                      <BiCommentDots />
                     </span>
                     {post.answers && post.answers.length > 0 ? (
                       <div className="questioner-answerer-desc">
@@ -360,11 +421,12 @@ export default function QnaListPage() {
             ))}
         </div>
 
-        <div id="sentinel">
-          {currentPage == totalPages && "불러올 글이 없습니다"}
+        <div className="loading-wrapper">
+          {isLoading && <div className="loading"></div>}
         </div>
+
+        <div id="sentinel"></div>
         {/* show Loading icon when loading*/}
-        {isLoading && <div className="loading"></div>}
       </div>
     </div>
   );
