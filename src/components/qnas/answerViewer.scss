@@ -62,6 +62,7 @@ $alco-yellow2-darker: #ffe640;
     .user-date-text {
       color: $midgrey;
       font-weight: 700;
+      font-size: 0.875rem;
     }
     .author-badge-container {
       display: flex;
@@ -108,7 +109,7 @@ $alco-yellow2-darker: #ffe640;
 
 .answer-content {
   padding: 25px 15px 40px 15px;
-  font-size: 1.125rem;
+  font-size: 1rem;
   line-height: 1.5;
   letter-spacing: 0.08rem;
   color: black;
@@ -252,7 +253,7 @@ $alco-yellow2-darker: #ffe640;
     .user-badge-container {
       display: flex;
       .commenter-name {
-        font-size: 1.125rem;
+        font-size: 1rem;
         font-weight: 700;
         color: $darkgrey;
       }
@@ -313,7 +314,7 @@ $alco-yellow2-darker: #ffe640;
   width: 100%;
   margin-left: 19px;
   background-color: rgba(white, 0);
-  font-size: 1.125rem;
+  font-size: 1rem;
 
   div {
     width: 90%;

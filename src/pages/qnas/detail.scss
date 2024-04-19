@@ -76,7 +76,7 @@ $alco-yellow2-darker: #ffe640;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 50px;
+  padding-bottom: 0;
 }
 
 .like-dislike-wrapper {
@@ -121,7 +121,7 @@ $alco-yellow2-darker: #ffe640;
 }
 
 .like-button.like-button-clicked {
-  color: $alco-yellow2;
+  color: plum;
 }
 
 .arrow-btn-wrapper {
