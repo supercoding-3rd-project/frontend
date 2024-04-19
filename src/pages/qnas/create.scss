@@ -58,7 +58,6 @@ $alco-yellow2-darker: #ffe640;
   width: 90px;
   height: 35px;
   display: flex;
-
   justify-content: center;
   align-items: center;
   border: none;
@@ -79,7 +78,7 @@ $alco-yellow2-darker: #ffe640;
     font-family: "SUITE-Regular";
     &:hover {
       cursor: pointer;
-      background-color: $alco-yellow2-darker;
+      background-color: #ffdf12;
       color: black;
       font-family: "SUITE-Regular";
     }
@@ -102,7 +101,6 @@ $alco-yellow2-darker: #ffe640;
   letter-spacing: 0.08rem;
   font-weight: 700;
   background-color: $lightgrey;
-  font-family: "SUITE-Regular";
   &.btn-enabled {
     color: white;
     background-color: $darkgrey;

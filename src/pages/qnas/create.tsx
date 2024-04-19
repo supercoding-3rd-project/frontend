@@ -253,6 +253,7 @@ export default function QnaCreatePage() {
         >
           임시저장
         </button>
+
         <button
           className={`submit-btn ${getButtonClassName()}`}
           onClick={submitClickHandler}
