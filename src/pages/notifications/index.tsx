@@ -61,6 +61,9 @@ export default function NotificationsPage() {
     fetch(`https://api.alco4dev.com/api/v1/notification/read`, {
       method: "POST",
       credentials: "include", // 인증이 필요한 경우 쿠키를 전송하여 서버에 인증 정보 제공
+      headers: {
+        "ngrok-skip-browser-warning": "any-value",
+      },
     })
       .then((response) => {
         if (response.ok) {
